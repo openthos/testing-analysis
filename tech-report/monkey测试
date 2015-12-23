@@ -1,0 +1,82 @@
+## Android自动测试之Monkey工具
+
+# Monkey介绍：它是Android中的一个命令行工具，可以运行在模拟器里或实际设备中。它向系统发送伪随机的用户事件流(利用socket通讯的方式来模拟用户的按键输入，触摸屏输入，手势输入等)，从而产生随机脉冲，检测设备多长时间会出异常，实现对正在开发的应用程序进行压力测试。所以可以用Monkey通过随机重复的方法去负荷测试开发的软件。Monkey测试是一种为了测试软件的稳定性、健壮性的快速有效的方法。
+
+# Monkey的特征
+1、测试的对象仅为应用程序包，有一定的局限性。
+2、Monky测试使用的事件流数据流是随机的，不能进行自定义。
+3、可对MonkeyTest的对象，事件数量，类型，频率等进行设置。
+
+# Monkey用法
+Monkey程序由Android系统自带，使用Java语言写成，在Android文件系统中的存放路径是：*/sdk/tools/lib/monkey.jar
+Monkey.jar程序是由一个名为“monkey”的Shell脚本来启动执行，shell脚本在Android文件系统中的存放路径是：*/sdk/tools/bin/monkey;
+基本语法如下：
+$ adb shell monkey [options] <eventcount>
+如果不指定options，Monkey将以无反馈模式启动，并把事件任意发送到安装在目标环境中的全部包。
+下面是一个更为典型的命令行示例，它启动指定的应用程序(your.package.name)，并向其发送500个伪随机事件：$ adb shell monkey -p your.package.name -v 500
+指定多个包：adb shell monkey -p com.htc.Weather –p com.htc.pdfreader  -p com.htc.photo.widgets 100
+获取Monkey命令自带的简单帮助:$ adb shell monkey –help
+四大类[options]：常用选项、事件选项、约束选项、调试选。
+（1）常用选
+--help：打印帮助信息;
+-v：用于指定输出信息的详细级别（信息级别就是日志的详细程度）; 级别分为三级：0（默认级别），1，2。
+-v表示级别为Level 0（缺省值，仅提供启动提示、测试完成和最终结果等少量信息）;
+-v -v表示级别为Level 1（提供较为详细的日志，包括每个发送到Activity的事件信息）;
+-v -v -v表示级别为Level 2（最详细的日志，包括了测试中选中/未选中的Activity信息）。
+（2）事件选项
+-s：指定产生随机事件种子值，相同的种子值产生相同的事件序列。如：两次测试的效果是相同的
+Monkey测试1：adb shell monkey -p com.htc.Weather –s 10 100
+Monkey测试2：adb shell monkey -p com.htc.Weather –s 10 100
+因为模拟的用户操作序列（每次操作按照一定的先后顺序所组成的一系列操作，即一个序列）是一样的。操作序列虽然是随机生成的，但是只要我们指定了相同的Seed值，就可以保证两次测试产生的随机操作序列是完全相同的，所以这个操作序列伪随机的。
+--throttle：每个事件结束后的间隔时间——降低系统的压力（如不指定，系统会尽快的发送事件序列）。如：--throttle 100
+--pct-touch：指定触摸事件的百分比，如：--pct-touch 5%
+相关的还有以下option：
+--pct-motion <percent>（滑动事件）、--pct-trackball <percent>（轨迹球事件）、 --pct-nav <percent>（导航事件 up/down/left/right）、--pct-majornav <percent> (主要导航事件 back key、menu key)、--pct-syskeys <percent> (系统按键事件 Home、Back、startCall、endCall、volumeControl)、--pct-appswitch <percent> （activity之间的切换）、--pct-anyevent <percent>（任意事件）
+（3）约束选项
+-p：指定有效的package（如不指定，则对系统中所有package有效），一个-p对应一个有效package， 如：-p com.ckt -p com.ckt.asura；
+-c：activity必须至少包含一个指定的category，才能被启动，否则启动不了；
+（4）调试选项
+--dbg-no-events：初始化启动的activity，但是不产生任何事件。
+--hprof：指定该项后在事件序列发送前后会立即生成分析报告  —— 一般建议指定该项。
+--ignore-crashes：忽略崩溃
+--ignore-timeouts：忽略超时
+--ignore-security-exceptions：忽略安全异常
+--kill-process-after-error：发生错误后直接杀掉进程
+--monitor-native-crashes：跟踪本地方法的崩溃问题
+--wait-dbg：知道连接了调试器才执行monkey测试。
+
+
+# Monkey测试的一个实例
+通过这个实例，我们能理解Monkey测试的步骤以及如何知道哪些应用程序能够用Monkey进行测试。
+
+Windows下（注：2—4步是为了查看我们可以测试哪些应用程序包，可省略）：
+1、通过eclipse启动一个Android的emulator
+2、在命令行中输入：adb devices查看设备连接情况
+C:\Documents and Settings\Administrator>adb devices
+List of devices attached
+emulator-5554   device
+3、在有设备连接的前提下，在命令行中输入：adb shell 进入shell界面
+C:\Documents and Settings\Administrator>adb shell
+#
+4、查看data/data文件夹下的应用程序包。注：我们能测试的应用程序包都在这个目录下面
+C:\Documents and Settings\Administrator>adb shell
+ls data/data
+
+5、以com.android.calculator2作为对象进行MonkeyTest
+#monkey -p com.android.calculator2 -v 500
+其中-p表示对象包 –v 表示反馈信息级别
+运行过程中，Emulator中的应用程序在不断地切换画面。
+按照选定的不同级别的反馈信息，在Monkey中还可以看到其执行过程报告和生成的事件。 
+注：具体参数的设定可参考：
+http://developer.android.com/guide/developing/tools/monkey.html
+
+五、关于Monkey测试的停止条件
+Monkey Test执行过程中在下列三种情况下会自动停止：
+1、如果限定了Monkey运行在一个或几个特定的包上，那么它会监测试图转到其它包的操作，并对其进行阻止。
+2、如果应用程序崩溃或接收到任何失控异常，Monkey将停止并报错。
+3、如果应用程序产生了应用程序不响应(application not responding)的错误，Monkey将会停止并报错。
+通过多次并且不同设定下的Monkey测试才算它是一个稳定性足够的程序。 
+
+参考地址：
+http://www.cnblogs.com/yyangblog/archive/2011/03/10/1980068.html
+http://www.cnblogs.com/manuosex/p/3215270.html
