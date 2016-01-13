@@ -55,13 +55,16 @@
 我们在测试一些项目的时候，完全跑一遍CTS测试，很多项都会失败fail，但是我们在对这些失败项单独测得时候，这些项目pass，这时，我们不可能再去重新完全跑一次CTS，这样既耗时，也不能确保该项一定会pass，这样，我们就可以用下面的方法来对失败项操作，做到失败项的pass结果整合。
 
 原理：
+*run cts –continue-session session_ID: run all not executed tests from a previous CTS session*
 
 将fail项修改成not Executed项，使用该命令进行重测。
 
 6.1. 定位
 
 找到那些测试fail的项，对它们进行源码的修改、调试，之后进行单独测试，直到它不再fail。使用文本编译器打开result的xml文件，找到该项
-
+*l r*
+*Session            Pass          Fail          Not Executed      Start time           Plan name         Device ser(s)8*
+*0                      598            2                  0     2016.01.7             NA                     MSM82*
  
 
 6.2. 修改
@@ -69,11 +72,13 @@
 找到项目之后，将[result=”fail”]改成[result=”not  Executed”],记得在xml文件的开头将fail总数和not Executed的总数根据你修改的数目进行修改
 
 修改之后：
-
+*cts-tf>l  r*
+*Session            Pass          Fail          Not Executed      Start time           Plan name         Device ser(s)*
+*0                 598           0             2                   2016.01.7            NA                     MSM82251*
  
 
 6.3. 测试
-
+*cts-tf>run cts –continue-session session_ID*
 session_ID是之前查看result前面的ID。
 
 运行，测试完成，结果就被整合到了原来的result集中，pass项将会把原来的fail的log在result的xml文件中也一并删除。
