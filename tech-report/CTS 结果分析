@@ -1,4 +1,4 @@
-CTS测试完后结果的分析：
+**CTS测试完后结果的分析：**
 
 结果在repository/results中，放在一个文件夹里，名字是你测试开始的时间。
 
@@ -11,7 +11,7 @@ CTS测试完后结果的分析：
 第二种方法牵扯到找测试源代码的问题，这就要对CTS源码目录以及相应生成物的命名有一定的了解。
 
 
-了解CTS这个工程：
+**了解CTS这个工程：**
 
 研究:android build system、CTS源码、makefile以及shell基本知识
 
@@ -20,7 +20,7 @@ CTS测试完后结果的分析：
 这个涉及到Linux的makefile以及android的编译系统的基本知识，具体内容还是挺多的，不过看懂了android编译系统，以后看其他Android工程应该都会得心应手。
 
 
-在android CTS上增加自己的test package
+**在android CTS上增加自己的test package**
 
 资料：CTS命令的用法
 
@@ -34,7 +34,7 @@ CTS测试完后结果的分析：
 
 
 
-接下来要弄明白的
+**接下来要弄明白的**
 
 1、android的编译系统（学习下makefile以及shell基本知识）
 
