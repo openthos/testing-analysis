@@ -120,4 +120,29 @@ run cts --disable-reboot [option]: 在测试过程中不需要重启手机
 http://blog.csdn.net/andrewblog/article/details/17510869
 http://www.cnblogs.com/liu-ke/p/4300666.html
 
-完整测试时间较长，大概需要3小时
+完整测试时间较长，大概需要5小时
+
+#结果分析
+Ø  查看整体测试概览
+
+Ø  查看具体测试包测试例执行情况
+
+Ø  测试fail项查看失败细节
+
+Ø  测试调试
+
+首先确定是哪个测试包出现失败,然后针对该测试包进行重新测试
+
+$ adb install  …/andandroid‐cts/package.apk
+
+$ adb shell pm list instrumentation   pm 用于管理 package，看当前机器安装了什么用例
+
+$ adb shell am instrument ‐w android.tests.sigtest/.InstrumentationRunner              
+
+Ø  定位某个测试失败项进行单独运行
+
+Start –plan [test plan name]–t
+
+[plan_package_name].[class_name]#[plan_package_test_name]
+
+注意寻找class_name,可从测试报告中找到
