@@ -19,9 +19,6 @@ Tests Not Executed |59450	总用例数为100090
 
 | 包名    |   用例数 | 包简介 |
 | :-------- | --------:| :--: |
-| Computer  | 1600 元 |  5   |
-| Phone     |   12 元 |  12  |
-| Pipe      |    1 元 | 234  |
 |android.JobScheduler	|4	| Android 5.1的调度作业JobScheduler |
 |android.aadb	|11	|  ADB是Android系统提供的调试工具|
 |android.acceleration	|6	|硬件加速
