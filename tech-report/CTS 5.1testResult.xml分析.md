@@ -3,10 +3,10 @@
 1. 最新的CTS有100094个测试用例
 2. 最新的CTS有211个package,其中105个重复出现两次，去掉重复为106个包。
 3. 测试类型分类 
-- 1. Instrumentation test: 使用APK和Instrumentation进行测试，大部分都是
-- 2. Host Test:没有APK，主要使用adb以及一些jar包进行测试，比如hosttestlib.jar等等，共19个，列表如 下：CtsAdbTests,CtsDevicePolicyManagerTestCases,android.core.vm-tests- tf,CtsJdwp, CtsHostsideNetworkTests,CtsAppSecurityTests,CtsUsbTests,CtsHostJank,CtsMonkeyTestCases
-- 3. Junit device test: 使用Junit的方法进行测试，共1个，CtsJdwp
-- 4. New wrapped native test: CtsNativeOpenGLTestCases
+ - 1. Instrumentation test: 使用APK和Instrumentation进行测试，大部分都是
+ - 2. Host Test:没有APK，主要使用adb以及一些jar包进行测试，比如hosttestlib.jar等等，共19个，列表如 下：CtsAdbTests,CtsDevicePolicyManagerTestCases,android.core.vm-tests- tf,CtsJdwp, CtsHostsideNetworkTests,CtsAppSecurityTests,CtsUsbTests,CtsHostJank,CtsMonkeyTestCases
+ - 3. Junit device test: 使用Junit的方法进行测试，共1个，CtsJdwp
+ - 4. New wrapped native test: CtsNativeOpenGLTestCases
 
 | 包名    |   用例数 | 包简介 |
 | :-------- | --------:| :--: |
