@@ -10,7 +10,11 @@
 
 | 包名    |   用例数 | 包简介 |
 | :-------- | --------:| :--: |
-|android.JobScheduler	|4	| Android 5.1的调度作业JobScheduler |
+|android.JobScheduler	|4	| 5.0开始提供的API,可以设定程序在特殊的条件下运行，比如 
+1. 当设备充电时启动
+2. 当设备连接到不限流量网络时启动
+3. 当设备空闲时启动
+4. 在特定的截止期限之前或以最小的延迟完成 |
 |android.aadb	|11	|  ADB是Android系统提供的调试工具|
 |android.acceleration	|6	|硬件加速|
 |android.accessibility	|30	|辅助功能|
