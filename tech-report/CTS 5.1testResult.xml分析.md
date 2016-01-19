@@ -76,13 +76,13 @@
 |android.net.hostsidenetwork	|1	|测试VPN的功能|
 |android.opengl	|37	|OpenGL 是个专业的3D程序接口，是一个功能强大，调用方便的底层3D图形库。|
 |android.openglperf	|3	|
-|android.os	|373	|
-|android.permission	|181	|
-|android.permission2	|21	|
-|android.preference	|4	|
-|android.preference2	|69	|
-|android.print	|21	|
-|android.provider	|291	|
+|android.os	|373	|android.os的相关的API的测试，太多了，比如AsyncTask测试，比如Binder相关测试|
+|android.permission	|181	| 测试android相关的权限相关测试|
+|android.permission2	|21	|两类权限测试，一类是验证andrioid:maxSdkVersion相关的权限行为，主要包括android.permission.VIBRATE和android.permission.FLASHLIGHT，另一类是验证录制系统音频输出的权限测试|
+|android.preference	|4	|设置程序里面的一些属性
+|android.preference2	|69	|设置程序里面的一些属性
+|android.print	|21	| 测试android的打印相关功能|
+|android.provider	|291	|测试各种content provider的功能，比如测试browser中各种书签，历史访问记录|
 |android.renderscript	|659	|
 |android.renderscriptlegacy	|15	|
 |android.rscpp	|25	|
