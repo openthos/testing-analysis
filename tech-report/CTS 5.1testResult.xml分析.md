@@ -1,6 +1,6 @@
 测试版本：CTS 5.1
  
-1. 最新的CTS有100094个测试用例
+1. 最新的CTS有100090个测试用例
 2. 最新的CTS有211个package,其中105个重复出现两次，去掉重复为106个包。
 3. 测试类型分类 
  - 1) Instrumentation test: 使用APK和Instrumentation进行测试，大部分都是
