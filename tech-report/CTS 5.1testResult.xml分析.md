@@ -1,8 +1,8 @@
 测试版本：CTS 5.1
  
 进入cts
-#cd /opt/android-cts/tools
-#cts-tf>list plans    查看得知此版本含有21个plan
+cd /opt/android-cts/tools
+cts-tf>list plans    查看得知此版本含有21个plan
 
 testResult.xml  结果汇总如下，通过数据得知pass率不足五分之一
 Tests Passed	37105
