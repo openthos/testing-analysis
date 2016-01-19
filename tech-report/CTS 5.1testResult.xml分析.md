@@ -1,21 +1,12 @@
 测试版本：CTS 5.1
  
-进入cts
-cd /opt/android-cts/tools
-cts-tf>list plans    查看得知此版本含有21个plan
-
-testResult.xml  结果汇总如下，通过数据得知pass率不足五分之一
-Tests Passed	37105
-Tests Failed	3535
-Tests Timed out	0
-Tests Not Executed	159521
-
-分析Test Package，得知共211个package.其中有105个包是重复出现两次的。去掉重复后，测试结果数据如下,pass率提高至三分之一：
------ | ---- | ----
-Tests Passed	|37105
-Tests Failed	|3535
-Tests Timed out|	0
-Tests Not Executed |59450	总用例数为100090
+1. 最新的CTS有100094个测试用例
+2. 最新的CTS有211个package,其中105个重复出现两次，去掉重复为106个包。
+3. 测试类型分类 
+- 1. Instrumentation test: 使用APK和Instrumentation进行测试，大部分都是
+- 2. Host Test:没有APK，主要使用adb以及一些jar包进行测试，比如hosttestlib.jar等等，共19个，列表如 下：CtsAdbTests,CtsDevicePolicyManagerTestCases,android.core.vm-tests- tf,CtsJdwp, CtsHostsideNetworkTests,CtsAppSecurityTests,CtsUsbTests,CtsHostJank,CtsMonkeyTestCases
+- 3. Junit device test: 使用Junit的方法进行测试，共1个，CtsJdwp
+- 4. New wrapped native test: CtsNativeOpenGLTestCases
 
 | 包名    |   用例数 | 包简介 |
 | :-------- | --------:| :--: |
