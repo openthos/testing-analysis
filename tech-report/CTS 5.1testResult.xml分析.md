@@ -17,7 +17,7 @@
 |android.accessibilityservice	|59	|Accessibility服务|
 |android.accounts	|31	|Android账户管理|
 |android.admin	|55	|Android 设备管理员|
-|android.adminhostside	|30	|
+|android.adminhostside	|30	|Android提供了设备管理API，我们可以通过这个API实现远程删除数据，设置锁屏密码等系统级操作|
 |android.animation	|82	|动画|
 |android.app	|260	|应用|
 |android.appwidget	|18	|AppWidget就是我们平常在桌面上见到的那种一个个的小窗口，利用这个小窗口可以给用户提供一些方便快捷的操作。|
