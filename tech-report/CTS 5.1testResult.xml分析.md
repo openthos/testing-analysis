@@ -1,4 +1,4 @@
-测试版本：CTS 5.1
+##测试版本：CTS 5.1
  
 1. 最新的CTS有100090个测试用例
 2. Testresult.xml有211个package,其中105个重复出现两次，去掉重复为106个包。
@@ -8,6 +8,7 @@
  - 3) Junit device test: 使用Junit的方法进行测试，共1个，CtsJdwp
  - 4) New wrapped native test: CtsNativeOpenGLTestCases
 
+\
 | 包名    |   用例数 | 包简介 |
 | :-------- | --------:| :--: |
 |android.JobScheduler	|4	| 5.0开始提供的API,可以设定程序在特殊的条件下运行|
@@ -83,27 +84,27 @@
 |android.preference2	|69	|设置程序里面的一些属性
 |android.print	|21	| 测试android的打印相关功能|
 |android.provider	|291	|测试各种content provider的功能，比如测试browser中各种书签，历史访问记录|
-|android.renderscript	|659	|
-|android.renderscriptlegacy	|15	|
-|android.rscpp	|25	|
-|android.sax	|4	|
-|android.security	|106	|
+|android.renderscript	|659	|google release的图形渲染得编程语言|
+|android.renderscriptlegacy	|15	|google release的图形渲染得编程语言|
+|android.rscpp	|25	|Rederscript的相关API测试，这是一种google release的图形渲染得编程语言|
+|android.sax	|4	| 测试android.saxAPI的相关功能，主要是xml解析相关的|
+|android.security	|106	|ndroid的各种关于安全的功能的测试|
 |android.signature	|2	|
-|android.speech	|9	|
-|android.telephony	|74	|
-|android.tests.appsecurity	|54	|
-|android.text	|696	|
-|android.textureview	|5	|
-|android.theme	|21	|
-|android.tv	|49	|
-|android.uiautomation	|3	|
-|android.uirendering	|29	|
-|android.usb	|1	|
-|android.util	|195	|
-|android.view	|642	|
-|android.webkit	|196	|
-|android.widget	|1015	|
-|com.android.cts.browserbench	|1	|
+|android.speech	|9	|主要测试speech中TextToSpeech这个类的各种API，主要是android的将文本转换为语言的功能|
+|android.telephony	|74	|对telephony（通信）的一些功能的测试|
+|android.tests.appsecurity	|54	|android的key的一些测试，比如keyset的一些基本feature|
+|android.text	|696	|测试android.text里面的一些API，比如AlteredCharSequence，Spanned等等|
+|android.textureview	|5	|TextureViewTestActivity的启动的一些测试|
+|android.theme	|21	| 针对各种各样的theme进行测试，主要测试有没有action bar
+|android.tv	|49	| tv的相关测试
+|android.uiautomation	|3	| 测试Uiautomation的API，比如uiAutomation.getWindowContentFrameStats
+|android.uirendering	|29	| ui渲染得一些测试，比如BitmapFilterTests，ExactCanvasTests，FontRenderingTests等等
+|android.usb	|1	|测试USB串口的号码与ro.serialno是否一致
+|android.util	|195	|关于android.util功能的一些测试，比如AndroidExceptionTest，AndroidRuntimeExceptionTest，ArrayMapTest，DebugUtilsTest，DisplayMetricsTest等等|
+|android.view	|642	|各种view的组件以及组件对外部事件的相应的一些测试
+|android.webkit	|196	|webkit的一些主要功能的测试，比如CookieManagerTest，DateSorterTest，HttpAuthHandlerTest等等
+|android.widget	|1015	|集中主要的widget的测试,比如AbsListViewTest,AbsSeekBarTest,AbsSpinnerTest,AbsoluteLayoutTest等等
+|com.android.cts.browserbench	|1	| 打开一个带网址的activiy然后等待反应时间
 |com.android.cts.dram	|26	|
 |com.android.cts.filesystemperf	|8	|
 |com.android.cts.jank	|5	|
