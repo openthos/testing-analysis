@@ -8,7 +8,8 @@
  - 3) Junit device test: 使用Junit的方法进行测试，共1个，CtsJdwp
  - 4) New wrapped native test: CtsNativeOpenGLTestCases
 
-\
+
+
 | 包名    |   用例数 | 包简介 |
 | :-------- | --------:| :--: |
 |android.JobScheduler	|4	| 5.0开始提供的API,可以设定程序在特殊的条件下运行|
@@ -71,7 +72,7 @@
 |android.mediastress	|120	|媒体
 |android.nativemedia.sl	|10	|原生media
 |android.nativemedia.xa	|2	|原生media
-|android.nativeopengl	|3	|原生opengl  OpenGL（全写Open Graphics Library）是个定义了一个跨编程语言、跨平台的编程接口规格的专业的图形程序接口。它用于三维图像（二维的亦可），是一个功能强大，调用方便的底层图形库。|
+|android.nativeopengl	|3	|原生opengl  OpenGL|
 |android.ndef	|11	|"NFC Data Exchange Format : NFC数据交换格式，NFC组织约定的NFC tag中的数据格式。|
 |android.net	|136	|android网络
 |android.net.hostsidenetwork	|1	|测试VPN的功能|
