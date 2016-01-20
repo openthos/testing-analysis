@@ -11,7 +11,7 @@
 
 
 | 包名    |   用例数 | 包简介 |
-| :-------- | --------:| :--: |
+----- | ---- | ----
 |android.JobScheduler	|4	| 5.0开始提供的API,可以设定程序在特殊的条件下运行|
 |android.aadb	|11	|  ADB是Android系统提供的调试工具|
 |android.acceleration	|6	|硬件加速|
