@@ -6,3 +6,6 @@
 - CTS 结果分析
 
 ##monkey tool
+- monkey 环境布署
+- 执行
+- 结果分析
