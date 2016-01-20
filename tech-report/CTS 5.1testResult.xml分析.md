@@ -106,15 +106,15 @@
 |android.webkit	|196	|webkit的一些主要功能的测试，比如CookieManagerTest，DateSorterTest，HttpAuthHandlerTest等等
 |android.widget	|1015	|集中主要的widget的测试,比如AbsListViewTest,AbsSeekBarTest,AbsSpinnerTest,AbsoluteLayoutTest等等
 |com.android.cts.browserbench	|1	| 打开一个带网址的activiy然后等待反应时间
-|com.android.cts.dram	|26	|
-|com.android.cts.filesystemperf	|8	|
+|com.android.cts.dram	|26	|测试1s之内memcpy功能耗费多少屏
+|com.android.cts.filesystemperf	|8	|文件系统的随机读写测试
 |com.android.cts.jank	|5	|
-|com.android.cts.opengl	|9	|
-|com.android.cts.simplecpu	|8	|
-|com.android.cts.tvproviderperf	|2	|
-|com.android.cts.ui	|1	|
-|com.android.cts.uihost	|2	|
-|com.android.cts.videoperf	|5	|
-|com.drawelements.deqp.gles3	|37360	|
-|com.drawelements.deqp.gles31	|17212	|
-|zzz.android.monkey	|9	|monkey|
+|com.android.cts.opengl	|9	|一些OpenGL的benchmark测试
+|com.android.cts.simplecpu	|8	| 让CPU做一些排序啊乘法之类的运算
+|com.android.cts.tvproviderperf	|2	| TV方面的feature的performance测试
+|com.android.cts.ui	|1	|测试一个ScrollingActivity是否能划到顶端和底端
+|com.android.cts.uihost	|2	| 测试APK的安装时间
+|com.android.cts.videoperf	|5	| 测试video编解码的速度
+|com.drawelements.deqp.gles3	|37360	| 测试OpenGL ES的相关功能
+|com.drawelements.deqp.gles31	|17212	| 测试OpenGL ES的相关功能
+|zzz.android.monkey	|9	|monkey|在com.android.cts.monkey上运行monkey
