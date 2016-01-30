@@ -9,3 +9,8 @@
 - monkey 环境布署
 - 执行
 - 结果分析
+
+##产品对比测试（remix,phoenix）
+- [[remix]] 
+- [[phoenix]]
+- 
