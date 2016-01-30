@@ -11,4 +11,5 @@
 - 结果分析
 
 ##产品对比测试（remix,phoenix）
-1. [remix]
+1. [remix](https://github.com/openthos/testing-analysis/wiki)
+2. [phoenix](https://github.com/openthos/testing-analysis/wiki)
