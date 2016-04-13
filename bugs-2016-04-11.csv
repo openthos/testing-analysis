@@ -1,0 +1,75 @@
+Bug ID,Summary,Severity,Reporter,对应开发人员,状态
+228,20160405版本-点击关机按钮，弹出start-memu菜单。,major,liumingming@emindsoft.com.cn,陈刚,已修复
+250,20160408版本-打开应用后应用图标未出现在任务栏。随机，不是固定应用。,major,liumingming@emindsoft.com.cn,陈刚,
+182,桌面缺失，鼠标右键功能无,major,liumingming@emindsoft.com.cn,4.15后新功能,降低级别
+229,20160405版本-WIFI无法使用。on 后，一直处于turing WI-FI on...状态,major,liumingming@emindsoft.com.cn,陈刚,已修复
+230,"20160405版本-因terminal无法使用,filemanager只能到welcome界面，wifi无法连接。导致第三方apk无法安装到此版本上。",major,liumingming@emindsoft.com.cn,陈刚,已修复
+234,20160406版本-download应用，打开后左上角顶端显示。最上端的tolbar均显示不出来。无法移动、最小化，最大化及关闭。,major,liumingming@emindsoft.com.cn,陈刚,
+168,应用打开后拖位时可以无限缩小，直到消失。应该 设置一个最小窗口范围,major,liumingming@emindsoft.com.cn,陈刚,已修复
+254,"20160408版本-开机后不断弹出Unfortunately,the process android.process.acore has stopped.",major,liumingming@emindsoft.com.cn,待定,
+255,20160409版本-startmenu中显示的原生APP图标未更换,major,liumingming@emindsoft.com.cn,董鹏,
+256,20160409版本-laucher打开时，再次点击startmenu，startmenu 未显示在最顶端。（显示在laucher后）,major,liumingming@emindsoft.com.cn,陈一璋,
+257,20160409版本-任务栏显示的应用图标过大，显示不完全,major,liumingming@emindsoft.com.cn,陈刚,
+238,20160406版本-下载第三方包（如超卓浏览器）安装时，因焦点错位，无法点next进行安装。通过界面无法安装第三方包,major,liumingming@emindsoft.com.cn,陈刚,
+258,20160409版本-点击界面右下角的时间 ，电池等 图标，均弹出 setting应用，且显示在laucher后（非当前窗口显示）。,major,liumingming@emindsoft.com.cn,需求如此，不是BUG,降低级别
+218,5.1版本 jabol打开后，启动应用前均出现一框 。,major,liumingming@emindsoft.com.cn,陈刚,已修复
+239,"20160407版本-使用adb 命令安装第三方包，安装firefox,chrome,qqbrowser安装后，原生browser变为不可用。",major,liumingming@emindsoft.com.cn,有一个好用即可,
+219,5.1 版本，打开jabol后多窗口一直生效，关闭jabol不起作用。,major,liumingming@emindsoft.com.cn,陈刚,已修复
+240,20160407版本-使用adb 命令安装第三方包，打开后全部跑到laucher后显示，并且无法切换到当前窗口显示,major,liumingming@emindsoft.com.cn,陈一璋,
+260,"20160409版本-五个应用在最新版上未去除（phone,contacts,messaging,Rss Reader,Speech Recorder）",major,liumingming@emindsoft.com.cn,肖络元,
+220,5.1 版本打开jabol。多应用 共存时，当前窗口-应用 切换功能不稳定，不次每次都生效。,major,liumingming@emindsoft.com.cn,陈刚,
+158,需要手动设置JA BOL开启，应改为默认打开,major,liumingming@emindsoft.com.cn,陈刚,已修复
+222,20160405版本-开始菜单弹出后，一直存在。点击其他应用时仍存在。,major,liumingming@emindsoft.com.cn,董鹏,
+159,"缺少laucher功能（与remix,,phoenix相比）",major,liumingming@emindsoft.com.cn,董鹏,已修复
+244,20160406版本-中文输入法无法使用。（20160407版也存在相同问题）,major,liumingming@emindsoft.com.cn,陈一璋,
+223,"20160405版本-打开管理器弹出welcome窗口，此时点ok,弹出OK下的dialer应用。即焦点错位。",major,liumingming@emindsoft.com.cn,陈刚,
+160,"输入法需要实现快捷键切换（目前remix,phoenix均已实现）",major,liumingming@emindsoft.com.cn,4.15后新功能,降低级别
+245,20160407版本-窗口顶端未实现缩放功能（左右下的缩放均已实现）,major,liumingming@emindsoft.com.cn,罗浩,
+224,20160405版本-gallery 应用无法打开。（原生5.1也存在相同问题）,major,liumingming@emindsoft.com.cn,陈一璋,已修复
+161,multiwin下的文件管理器，左侧主菜单按钮显示不全（放大仍然）,major,liumingming@emindsoft.com.cn,陈刚,已修复
+246,"20160408版本-startmenu弹出原生应用未经筛,好多机器人图标，且部分机器人图标无法打开（user dictionary）",major,liumingming@emindsoft.com.cn,董鹏,
+225,20160405版本-通过laucher打开应用时，laucher主界面下移约0.5CM。关闭应用后.laucher 又回到顶端显示。,major,liumingming@emindsoft.com.cn,陈一璋,已修复
+162,mltiwin无最小化按钮，最大化按钮与关闭按钮长像相似且不美观，需修改。,major,liumingming@emindsoft.com.cn,罗浩,李明飞
+247,20160408版本-startmenu-app可查看到已安装的第三方应用， 点击打开应用（qqbrowser），窗口显示在startmenu上方，移动应用时startmenu随着一起被移动。,major,liumingming@emindsoft.com.cn,罗浩,已修复
+179,打开多个应用，窗口绘制在相同位置且大小相同，完全覆盖,major,liumingming@emindsoft.com.cn,陈刚,已修复
+226,20160405版本-terminal 应用无法打开。（原生5.1也存在相同问题）,major,liumingming@emindsoft.com.cn,陈一璋,已修复
+163,APP网络启动顺序改为（有线-WIFI-流量），现默认WIFI，PC上无WIFI但有有线时提示无网络连接,major,liumingming@emindsoft.com.cn,无要求，有网即可,降低级别
+248,20160408版本-任务栏上同一应用图标显示出现多次（两个头条、两个chrome）,major,liumingming@emindsoft.com.cn,陈刚,
+180,每次打开应用时都是默认位置及大小，无记忆上次打开时设置大小及位置,major,liumingming@emindsoft.com.cn,陈刚,已修复
+227,20160405版本-日历应用打开左侧有文字重叠。,major,liumingming@emindsoft.com.cn,陈刚,已修复
+164,"增加截屏功能（remix,phoenix右侧通知栏上有此功能）",major,liumingming@emindsoft.com.cn,新需求,降低级别
+249,20160408版本-打开应用后应用图标出现在任务栏，点击任务栏图标进行应用还原，偶尔能还原成功。,major,liumingming@emindsoft.com.cn,陈刚,
+166,点击拨号，屏幕变成横屏，,major,wangjinzhao@emindsoft.com.cn,去除dailer,
+175,"窗口边框过大,边框过大时，开启某些应用如终端模拟器时，会遮挡显示内容",major,zhangxiaozhao@emindsoft.com.cn,罗浩,
+150,动态开启JABOL后，已打开的窗口无法自动支持多窗口,normal,hushaolong@emindsoft.com.cn,,
+152,笔记本触摸屏被映射为屏幕，不符合PC用户的习惯，应改为鼠标,normal,hushaolong@emindsoft.com.cn,,
+153,电源功能支持不稳定：关机/重启等,normal,hushaolong@emindsoft.com.cn,,
+181,在添加launcher后，需要添加快速启动栏,normal,hushaolong@emindsoft.com.cn,,
+183,在添加launcher后，需要添加任务栏,normal,hushaolong@emindsoft.com.cn,,
+184,参考Remix和Phoenix，将安卓原生的两个通知栏整合成一个，放置在屏幕下方右下角,normal,hushaolong@emindsoft.com.cn,,
+186,安卓输入法目前占据屏幕下方很大一块，为手机的默认形式，需要改为PC上的设计,normal,hushaolong@emindsoft.com.cn,,
+252,20160408版本-更换startmenu图标后，弹出框的最左侧图标正确，文字仍为乱码。需修改,normal,liumingming@emindsoft.com.cn,,
+259,20160409版本-主菜单laucher显示不全，被任务栏遮挡,normal,liumingming@emindsoft.com.cn,,
+177,启多个应用 时，不支持键盘快捷键tab+alt切换（显示近期任务）,normal,liumingming@emindsoft.com.cn,,
+169,窗口拖动到屏幕边缘无对应变化,normal,wangjinzhao@emindsoft.com.cn,,
+170,不支持鼠标左键双击打开应用，及右键点击。,normal,wangjinzhao@emindsoft.com.cn,,
+173,不支持鼠标左键点击，划片选中,normal,wangjinzhao@emindsoft.com.cn,,
+174,不支持鼠标右键单击操作列表,normal,wangjinzhao@emindsoft.com.cn,,
+185,左下角和右下角的拖动指示按钮很大，对比remix/phoenix边缘没有粗框和指示按钮,normal,zhangxiaozhao@emindsoft.com.cn,,
+171,去除手机相关组件：拨号、短信、联系人,normal,zhangxiaozhao@emindsoft.com.cn,,
+176,窗口边缘无法拖动改变窗口大小,normal,zhangxiaozhao@emindsoft.com.cn,,
+235,20160407版本，设置更改语言时，startmenu弹出项跑到最左顶显示，且整个背景是startmenu上的黑背景（出现一次。再次更改语言未复现）打开新安装的消消乐时，也存在此问题,minor,liumingming@emindsoft.com.cn,,
+236,20160407版本，不打开窗口，未进行窗口缩放时鼠标变为“左右箭头缩放”图标。,minor,liumingming@emindsoft.com.cn,,
+149,4.4版本关机键，按下后无相应重启 关机按钮出现，直接黑屏,minor,wangjinzhao@emindsoft.com.cn,,
+151,计算器Calculator内按键显示不能随窗口大小变化而变化,minor,wangjinzhao@emindsoft.com.cn,,
+154,点击download，窗口显示不正常,minor,wangjinzhao@emindsoft.com.cn,,
+156,相册Gallery中启动camera，camera窗口未显示在顶级,minor,wangjinzhao@emindsoft.com.cn,,
+172,鼠标左右键点击应用，都是窗口打开操作；,minor,wangjinzhao@emindsoft.com.cn,,
+187,实现 Shift+鼠标左键拖动 可以区域选择文字进行复制,enhancement,hushaolong@emindsoft.com.cn,,
+155,开启多窗口后，Terminal emulator 获取权限窗口无法置于前台,enhancement,hushaolong@emindsoft.com.cn,,
+165,multiwin下设置-所有设置项居中显示，但显示不全，需修改,enhancement,liumingming@emindsoft.com.cn,,
+251,20160408版本-最大化窗口未顶端显示，离顶端有一段距离。,enhancement,liumingming@emindsoft.com.cn,,
+241,20160407版本-使用adb 命令安装豌豆荚，豌豆荚无边框及最顶端的tobar（最大、小、关闭）按钮。,enhancement,liumingming@emindsoft.com.cn,,
+178,分辨率不同，应用打开窗口显示不同（分辨率低时显示不完全）,enhancement,liumingming@emindsoft.com.cn,,
+167,应用打开窗口显示在屏幕左侧，且窗口大小不合理,enhancement,wangjinzhao@emindsoft.com.cn,,
+157,clock内容，无法跟随窗口变化而变化大小,enhancement,wangjinzhao@emindsoft.com.cn,,
