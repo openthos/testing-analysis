@@ -1,0 +1,29 @@
+1 安装并配置JDK，1.6或者1.7版均可，建议1.7，Java SDK的安装很简单，不详述了。（装JDK是因为后面Android SDK要依赖它）
+
+2 安装Android SDK并配置环境变量（测试中用到Android SDK的一些工具）
+
+   1) 安装Android SDK  https://developer.android.com/sdk/installing/index.html?pkg=tools
+
+   2) 安装完毕后启动Android SDK Manger (SDK Manager.exe，在Android SDK的安装目录下)，安装需要的Android Packages，比如一些工具，需要的Android版本， EABI(模拟器相关的包）等等
+
+   3) 添加环境变量Android_HOME, 值是Android SDK的安装路径； 并把Android SDK下的platform-tools路径和tools路径添加到环境变量Path (%ANDROID_HOME%\platform-tools; %ANDROID_HOME%\tools;) 
+
+3 安装Python开发环境并配置环境变量
+
+   1) 下载并安装Python2.7 https://www.python.org/ftp/python/2.7.9/python-2.7.9.msi
+
+   2)将Python2.7的安装路径（也就是python.exe所在的目录）添加到环境变量Path
+
+4 安装Nodejs (Appium使用Node.js作为服务器引擎)
+
+   1) 下载并安装Node.js http://nodejs.org/dist/v0.10.35/node-v0.10.35-x86.msi
+
+   2) 把Node.js的安装路径（也就是node.exe文件所在的目录）添加到环境变量Path
+
+5 安装Appium。 
+
+    1) 打开CMD窗口，执行 npm install -g appium 命令开始安装Appium. Appium默认被安装到C:\Users\Administrator\AppData\Roaming\npm\ 下。 
+
+    2) 把路径C:\Users\Administrator\AppData\Roaming\npm\ (appium可执行文件所在的目录）添加到环境变量Path
+
+至此，Appium的环境就算搭建好了。打开CMD窗口，执行 appium 即可运行起来。默认侦端口为4723。
