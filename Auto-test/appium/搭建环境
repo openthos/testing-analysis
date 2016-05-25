@@ -1,3 +1,4 @@
+windows:
 1 安装并配置JDK，1.6或者1.7版均可，建议1.7，Java SDK的安装很简单，不详述了。（装JDK是因为后面Android SDK要依赖它）
 
 2 安装Android SDK并配置环境变量（测试中用到Android SDK的一些工具）
@@ -27,3 +28,9 @@
     2) 把路径C:\Users\Administrator\AppData\Roaming\npm\ (appium可执行文件所在的目录）添加到环境变量Path
 
 至此，Appium的环境就算搭建好了。打开CMD窗口，执行 appium 即可运行起来。默认侦端口为4723。
+linux 
+1.安装andriod sdk
+2.安装python
+3.安装node.js
+4.安装npm
+5.安装appium
