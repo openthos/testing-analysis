@@ -1,18 +1,13 @@
-#uiautomator编译及执行
-##eclipse编写JAVA
-
-
-##1.创建编译文件
+#uiautomator编译及执行-步骤如下：
+##1.使用eclipse编写JAVA
+##2.创建编译文件
 $android create uitest-project -n demo1 -t 4 -p /home/emindsoft/workspace/demo1/
-
-##2.修改build.xml
-
-##3.编译
+##3.修改build.xml
+##4.编译
 $ant build.xml=====ant -buildfile build.xml
-##4.push 到测试机
+##5.push 到测试机
 $adb push demo1.jar /data/local/tmp/
-
-##5.执行测试
+##6.执行测试
 $adb shell uiautomator runtest demo1.jar -c com.browser.demobrowser
 
 
