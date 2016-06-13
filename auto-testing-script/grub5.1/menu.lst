@@ -1,0 +1,21 @@
+default=0
+timeout=6
+splashimage=/grub/android-x86.xpm.gz
+root (hd0,0)
+
+title Android-x86 2016-04-02
+	kernel /android-2016-04-02/kernel quiet root=/dev/ram0 androidboot.hardware=android_x86_64 SRC=/android-2016-04-02
+	initrd /android-2016-04-02/initrd.img
+
+title Android-x86 2016-04-02 (Debug mode)
+	kernel /android-2016-04-02/kernel root=/dev/ram0 androidboot.hardware=android_x86_64 DEBUG=2 SRC=/android-2016-04-02
+	initrd /android-2016-04-02/initrd.img
+
+title Android-x86 2016-04-02 (Debug nomodeset)
+	kernel /android-2016-04-02/kernel nomodeset root=/dev/ram0 androidboot.hardware=android_x86_64 DEBUG=2 SRC=/android-2016-04-02
+	initrd /android-2016-04-02/initrd.img
+
+title Android-x86 2016-04-02 (Debug video=LVDS-1:d)
+	kernel /android-2016-04-02/kernel video=LVDS-1:d root=/dev/ram0 androidboot.hardware=android_x86_64 DEBUG=2 SRC=/android-2016-04-02
+	initrd /android-2016-04-02/initrd.img
+
