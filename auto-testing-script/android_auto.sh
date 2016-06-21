@@ -37,11 +37,11 @@ sleep 3
 
 
 #adb install ./fndxn2_yoyou.com.apk
-adb install ./net.jishigou.t2.8.0.apk
+adb -s $ip_android:5555 install ./net.jishigou.t2.8.0.apk
 
 sleep 3
 
-adb shell am start -n net.jishigou.t/net.jishigou.t.StartActivity
+adb -s $ip_android:5555 shell am start -n net.jishigou.t/net.jishigou.t.StartActivity
 
 #./adb push  ./xxx/x   /x/x/x/
 #./adb shell /x/x/x/x
@@ -52,7 +52,7 @@ adb shell am start -n net.jishigou.t/net.jishigou.t.StartActivity
 #rm -rf ./test_result
 sleep 10
 
-adb reboot
+adb -s $ip_android:5555 reboot
 
 
 

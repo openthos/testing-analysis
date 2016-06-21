@@ -2,9 +2,11 @@
 ###################### 
 ## $1 : disk path(/dev/sda40)
 ## $2 : 
+cd "$(dirname "$0")"
 disk_path=$1
 boot_cmd=$2
 iso_loc=$3
+
 
 if [ ! -d "./android_mnt" ]; then
 	mkdir  ./android_mnt
@@ -70,6 +72,9 @@ if [ "$boot_cmd" = "flashall" ];then
 	
 	sleep 2
 	rm system_tmp -r;
+
+	##cp check android desktop script
+	cp checkAndroidDesktop.sh ./android_disk/android*/system/
 fi
 umount android_mnt;
 umount android_disk;

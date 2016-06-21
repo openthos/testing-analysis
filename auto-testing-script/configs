@@ -1,0 +1,2 @@
+v install localhost /media/aquan/000D204000041550/android-x86.raw "-p android.acceleration --disable-reboot" /home/aquan/git/xyl_android_x86_64_6.0.iso
+v install localhost /media/aquan/000D204000041550/research/android-x86-6.0.raw "-p android.acceleration --disable-reboot" /home/aquan/git/xyl_android_x86_64_6.0.iso

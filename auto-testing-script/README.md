@@ -63,8 +63,3 @@
 
 ###测试结果
 测试结果保存在/android-cts/repository/results/中
-
-## 相关链接
-
- * [openthos上的CTS测试自动化](http://166.111.68.197:11123/research/kernel/OpenthosCtsTesting2016)：开发工作wiki页面；
- * [Android-x86在模拟器（qemu）以及真机中自动化cts测试文档和代码](https://github.com/aoquan/cts-autotest)：敖权以前维护的自动测试代码仓库；
