@@ -1,0 +1,3 @@
+如果需要执行设备管理方面的兼容性测试，则在测试机上安装“CtsDeviceAdmin.apk” (adb install –r /android-cts/repository/testcases/ CtsDeviceAdmin.apk)，并在设备上将Setting->Security->Devices Administrators->android.devicesadmin.cts.CtsDevicesAdmin等选项打开。On the device, enable Settings > Security > Device Administrators > android.deviceadmin.cts.CtsDeviceAdmin settings
+
+这个操作使得自动化无法进行，所以可以修改/data/system/device_policies.xml文件，可以达到同样的效果（需要重启）

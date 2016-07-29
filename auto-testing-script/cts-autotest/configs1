@@ -1,0 +1,5 @@
+r 192.168.2.51 /dev/sda40 installTest $iso "-p android.acceleration --disable-reboot"
+r 192.168.2.50 /dev/sda40 installTest $iso "-p android.acceleration --disable-reboot"
+v localhost /media/aquan/000D204000041550/android-x86.raw installTest $iso "-p android.acceleration --disable-reboot"
+r 192.168.0.70 /dev/sda40 installTest $iso "--plan CTS --disable-reboot"
+v localhost android-x86.raw installTest $iso "--plan CTS --disable-reboot"

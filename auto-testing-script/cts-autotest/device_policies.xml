@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8' standalone='yes' ?>
+<policies setup-complete="true">
+<admin name="android.deviceadmin.cts/android.deviceadmin.cts.CtsDeviceAdminReceiver">
+<policies flags="95" />
+<disable-bt-contacts-sharing value="true" />
+</admin>
+<admin name="android.deviceadmin.cts/android.deviceadmin.cts.CtsDeviceAdminReceiver2">
+<policies flags="21" />
+<disable-bt-contacts-sharing value="true" />
+</admin>
+<admin name="android.deviceadmin.cts/android.deviceadmin.cts.CtsDeviceAdminDeactivatedReceiver">
+<policies flags="95" />
+<disable-bt-contacts-sharing value="true" />
+</admin>
+</policies>
