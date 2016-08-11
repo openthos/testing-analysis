@@ -1,9 +1,12 @@
 #uiautomator执行步骤如下：
-##1.提供两个jar文件
+##1.安装系统及第三方APK
+成功安装启动openthos；安装所需测试的四十多个APP
+
+##2.提供两个jar文件
 lmmuiauto.jar
 
 otoAutoTest.jar
-##2.执行
+##3.执行
 usage: java -jar *.jar targetIp otoAutoTest.jar
 
 eg:java -jar lmmuiauto.jar 192.168.0.105 Auto-test/uiautomator/bin/otoAutoTest.jar 
