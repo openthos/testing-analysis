@@ -4,7 +4,8 @@ lmmuiauto.jar
 
 otoAutoTest.jar
 ##2.执行
-java -jar lmmuiauto.jar 192.168.0.105 Auto-test/uiautomator/bin/otoAutoTest.jar 
+usage: java -jar *.jar targetIp otoAutoTest.jar
+eg:java -jar lmmuiauto.jar 192.168.0.105 Auto-test/uiautomator/bin/otoAutoTest.jar 
 
 
 
