@@ -14,6 +14,7 @@ eg:java -jar lmmuiauto.jar 192.168.0.105 Auto-test/uiautomator/bin/otoAutoTest.j
 可运行四十多个APP的自动测试。包括：打开，窗口滑动，窗口缩放，窗口拖动，账户登录、关闭等功能 。
 
 所测应用列表如下：包名+用例名
+
 		{"com.autoTestUI.calc", "testcalc"},
 		{ "com.autoTestUI.clock", "testclock" },
 		{ "com.autoTestUI.date", "testdate" },
@@ -29,7 +30,6 @@ eg:java -jar lmmuiauto.jar 192.168.0.105 Auto-test/uiautomator/bin/otoAutoTest.j
 		{ "com.autoTestUI.tencent_video", "testtencent_video" },
 		{ "com.autoTestUI.VLC", "testVLC" },
 		{ "com.autoTestUI.wps", "testwps" },
-
 		{"com.autoTestUI.music", "testmusic"},
 		{ "com.autoTestUI.terminal", "testterminal" },
 		{ "com.autoTestUI.termux", "testtermux" },		
@@ -42,12 +42,9 @@ eg:java -jar lmmuiauto.jar 192.168.0.105 Auto-test/uiautomator/bin/otoAutoTest.j
 		{"com.autoTestUI.fm", "testfm"},
 		{"com.autoTestUI.toutiao", "testtoutiao"},
 		{"com.autoTestUI.baiduy", "testbaiduy"},
-
 		{"com.autoTestUI.seafile", "testseafile"},
-
 		{"com.autoTestUI.taobao", "testtaobao"},
 		{"com.autoTestUI.jd", "testjd"},
-
 		{"com.autoTestUI.angrybird", "testangrybird"},
 		{"com.autoTestUI.appstore", "testappstore"},
 		{"com.autoTestUI.czfilemanager", "testczfilemanager"},
