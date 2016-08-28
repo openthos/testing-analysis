@@ -6,7 +6,7 @@
 1. 测试机(linux)需要安装jdk1.6或者1.7，不支持1.8，apt-get install openjdk-7-jdk
 1. 测试机安装adb，apt-get install android-tools-adb
 1. 下载自动化测试的程序，[下载地址](https://github.com/openthos/testing-analysis)
-1. 测试机下载cts测试包，[下载地址]( https://dl.google.com/dl/android/cts/android-cts-5.1_r4-linux_x86-x86.zip),并将解压后的文件夹放到auto-testing-script目录下
+1. 测试机下载cts测试包，[下载地址]( https://dl.google.com/dl/android/cts/android-cts-5.1_r4-linux_x86-x86.zip),并将解压后的文件夹放到auto-testing-script目录下,替代原先的android-cts目录
 1. 进入到auto-testing-script/cts-autotest目录中，修改根据所需configs文件，其中configs文件是所需要执行的autoTest.sh的各个参数,指定iso时使用$iso即可
 1. 进入到auto-testing-script/kernelci-analysis,修改build.sh中的参数，[参考曹睿东编译帮助](kernelci-analysis/README.md)
 1. 如果需要进行模拟器的测试,还需要准备一个android-x86.raw的镜像放在auto-testing-scrip文件夹下
