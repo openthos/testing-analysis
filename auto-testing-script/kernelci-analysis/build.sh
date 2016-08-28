@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash -e
 otoid=$1
 result=/mnt/freenas
 ctsautotest=../cts-autotest
@@ -7,11 +7,17 @@ iso=/mnt/freenas/work/out/target/product/x86_64/android_x86_64-$otoid-5.1.iso
 
 cd `dirname $0`
 start=$(date "+%s")
+echo 'start compile'
 ./compile.sh $otoid > $result/compile/`date +%Y%m%d`-$otoid 2>&1
+
+if [ $? -ne 0 ];
+then
+	exit
+fi
+
 now=$(date "+%s")
 time=$((now-start))
 echo "compile time:$time s"
-#cp /home/aquan/cts/android-x86.raw /mnt/freenas/android-x86.raw
 cp ../android-x86.raw ../cts-autotest/
 $ctsautotest/paraRun.sh $iso
 now1=$(date "+%s")
