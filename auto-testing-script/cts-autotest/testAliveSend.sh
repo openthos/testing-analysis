@@ -18,7 +18,7 @@ adb -s $ip:$port shell "busybox nohup data/testAliveReceive.sh alive.txt $hostTy
 
 while true
 do
-    sleep 10
+    sleep 100
     ### if run in qemu. ip=localhost, ping localhost is always success, so we need consider this two situation seperately
     if [ $hostType = "v" ];then
         netstat -tunlp | grep $port

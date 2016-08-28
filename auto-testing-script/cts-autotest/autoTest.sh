@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash -xe
 # install related tools and download related packages
 
 # run qemu
@@ -88,24 +88,23 @@ function EditBoot()
     #echo \$ip | nc -q 0 $ip_linux_host $ListenPort
     if [ "$line2bottom" == "return 0" ]; then
     echo "ip=\`getprop | grep ipaddress\`
-    echo \$ip >>abc.txt
     ip=\${ip##*\[}
-    echo \$ip >>abc.txt
     ip=\${ip%]*}
-    echo \$ip >>abc.txt
+    if [ \$ip ];then
     nc -w 2 $ip_linux_host $ListenPort << EOF
-        \$ip
+\$ip
 EOF
-    echo \$? >> abc.txt
-    echo \$ip >>abc.txt
+    fi
         return 0" >> ./android_disk/android*/system/etc/init.sh
     else
         sed '$d' -i ./android_disk/android*/system/etc/init.sh
         sed '$d' -i ./android_disk/android*/system/etc/init.sh
         sed '$d' -i ./android_disk/android*/system/etc/init.sh
+        sed '$d' -i ./android_disk/android*/system/etc/init.sh
         echo "nc -w 2 $ip_linux_host $ListenPort << EOF
-        \$ip
+\$ip
 EOF
+    fi
         return 0" >> ./android_disk/android*/system/etc/init.sh
     fi
     umount android_disk;
@@ -133,6 +132,7 @@ if [ "$r_v" == "v" ]; then
         ## install CtsDeviceAdmin.apk and active the device adminstrators, this setting will take effect after reboot 
         /usr/local/bin/qemu-system-x86_64 -m 2G -vga vmware --enable-kvm -net nic -net user,hostfwd=tcp::$NATPort-:5555 $disk_path -vnc :1 &
         {
+	    echo v1v1v1v1!!!!!!!!!!!!!!!!!!!!!
             ip_android_v=`nc -lp $ListenPort`
             ## waiting for a message from android-x86, this ip address is useful in real mechine test, but in virtural mechine ,we adopt nat address mapping ,
             ## so it's just a symbol that android-x86 is running 
@@ -157,6 +157,7 @@ if [ "$r_v" == "v" ]; then
         #EditBoot
         /usr/local/bin/qemu-system-x86_64 -m 2G -vga vmware --enable-kvm -net nic -net user,hostfwd=tcp::$NATPort-:5555 $disk_path -vnc :2 &
         {
+	    echo v2v2v2!!!!!!!!!!!!!!!!!!!!!
             ip_android_v=`nc -lp $ListenPort`
             echo 'waiting for android boot !!!!!'  
 
@@ -181,6 +182,7 @@ if [ "$r_v" == "v" ]; then
         EditBoot
         /usr/local/bin/qemu-system-x86_64 -m 2G -vga vmware --enable-kvm -net nic -net user,hostfwd=tcp::$NATPort-:5555 $disk_path -vnc :3 &
         {
+	    echo v3v3v3!!!!!!!!!!!!!!!!!!!!!!!!
             ip_android_v=`nc -lp $ListenPort`
             echo 'waiting for android boot !!!!!'  
 
@@ -215,7 +217,7 @@ elif [ "$r_v" == "r" ];then
         ## real mechine
         rsync   -avz -e ssh ./scriptReboot1 root@${ip_linux_client}:~/;
         ssh root@${ip_linux_client} "~/scriptReboot1/reboot.sh $disk_path $ip_linux_host $ListenPort";
-
+        echo r1r1r1!!!!!!!!!!!!!!!!
         ip_android=`nc -lp $ListenPort`
         echo $ip_android
         adb connect $ip_android
@@ -250,6 +252,8 @@ elif [ "$r_v" == "r" ];then
         ## install android-x86 and then test
         iso_loc=$6
         ./auto2.sh $ip_linux_client $iso_loc $disk_path $ListenPort;
+
+        echo r2r2r2!!!!!!!!!!!!!!!!!!
         ip_android=`nc -lp $ListenPort`
         echo "android boot success!"
         #sleep 30
@@ -266,7 +270,8 @@ elif [ "$r_v" == "r" ];then
 	adb -s $ip_android:5555 push commitId.txt data/
         ./android_fastboot.sh  ${ip_android} bios_reboot 
 
-        ##second boot 
+        ##second boot
+        echo r3r3r3!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 
         ip_android=`nc -lp $ListenPort`
         echo "android boot success!"
 
@@ -290,6 +295,7 @@ elif [ "$r_v" == "r" ];then
         ## install android-x86 and then test
         iso_loc=$6
         ./auto2.sh $ip_linux_client $iso_loc $disk_path $ListenPort;
+        echo r5r5r5!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         ip_android=`nc -lp $ListenPort`
         echo "android boot success!"
         #sleep 30
@@ -330,4 +336,4 @@ if [ $resultDirName"x" != "x" ];then
     cp -r ../android-cts/repository/results/$resultDirName /mnt/freenas/result/cts/default/$ip_android/android/android_x86/gcc/$commitId
 fi
 wait
-exit
+exit 0

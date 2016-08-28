@@ -1,4 +1,9 @@
-#!/bin/bash -x
+#!/bin/bash -xe
+ping $1 -c 1 > /dev/null
+if [[ $? -ne 0 ]];then
+    echo "cannot ping $1 in script android_fastboot.sh !"
+    exit -1
+fi
 
 adb connect $1
 wait
@@ -43,4 +48,5 @@ adb -s $1:5555 reboot &
     #pkill adb
     adb disconnect $1:5555
 }
+exit 0
 ###adb reboot can not normal exit, must ctrl+c, game over 
