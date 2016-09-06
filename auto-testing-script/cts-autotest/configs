@@ -1,2 +1,1 @@
-r 192.168.0.70 /dev/sda40 installTest $iso "--plan CTS --disable-reboot"
-v localhost android-x86.raw installTest $iso "--plan CTS --disable-reboot"
+r 192.168.0.106 /dev/sda4 run cts "--plan CTS --disable-reboot"

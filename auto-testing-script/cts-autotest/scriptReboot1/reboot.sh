@@ -43,7 +43,7 @@ umount android_disk;
 ## we need specify which system to start up, so change the grub.cfg (set default = 0,1,2)
 if [ "$androidLocation"x = "/dev/sda4"x ]; then
 	## android_x86 6.0
-	sed -i '/set default=\"[0-9]\"/c'"   set\ default=\"1\"" /boot/grub/grub.cfg
+	sed -i '/set default=\"[0-9]\"/c'"   set\ default=\"0\"" /boot/grub/grub.cfg
 else
 	## android_x86 5.1
 	sed -i '/set default=\"[0-9]\"/c'"   set\ default=\"0\"" /boot/grub/grub.cfg
