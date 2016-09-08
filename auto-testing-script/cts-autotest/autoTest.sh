@@ -1,4 +1,4 @@
-#!/bin/bash -xe
+#!/bin/bash -x
 # install related tools and download related packages
 
 # run qemu
@@ -44,7 +44,7 @@ ip_linux_client=$3
 disk_path=$4
 run_install=$5 
 
-ip_linux_host=`/sbin/ifconfig -a|grep inet|grep -v 127.0.0.1|grep -v inet6|awk '{print $2}'|tr -d "addr:"`
+ip_linux_host=`/sbin/ifconfig -a|grep inet|grep -v 127.0.0.1|grep -v inet6|awk '{print $2}'|tr -d "addr:"|grep 192`
 
 ip_android="0.0.0.0"
 iso_loc="default"
@@ -124,17 +124,16 @@ function tradefedMonitor()
     tradefedPid=$1
     sleepTimes=0
     ### sleep 23 hours, if the cts-tradefed is not exit, we kill it.
-    while [ sleepTimes < 46 ]
+    while [ $sleepTimes -lt 460 ]
     do
-        sleep 1800
-        ps -ax | awk '{ print $1 }' | grep -e "^${qemuPid}$"
-        if [ $? -ne 0];then
-            killFlag=1
-            break
+        sleep 180
+        ps -ax | awk '{ print $1 }' | grep -e "^${tradefedPid}$"
+        if [ $? -ne 0 ];then
+            return 0
         fi
-        $sleepTimes=$((sleepTime+1))
+        sleepTimes=$((sleepTimes+1))
     done
-    if [ $sleepTime -eq 46 ];then
+    if [ $sleepTimes -eq 460 ];then
         kill $tradefedPid
         return -1
     else
@@ -195,7 +194,7 @@ if [ "$r_v" == "v" ]; then
             ### monitor script, if network is down, reboot to linux
             ./testAliveSend.sh localhost $NATPort $r_v &
 
-            ./allinone.sh localhost:$NATPort $iso_loc
+            #./allinone.sh localhost:$NATPort $iso_loc
             echo "exit" | ../android-cts/tools/cts-tradefed run cts $cts_cmd &
             {
                 tradefedMonitor $!
@@ -291,7 +290,7 @@ elif [ "$r_v" == "r" ];then
     elif [ "$run_install" == "installTest" ];then
         ## install android-x86 and then test
         iso_loc=$6
-        ./auto2.sh $ip_linux_client $iso_loc $disk_path $ListenPort;
+        ./auto2.sh $ip_linux_client $iso_loc $disk_path $ListenPort $ip_linux_host;
 
         echo r2r2r2!!!!!!!!!!!!!!!!!!
         ip_android=`nc -lp $ListenPort`
@@ -327,7 +326,7 @@ elif [ "$r_v" == "r" ];then
         ./testAliveSend.sh $ip_android 5555 $r_v &
 
         ./allinone.sh $ip_android:5555 $iso_loc
-        echo "exit" | ../android-cts/tools/cts-tradefed run cts -s $ip_android:5555 $cts_cmd
+        echo "exit" | ../android-cts/tools/cts-tradefed run cts -s $ip_android:5555 $cts_cmd &
         {
             tradefedMonitor $!
             if [ $? -eq 0 ];then
@@ -339,7 +338,7 @@ elif [ "$r_v" == "r" ];then
     elif [ "$run_install" == "install" ];then
         ## install android-x86 and then test
         iso_loc=$6
-        ./auto2.sh $ip_linux_client $iso_loc $disk_path $ListenPort;
+        ./auto2.sh $ip_linux_client $iso_loc $disk_path $ListenPort $ip_linux_host;
         echo r5r5r5!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         ip_android=`nc -lp $ListenPort`
         echo "android boot success!"
