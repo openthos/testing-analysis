@@ -24,16 +24,21 @@ if [ "$line1bottom" == "return 0" ]; then
 	echo "ip=\`getprop | grep ipaddress\`
 	ip=\${ip##*\[}
 	ip=\${ip%]*}
+        if [ \$ip ];then
 	nc -w 2 $ip_linux_host $ListenPort << EOF
-    \$ip
+\$ip
 EOF
+        fi
 	return 0" >> ./android_disk/android*/system/etc/init.sh
 else
     sed '$d' -i ./android_disk/android*/system/etc/init.sh
     sed '$d' -i ./android_disk/android*/system/etc/init.sh
+    sed '$d' -i ./android_disk/android*/system/etc/init.sh
+    sed '$d' -i ./android_disk/android*/system/etc/init.sh
     echo "nc -w 2 $ip_linux_host $ListenPort << EOF
-    \$ip
+\$ip
 EOF
+    fi
     return 0" >> ./android_disk/android*/system/etc/init.sh
 fi
 umount android_disk;

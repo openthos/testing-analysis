@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash -xe
 cd "$(dirname "$0")" 
 port=52000
 
@@ -26,7 +26,7 @@ wait
 pkill adb
 pkill nc
 
-exit
+exit 0
 
 
 

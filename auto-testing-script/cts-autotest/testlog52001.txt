@@ -1,8 +1,0 @@
-192.168.0.105
-[32mip is up![0m
-sending incremental file list
-scriptReboot1/
-scriptReboot1/reboot.sh
-
-sent 367 bytes  received 57 bytes  282.67 bytes/sec
-total size is 1,956  speedup is 4.61

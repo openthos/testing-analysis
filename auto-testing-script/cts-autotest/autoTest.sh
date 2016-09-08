@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash -xe
 # install related tools and download related packages
 
 # run qemu
@@ -88,24 +88,23 @@ function EditBoot()
     #echo \$ip | nc -q 0 $ip_linux_host $ListenPort
     if [ "$line2bottom" == "return 0" ]; then
     echo "ip=\`getprop | grep ipaddress\`
-    echo \$ip >>abc.txt
     ip=\${ip##*\[}
-    echo \$ip >>abc.txt
     ip=\${ip%]*}
-    echo \$ip >>abc.txt
+    if [ \$ip ];then
     nc -w 2 $ip_linux_host $ListenPort << EOF
-        \$ip
+\$ip
 EOF
-    echo \$? >> abc.txt
-    echo \$ip >>abc.txt
+    fi
         return 0" >> ./android_disk/android*/system/etc/init.sh
     else
         sed '$d' -i ./android_disk/android*/system/etc/init.sh
         sed '$d' -i ./android_disk/android*/system/etc/init.sh
         sed '$d' -i ./android_disk/android*/system/etc/init.sh
+        sed '$d' -i ./android_disk/android*/system/etc/init.sh
         echo "nc -w 2 $ip_linux_host $ListenPort << EOF
-        \$ip
+\$ip
 EOF
+    fi
         return 0" >> ./android_disk/android*/system/etc/init.sh
     fi
     umount android_disk;
@@ -118,6 +117,29 @@ function getCommitId()
     tmp=${iso#*-}
     commitId=${tmp%-*}
     echo $commitId
+}
+
+function tradefedMonitor()
+{
+    tradefedPid=$1
+    sleepTimes=0
+    ### sleep 23 hours, if the cts-tradefed is not exit, we kill it.
+    while [ sleepTimes < 46 ]
+    do
+        sleep 1800
+        ps -ax | awk '{ print $1 }' | grep -e "^${qemuPid}$"
+        if [ $? -ne 0];then
+            killFlag=1
+            break
+        fi
+        $sleepTimes=$((sleepTime+1))
+    done
+    if [ $sleepTime -eq 46 ];then
+        kill $tradefedPid
+        return -1
+    else
+        return 0
+    fi
 }
 
 ## according to where it's virtual mechine(qemu) or real mechine, we should change the network model
@@ -133,6 +155,7 @@ if [ "$r_v" == "v" ]; then
         ## install CtsDeviceAdmin.apk and active the device adminstrators, this setting will take effect after reboot 
         /usr/local/bin/qemu-system-x86_64 -m 2G -vga vmware --enable-kvm -net nic -net user,hostfwd=tcp::$NATPort-:5555 $disk_path -vnc :1 &
         {
+	    echo v1v1v1v1!!!!!!!!!!!!!!!!!!!!!
             ip_android_v=`nc -lp $ListenPort`
             ## waiting for a message from android-x86, this ip address is useful in real mechine test, but in virtural mechine ,we adopt nat address mapping ,
             ## so it's just a symbol that android-x86 is running 
@@ -157,6 +180,8 @@ if [ "$r_v" == "v" ]; then
         #EditBoot
         /usr/local/bin/qemu-system-x86_64 -m 2G -vga vmware --enable-kvm -net nic -net user,hostfwd=tcp::$NATPort-:5555 $disk_path -vnc :2 &
         {
+            qemuPid=$!
+	    echo v2v2v2!!!!!!!!!!!!!!!!!!!!!
             ip_android_v=`nc -lp $ListenPort`
             echo 'waiting for android boot !!!!!'  
 
@@ -171,8 +196,13 @@ if [ "$r_v" == "v" ]; then
             ./testAliveSend.sh localhost $NATPort $r_v &
 
             ./allinone.sh localhost:$NATPort $iso_loc
-            echo "exit" | ../android-cts/tools/cts-tradefed run cts $cts_cmd 
-            adb -s localhost:$NATPort shell poweroff
+            echo "exit" | ../android-cts/tools/cts-tradefed run cts $cts_cmd &
+            {
+                tradefedMonitor $!
+                if [ $? -eq 0 ];then
+                    adb -s localhost:$NATPort shell poweroff
+                fi
+            }
         }
     fi
 
@@ -181,6 +211,8 @@ if [ "$r_v" == "v" ]; then
         EditBoot
         /usr/local/bin/qemu-system-x86_64 -m 2G -vga vmware --enable-kvm -net nic -net user,hostfwd=tcp::$NATPort-:5555 $disk_path -vnc :3 &
         {
+            pid=$!
+	    echo v3v3v3!!!!!!!!!!!!!!!!!!!!!!!!
             ip_android_v=`nc -lp $ListenPort`
             echo 'waiting for android boot !!!!!'  
 
@@ -204,9 +236,14 @@ if [ "$r_v" == "v" ]; then
             elif [ "$testType" == "all" ];then
                 cts_cmd="$7"
                 ./allinone.sh localhost:$NATPort
-                echo "exit" | ../android-cts/tools/cts-tradefed run cts $cts_cmd 
+                echo "exit" | ../android-cts/tools/cts-tradefed run cts $cts_cmd &
+                {
+                    tradefedMonitor $!
+                    if [ $? -eq 0 ];then
+                        adb -s localhost:$NATPort shell poweroff
+                    fi
+                }
             fi
-            adb -s localhost:$NATPort shell poweroff
         }
     fi
     
@@ -215,7 +252,7 @@ elif [ "$r_v" == "r" ];then
         ## real mechine
         rsync   -avz -e ssh ./scriptReboot1 root@${ip_linux_client}:~/;
         ssh root@${ip_linux_client} "~/scriptReboot1/reboot.sh $disk_path $ip_linux_host $ListenPort";
-
+        echo r1r1r1!!!!!!!!!!!!!!!!
         ip_android=`nc -lp $ListenPort`
         echo $ip_android
         adb connect $ip_android
@@ -241,15 +278,22 @@ elif [ "$r_v" == "r" ];then
         elif [ "$testType" == "all" ];then
             cts_cmd="$7"
             ./allinone.sh $ip_android:5555
-            echo "exit" | ../android-cts/tools/cts-tradefed run cts $cts_cmd
+            echo "exit" | ../android-cts/tools/cts-tradefed run cts $cts_cmd &
+            {
+                tradefedMonitor $!
+                if [ $? -eq 0 ];then
+                    ./android_fastboot.sh  $ip_android  reboot_bootloader
+                fi
+            }
         fi
 
-        ./android_fastboot.sh  $ip_android  reboot_bootloader
     
     elif [ "$run_install" == "installTest" ];then
         ## install android-x86 and then test
         iso_loc=$6
         ./auto2.sh $ip_linux_client $iso_loc $disk_path $ListenPort;
+
+        echo r2r2r2!!!!!!!!!!!!!!!!!!
         ip_android=`nc -lp $ListenPort`
         echo "android boot success!"
         #sleep 30
@@ -266,7 +310,8 @@ elif [ "$r_v" == "r" ];then
 	adb -s $ip_android:5555 push commitId.txt data/
         ./android_fastboot.sh  ${ip_android} bios_reboot 
 
-        ##second boot 
+        ##second boot
+        echo r3r3r3!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 
         ip_android=`nc -lp $ListenPort`
         echo "android boot success!"
 
@@ -283,13 +328,19 @@ elif [ "$r_v" == "r" ];then
 
         ./allinone.sh $ip_android:5555 $iso_loc
         echo "exit" | ../android-cts/tools/cts-tradefed run cts -s $ip_android:5555 $cts_cmd
-        ###reboot to  linux
-        ./android_fastboot.sh  ${ip_android}  reboot_bootloader
+        {
+            tradefedMonitor $!
+            if [ $? -eq 0 ];then
+                ###reboot to  linux
+                ./android_fastboot.sh  ${ip_android}  reboot_bootloader
+            fi
+        }
 
     elif [ "$run_install" == "install" ];then
         ## install android-x86 and then test
         iso_loc=$6
         ./auto2.sh $ip_linux_client $iso_loc $disk_path $ListenPort;
+        echo r5r5r5!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         ip_android=`nc -lp $ListenPort`
         echo "android boot success!"
         #sleep 30
@@ -330,4 +381,4 @@ if [ $resultDirName"x" != "x" ];then
     cp -r ../android-cts/repository/results/$resultDirName /mnt/freenas/result/cts/default/$ip_android/android/android_x86/gcc/$commitId
 fi
 wait
-exit
+exit 0
