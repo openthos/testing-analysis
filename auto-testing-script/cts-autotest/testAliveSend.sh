@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 ip=$1
 port=$2
 hostType=$3
@@ -42,4 +42,4 @@ adb devices | grep "$ip:$port"
 if [[ $? -eq 0 ]];then
     adb disconnect $ip:$port
 fi
-exit    
+exit 0

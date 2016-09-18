@@ -20,7 +20,7 @@ now=$(date "+%s")
 time=$((now-start))
 echo "compile time:$time s"
 
-cp ../android-x86.raw ../cts-autotest/
+#cp ../android-x86.raw ../cts-autotest/
 $ctsautotest/paraRun.sh $iso
 now1=$(date "+%s")
 time=$((now1-now))

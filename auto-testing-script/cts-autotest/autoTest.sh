@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash -xu
 # install related tools and download related packages
 
 # run qemu
@@ -36,8 +36,7 @@ cd "$(dirname "$0")"
 
 # listening port, user should specify it when parallel tesing 
 ListenPort=$1
-# ListenPort=52001
-NATPort=$(($ListenPort+100))
+adbPort=$(($ListenPort+100))
 
 r_v=$2
 ip_linux_client=$3
@@ -48,6 +47,8 @@ ip_linux_host=`/sbin/ifconfig -a|grep inet|grep -v 127.0.0.1|grep -v inet6|awk '
 
 ip_android="0.0.0.0"
 iso_loc="default"
+
+testcaseFold="../kernelci-analysis/testcases"
 #check whether the ip address
 function checkIP()
 {
@@ -112,11 +113,9 @@ EOF
 
 function getCommitId()
 {
-    iso_loc=$1
-    iso=${iso_loc##*/}
-    tmp=${iso#*-}
+    tmp=${iso_loc##*/}
+    tmp=${tmp#*-}
     commitId=${tmp%-*}
-    echo $commitId
 }
 
 function tradefedMonitor()
@@ -141,6 +140,15 @@ function tradefedMonitor()
     fi
 }
 
+## run all the testcase in ../kernelci-analysis 
+function runTestInFold()
+{
+    for testcase in `ls $testcaseFold`
+    do 
+        $testcaseFold/$testcase/$testcase".sh" $ip_android $adbPort $testcaseFold > $testcaseFold/$testcase/$ip_android"_"$adbPort"_"$commitId
+    done
+}
+
 ## according to where it's virtual mechine(qemu) or real mechine, we should change the network model
 if [ "$r_v" == "v" ]; then
     ip_android="localhost"
@@ -148,58 +156,62 @@ if [ "$r_v" == "v" ]; then
     if [ "$run_install" == "installTest" ] || [ "$run_install" == "install" ];then
         ## install iso and then test the android-x86
         iso_loc=$6
+        getCommitId
         ./fastboot_vir.sh $disk_path flashall $iso_loc;
         EditBoot
         
         ## install CtsDeviceAdmin.apk and active the device adminstrators, this setting will take effect after reboot 
-        /usr/local/bin/qemu-system-x86_64 -m 2G -vga vmware --enable-kvm -net nic -net user,hostfwd=tcp::$NATPort-:5555 $disk_path -vnc :1 &
+        /usr/local/bin/qemu-system-x86_64 -m 2G -vga vmware --enable-kvm -net nic -net user,hostfwd=tcp::$adbPort-:5555 $disk_path -vnc :1 &
         {
 	    echo v1v1v1v1!!!!!!!!!!!!!!!!!!!!!
-            ip_android_v=`nc -lp $ListenPort`
+            nc -lp $ListenPort
             ## waiting for a message from android-x86, this ip address is useful in real mechine test, but in virtural mechine ,we adopt nat address mapping ,
             ## so it's just a symbol that android-x86 is running 
             echo 'waiting for android boot !!!!!'
-            adb connect $ip_linux_client:$NATPort
+            adb connect $ip_linux_client:$adbPort
             sleep 2
-            adb -s $ip_linux_client:$NATPort shell system/checkAndroidDesktop.sh
+            adb -s $ip_linux_client:$adbPort shell system/checkAndroidDesktop.sh
             sleep 5
             ##keep screen active
-            adb -s $ip_linux_client:$NATPort shell svc power stayon true
+            adb -s $ip_linux_client:$adbPort shell svc power stayon true
             ## install CtsDeviceAdmin.apk
             echo 'install CtsDeviceAdmin.apk!!!!!'
-            adb -s $ip_linux_client:$NATPort install ../android-cts/repository/testcases/CtsDeviceAdmin.apk
-            adb -s $ip_linux_client:$NATPort push device_policies.xml data/system/device_policies.xml
-            adb -s $ip_linux_client:$NATPort push commitId.txt data/
-            adb -s $ip_linux_client:$NATPort shell poweroff
+            adb -s $ip_linux_client:$adbPort install ../android-cts/repository/testcases/CtsDeviceAdmin.apk
+            adb -s $ip_linux_client:$adbPort push device_policies.xml data/system/device_policies.xml
+            adb -s $ip_linux_client:$adbPort push commitId.txt data/
+            adb -s $ip_linux_client:$adbPort shell poweroff
         }
     fi
 
     if [ "$run_install" == "installTest" ];then
 
         #EditBoot
-        /usr/local/bin/qemu-system-x86_64 -m 2G -vga vmware --enable-kvm -net nic -net user,hostfwd=tcp::$NATPort-:5555 $disk_path -vnc :2 &
+        /usr/local/bin/qemu-system-x86_64 -m 2G -vga vmware --enable-kvm -net nic -net user,hostfwd=tcp::$adbPort-:5555 $disk_path -vnc :2 &
         {
             qemuPid=$!
-	    echo v2v2v2!!!!!!!!!!!!!!!!!!!!!
-            ip_android_v=`nc -lp $ListenPort`
+            echo v2v2v2!!!!!!!!!!!!!!!!!!!!!
+            nc -lp $ListenPort
             echo 'waiting for android boot !!!!!'  
 
             ## gui haven't been loaded completely for android_x86-5.1 
-            adb connect localhost:$NATPort
+            adb connect localhost:$adbPort
             sleep 2
-            adb -s localhost:$NATPort shell system/checkAndroidDesktop.sh
+            adb -s localhost:$adbPort shell system/checkAndroidDesktop.sh
             sleep 5
             cts_cmd="$7"       
 
             ### monitor script, if network is down, reboot to linux
-            ./testAliveSend.sh localhost $NATPort $r_v &
-
-            #./allinone.sh localhost:$NATPort $iso_loc
+            ./testAliveSend.sh localhost $adbPort $r_v &
+            
+            runTestInFold 
+            sleep 2 
             echo "exit" | ../android-cts/tools/cts-tradefed run cts $cts_cmd &
             {
                 tradefedMonitor $!
                 if [ $? -eq 0 ];then
-                    adb -s localhost:$NATPort shell poweroff
+                    adb -s localhost:$adbPort shell poweroff
+                else
+                    python sendEmail.py
                 fi
             }
         }
@@ -208,38 +220,58 @@ if [ "$r_v" == "v" ]; then
     if [ "$run_install" == "run" ];then
 
         EditBoot
-        /usr/local/bin/qemu-system-x86_64 -m 2G -vga vmware --enable-kvm -net nic -net user,hostfwd=tcp::$NATPort-:5555 $disk_path -vnc :3 &
+        /usr/local/bin/qemu-system-x86_64 -m 2G -vga vmware --enable-kvm -net nic -net user,hostfwd=tcp::$adbPort-:5555 $disk_path -vnc :3 &
         {
             pid=$!
-	    echo v3v3v3!!!!!!!!!!!!!!!!!!!!!!!!
-            ip_android_v=`nc -lp $ListenPort`
+            echo v3v3v3!!!!!!!!!!!!!!!!!!!!!!!!
+            nc -lp $ListenPort
             echo 'waiting for android boot !!!!!'  
 
-            adb connect localhost:$NATPort
+            adb connect localhost:$adbPort
             sleep 2
-            adb -s localhost:$NATPort shell system/checkAndroidDesktop.sh
-	    tmp=`adb -s localhost:NATPort shell cat data/commitId.txt | grep commitId`
-	    commitId=${tmp##*:}
+            adb -s localhost:$adbPort shell system/checkAndroidDesktop.sh
+	        tmp=`adb -s localhost:adbPort shell cat data/commitId.txt | grep commitIdi -v WARNING` 
+	        commitId=${tmp##*:}
             commitId=${commitId%?}
             sleep 5
         
             ### monitor script, if network is down, reboot to linux
-            ./testAliveSend.sh localhost $NATPort $r_v &
+            ./testAliveSend.sh localhost $adbPort $r_v &
 
             testType=$6 
             if [ "$testType" == "cts" ];then
                 cts_cmd="$7"
-                echo "exit" | ../android-cts/tools/cts-tradefed run cts $cts_cmd 
-            elif [ "$testType" == "lkp" ];then
-                ./allinone.sh localhost:$NATPort
-            elif [ "$testType" == "all" ];then
-                cts_cmd="$7"
-                ./allinone.sh localhost:$NATPort
+               # echo "exit" | ../android-cts/tools/cts-tradefed run cts $cts_cmd 
                 echo "exit" | ../android-cts/tools/cts-tradefed run cts $cts_cmd &
                 {
                     tradefedMonitor $!
                     if [ $? -eq 0 ];then
-                        adb -s localhost:$NATPort shell poweroff
+                        adb -s localhost:$adbPort shell poweroff
+                    fi
+                }
+            elif [ "$testType" == "gui" ];then
+                ./install_apk.sh localhost $adbPort
+                sleep 10
+	        ./uiauto.sh localhost
+                sleep 2 
+                ./saveGuiResult.sh localhost:$adbPort $commitId gui
+            elif [ "$testType" == "lkp" ];then
+                ./allinone.sh localhost:$adbPort
+            elif [ "$testType" == "all" ];then
+                cts_cmd="$7"
+                #./allinone.sh localhost:$adbPort
+                ./install_apk.sh localhost $adbPort
+                sleep 10
+	        ./uiauto.sh localhost 
+                sleep 2 
+                ./mkResultDir.sh localhost:$adbPort $commitId gui
+                echo "exit" | ../android-cts/tools/cts-tradefed run cts $cts_cmd &
+                {
+                    tradefedMonitor $!
+                    if [ $? -eq 0 ];then
+                        adb -s localhost:$adbPort shell poweroff
+                    else
+                        python sendEmail.py
                     fi
                 }
             fi
@@ -247,6 +279,7 @@ if [ "$r_v" == "v" ]; then
     fi
     
 elif [ "$r_v" == "r" ];then
+    adbPort=5555
     if [ "$run_install" == "run" ];then
         ## real mechine
         rsync   -avz -e ssh ./scriptReboot1 root@${ip_linux_client}:~/;
@@ -260,8 +293,8 @@ elif [ "$r_v" == "r" ];then
         adb -s $ip_android:5555 shell system/checkAndroidDesktop.sh
 
         ### get commit id
-	tmp=`adb -s $ip_android:5555 shell cat data/commitId.txt | grep commitId`
-	commitId=${tmp##*:}
+        tmp=`adb -s $ip_android:5555 shell cat data/commitId.txt | grep commitId`
+        commitId=${tmp##*:}
         commitId=${commitId%?}
 
         echo 'testing'
@@ -271,17 +304,34 @@ elif [ "$r_v" == "r" ];then
         testType=$6
         if [ "$testType" == "cts" ];then
             cts_cmd="$7"
-            echo "exit" | ../android-cts/tools/cts-tradefed run cts $cts_cmd
-        elif [ "$testType" == "lkp" ];then
-            ./allinone.sh $ip_android:5555
-        elif [ "$testType" == "all" ];then
-            cts_cmd="$7"
-            ./allinone.sh $ip_android:5555
             echo "exit" | ../android-cts/tools/cts-tradefed run cts $cts_cmd &
             {
                 tradefedMonitor $!
                 if [ $? -eq 0 ];then
                     ./android_fastboot.sh  $ip_android  reboot_bootloader
+                fi
+            }
+        elif [ "$testType" == "gui" ];then
+            ./install_apk.sh $ip_android 5555 
+            sleep 10
+            ./uiauto.sh $ip_android 
+            sleep 2 
+        elif [ "$testType" == "lkp" ];then
+            ./allinone.sh localhost:$adbPort
+        elif [ "$testType" == "all" ];then
+            cts_cmd="$7"
+            #./allinone.sh $ip_android:5555
+            ./install_apk.sh $ip_android 5555 
+            sleep 10
+            ./uiauto.sh $ip_android 
+            sleep 2 
+            echo "exit" | ../android-cts/tools/cts-tradefed run cts $cts_cmd &
+            {
+                tradefedMonitor $!
+                if [ $? -eq 0 ];then
+                    ./android_fastboot.sh  $ip_android  reboot_bootloader
+                else
+                    python sendEmail.py
                 fi
             }
         fi
@@ -290,6 +340,7 @@ elif [ "$r_v" == "r" ];then
     elif [ "$run_install" == "installTest" ];then
         ## install android-x86 and then test
         iso_loc=$6
+        getCommitId
         ./auto2.sh $ip_linux_client $iso_loc $disk_path $ListenPort $ip_linux_host;
 
         echo r2r2r2!!!!!!!!!!!!!!!!!!
@@ -299,14 +350,14 @@ elif [ "$r_v" == "r" ];then
         echo ${ip_android}
         adb connect ${ip_android}
         wait
-        adb -s $ip_android:5555 shell system/checkAndroidDesktop.sh
+        adb -s $ip_android:$adbPort shell system/checkAndroidDesktop.sh
 
         ##keep screen active
-        adb -s $ip_android:5555 shell svc power stayon true
+        adb -s $ip_android:$adbPort shell svc power stayon true
         echo 'install CtsDeviceAdmin.apk!!!!!'
-        adb -s $ip_android:5555 install ../android-cts/repository/testcases/CtsDeviceAdmin.apk
-        adb -s $ip_android:5555 push device_policies.xml data/system/device_policies.xml
-	adb -s $ip_android:5555 push commitId.txt data/
+        adb -s $ip_android:$adbPort install ../android-cts/repository/testcases/CtsDeviceAdmin.apk
+        adb -s $ip_android:$adbPort push device_policies.xml data/system/device_policies.xml
+        adb -s $ip_android:$adbPort push commitId.txt data/
         ./android_fastboot.sh  ${ip_android} bios_reboot 
 
         ##second boot
@@ -318,20 +369,24 @@ elif [ "$r_v" == "r" ];then
         echo ${ip_android}
         adb connect ${ip_android}
         wait
-        adb -s $ip_android:5555 shell system/checkAndroidDesktop.sh
+        adb -s $ip_android:$adbPort shell system/checkAndroidDesktop.sh
         #sleep 5
         cts_cmd="$7"
         echo 'testing'
         ### monitor script, if network is down, reboot to linux
-        ./testAliveSend.sh $ip_android 5555 $r_v &
+        ./testAliveSend.sh $ip_android $adbPort $r_v &
 
-        ./allinone.sh $ip_android:5555 $iso_loc
-        echo "exit" | ../android-cts/tools/cts-tradefed run cts -s $ip_android:5555 $cts_cmd &
+        runTestInFold 
+        sleep 2 
+
+        echo "exit" | ../android-cts/tools/cts-tradefed run cts -s $ip_android:$adbPort $cts_cmd &
         {
             tradefedMonitor $!
             if [ $? -eq 0 ];then
                 ###reboot to  linux
                 ./android_fastboot.sh  ${ip_android}  reboot_bootloader
+            else
+                python sendEmail.py
             fi
         }
 
@@ -361,23 +416,52 @@ elif [ "$r_v" == "r" ];then
     fi
 fi
 
-tmp=`find "testlog"$ListenPort".txt" | xargs grep -a "Created result dir"`
-#tmp=`grep -a "Created result dir" "testlog"$ListenPort".txt"`
-resultDirName=${tmp##* }
-
-if [ "$iso_loc" != "default" ];then
-    commitId=`getCommitId $iso_loc`
+if [ "$run_install" == "install" ];then
+   exit 0
 fi
-echo $commitId
-### edit result, add commit id
-./addCommitId.sh $resultDirName $commitId
 
-ip_android=${ip_android##* }
-if [ $resultDirName"x" != "x" ];then
-    if [[ ! -d  /mnt/freenas/result/cts/default/$ip_android/android/android_x86/gcc/$commitId ]];then
-	mkdir -p /mnt/freenas/result/cts/default/$ip_android/android/android_x86/gcc/$commitId
+
+## cp the result to a specified fold
+###########################################
+## set some parameter
+result=/mnt/freenas/result
+testarg=default
+host=$ip_android:$adbPort
+rootfs=android
+kconfig=android_x86
+cc=gcc
+kernel=$commitId
+##########################################    
+for i in {0..99}
+do
+        if [ ! -d $result/ebizzy/$testarg/$host/$rootfs/$kconfig/$cc/$kernel/$i ]
+        then
+                no=$i
+                break
+        fi
+done
+#######################################
+for testcase in `ls $testcaseFold`
+do
+    if [ -f $testcaseFold/$testcase/$ip_android"_"$adbPort"_"$kernel ];then
+        mkdir -p $result/$testcase/$testarg/$host/$rootfs/$kconfig/$cc/$kernel/$no
+        mv $testcaseFold/$testcase/$ip_android"_"$adbPort"_"$kernel $result/$testcase/$testarg/$host/$rootfs/$kconfig/$cc/$kernel/$no/testResult
     fi
-    cp -r ../android-cts/repository/results/$resultDirName /mnt/freenas/result/cts/default/$ip_android/android/android_x86/gcc/$commitId
-fi
+done
+#########################################
+if [ $run_install == "installTest" ] || [ $cts_cmd == "cts" ] || [ $cts_cmd == "all" ];then
+    tmp=`find "testlog"$ListenPort".txt" | xargs grep -a "Created result dir"`
+    resultDirName=${tmp##* }
+    ### edit result, add commit id
+    ./addCommitId.sh $resultDirName $commitId
+    if [ $resultDirName"x" != "x" ];then
+        if [[ ! -d  $result/cts/$testarg/$host/$rootfs/$kconfig/$cc/$kernel ]];then
+            mkdir -p $result/cts/$testarg/$host/$rootfs/$kconfig/$cc/$kernel
+        fi
+        cp -r ../android-cts/repository/results/$resultDirName $result/cts/$testarg/$host/$rootfs/$kconfig/$cc/$kernel
+        mv "testlog"$ListenPort".txt" $result/cts/$testarg/$host/$rootfs/$kconfig/$cc/$kernel/$resultDirName/cmdLog
+    fi 
+fi 
+
 wait
 exit 0

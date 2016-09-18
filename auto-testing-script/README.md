@@ -10,6 +10,11 @@
 1. 进入到auto-testing-script/cts-autotest目录中，修改根据所需configs文件，其中configs文件是所需要执行的autoTest.sh的各个参数,指定iso时使用$iso即可
 1. 进入到auto-testing-script/kernelci-analysis,修改build.sh中的参数，[参考曹睿东编译帮助](kernelci-analysis/README.md)
 1. 如果需要进行模拟器的测试,还需要准备一个android-x86.raw的镜像放在auto-testing-scrip文件夹下
+1. 安装python pip，然后安装PyEmail模块
+```
+sudo apt-get install python-pip
+pip install PyEmail
+```
 
 ###测试机制和安装机制
 * CTS包含两套机制：
