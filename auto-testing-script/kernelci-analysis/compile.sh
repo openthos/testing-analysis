@@ -23,7 +23,13 @@ do
     ## compileFinished is a flag which means the compile is finished
     if [ -f  /mnt/freenas/compile/compileFinished ];then
         rm /mnt/freenas/compile/compileFinished
-        break;
+        if [ `cat  /mnt/freenas/compile/compileFinished` == "compile fail" ];then
+            echo "compile failed"
+            exit -1
+        else
+            echo "compile success"
+            break
+        fi
     fi
     ## if the compile continued above 6 hours, we think it would be some proble in compile and exit the program
     if [ $count -eq 360 ];then

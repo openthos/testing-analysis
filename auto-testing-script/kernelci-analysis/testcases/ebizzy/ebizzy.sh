@@ -1,2 +1,7 @@
 #!/bin/bash
-./ebizzy
+androidIP=$1
+port=$2
+commitId=$3
+cd "$(dirname "$0")"
+adb -s $androidIP:$port push ebizzy /data/local/tmp
+adb -s $androidIP:$port shell /data/local/tmp/ebizzy
