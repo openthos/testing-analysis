@@ -24,7 +24,7 @@ adb -s $androidIP:$port push ebizzy /data/local/tmp
 adb -s $androidIP:$port shell /data/local/tmp/ebizzy > $foldName/restResult
 ```
 * 目前所有的测试的结果只有一个文件，所以统一命名为了testResult，并放入`$foldName`，当然后期如果结果是多个文件，那么可以根据自己的需要进行命名，只需要放入`$foldName`文件夹即可
-* **测试用例在上传之前，必须在adb连接两台机器的情况下测试通过，主要用于检测测试用例中adb没有加-s参数的情况**
+* __测试用例在上传之前，必须在adb连接两台机器的情况下测试通过，主要用于检测测试用例中adb没有加-s参数的情况__
 
 ---
 目前先到的就这些，编写测试用例的人员有别的需求也可以找**敖权**协商
