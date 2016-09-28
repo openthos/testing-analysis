@@ -145,7 +145,7 @@ function runTestInFold()
 {
     for testcase in `ls $testcaseFold`
     do 
-        $testcaseFold/$testcase/$testcase".sh" $ip_android $adbPort $testcaseFold > $testcaseFold/$testcase/$ip_android"_"$adbPort"_"$commitId
+        $testcaseFold/$testcase/$testcase".sh" $ip_android $adbPort $ip_android"_"$adbPort"_"$commitId
     done
 }
 
@@ -230,8 +230,8 @@ if [ "$r_v" == "v" ]; then
             adb connect localhost:$adbPort
             sleep 2
             adb -s localhost:$adbPort shell system/checkAndroidDesktop.sh
-	        tmp=`adb -s localhost:adbPort shell cat data/commitId.txt | grep commitIdi -v WARNING` 
-	        commitId=${tmp##*:}
+	    tmp=`adb -s localhost:adbPort shell cat data/commitId.txt | grep commitIdi -v WARNING` 
+	    commitId=${tmp##*:}
             commitId=${commitId%?}
             sleep 5
         
@@ -247,24 +247,18 @@ if [ "$r_v" == "v" ]; then
                     tradefedMonitor $!
                     if [ $? -eq 0 ];then
                         adb -s localhost:$adbPort shell poweroff
+                    else
+                        python sendEmail.py
                     fi
                 }
             elif [ "$testType" == "gui" ];then
-                ./install_apk.sh localhost $adbPort
-                sleep 10
-	        ./uiauto.sh localhost
-                sleep 2 
-                ./saveGuiResult.sh localhost:$adbPort $commitId gui
+                runTestInFold
             elif [ "$testType" == "lkp" ];then
-                ./allinone.sh localhost:$adbPort
+                echo "no lkp testcase!"
             elif [ "$testType" == "all" ];then
                 cts_cmd="$7"
-                #./allinone.sh localhost:$adbPort
-                ./install_apk.sh localhost $adbPort
-                sleep 10
-	        ./uiauto.sh localhost 
-                sleep 2 
-                ./mkResultDir.sh localhost:$adbPort $commitId gui
+                runTestInFold
+                sleep 2
                 echo "exit" | ../android-cts/tools/cts-tradefed run cts $cts_cmd &
                 {
                     tradefedMonitor $!
@@ -304,37 +298,36 @@ elif [ "$r_v" == "r" ];then
         testType=$6
         if [ "$testType" == "cts" ];then
             cts_cmd="$7"
-            echo "exit" | ../android-cts/tools/cts-tradefed run cts $cts_cmd &
+            echo "exit" | ../android-cts/tools/cts-tradefed run cts -s $ip_android:$adbPort $cts_cmd &
             {
                 tradefedMonitor $!
                 if [ $? -eq 0 ];then
-                    ./android_fastboot.sh  $ip_android  reboot_bootloader
-                fi
-            }
-        elif [ "$testType" == "gui" ];then
-            ./install_apk.sh $ip_android 5555 
-            sleep 10
-            ./uiauto.sh $ip_android 
-            sleep 2 
-        elif [ "$testType" == "lkp" ];then
-            ./allinone.sh localhost:$adbPort
-        elif [ "$testType" == "all" ];then
-            cts_cmd="$7"
-            #./allinone.sh $ip_android:5555
-            ./install_apk.sh $ip_android 5555 
-            sleep 10
-            ./uiauto.sh $ip_android 
-            sleep 2 
-            echo "exit" | ../android-cts/tools/cts-tradefed run cts $cts_cmd &
-            {
-                tradefedMonitor $!
-                if [ $? -eq 0 ];then
-                    ./android_fastboot.sh  $ip_android  reboot_bootloader
+                    ###reboot to  linux
+                    ./android_fastboot.sh  ${ip_android}  reboot_bootloader
                 else
                     python sendEmail.py
                 fi
             }
-        fi
+            fi
+        elif [ "$testType" == "gui" ];then
+            runTestInFold 
+        elif [ "$testType" == "lkp" ];then
+            echo "no lkp testcase!"
+        elif [ "$testType" == "all" ];then
+            cts_cmd="$7"
+            runTestInFold 
+            sleep 2 
+            echo "exit" | ../android-cts/tools/cts-tradefed run cts -s $ip_android:$adbPort $cts_cmd &
+            {
+                tradefedMonitor $!
+                if [ $? -eq 0 ];then
+                    ###reboot to  linux
+                    ./android_fastboot.sh  ${ip_android}  reboot_bootloader
+                else
+                    python sendEmail.py
+                fi
+            }
+            fi
 
     
     elif [ "$run_install" == "installTest" ];then
@@ -378,7 +371,6 @@ elif [ "$r_v" == "r" ];then
 
         runTestInFold 
         sleep 2 
-
         echo "exit" | ../android-cts/tools/cts-tradefed run cts -s $ip_android:$adbPort $cts_cmd &
         {
             tradefedMonitor $!
@@ -443,10 +435,11 @@ done
 #######################################
 for testcase in `ls $testcaseFold`
 do
-    if [ -f $testcaseFold/$testcase/$ip_android"_"$adbPort"_"$kernel ];then
+    if [ -d $testcaseFold/$testcase/$ip_android"_"$adbPort"_"$kernel ];then
         mkdir -p $result/$testcase/$testarg/$host/$rootfs/$kconfig/$cc/$kernel/$no
-        mv $testcaseFold/$testcase/$ip_android"_"$adbPort"_"$kernel $result/$testcase/$testarg/$host/$rootfs/$kconfig/$cc/$kernel/$no/testResult
-    fi
+        mv $testcaseFold/$testcase/$ip_android"_"$adbPort"_"$kernel/* $result/$testcase/$testarg/$host/$rootfs/$kconfig/$cc/$kernel/$no
+        rm -r $testcaseFold/$testcase/$ip_android"_"$adbPort"_"$kernel
+   fi
 done
 #########################################
 if [ $run_install == "installTest" ] || [ $cts_cmd == "cts" ] || [ $cts_cmd == "all" ];then
