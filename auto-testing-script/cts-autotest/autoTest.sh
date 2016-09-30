@@ -163,7 +163,7 @@ if [ "$r_v" == "v" ]; then
         ## install CtsDeviceAdmin.apk and active the device adminstrators, this setting will take effect after reboot 
         /usr/local/bin/qemu-system-x86_64 -m 2G -vga vmware --enable-kvm -net nic -net user,hostfwd=tcp::$adbPort-:5555 $disk_path -vnc :1 &
         {
-	    echo v1v1v1v1!!!!!!!!!!!!!!!!!!!!!
+            echo v1v1v1v1!!!!!!!!!!!!!!!!!!!!!
             nc -lp $ListenPort
             ## waiting for a message from android-x86, this ip address is useful in real mechine test, but in virtural mechine ,we adopt nat address mapping ,
             ## so it's just a symbol that android-x86 is running 
@@ -230,8 +230,8 @@ if [ "$r_v" == "v" ]; then
             adb connect localhost:$adbPort
             sleep 2
             adb -s localhost:$adbPort shell system/checkAndroidDesktop.sh
-	    tmp=`adb -s localhost:adbPort shell cat data/commitId.txt | grep commitIdi -v WARNING` 
-	    commitId=${tmp##*:}
+            tmp=`adb -s localhost:adbPort shell cat data/commitId.txt | grep commitIdi -v WARNING` 
+            commitId=${tmp##*:}
             commitId=${commitId%?}
             sleep 5
         
@@ -308,7 +308,6 @@ elif [ "$r_v" == "r" ];then
                     python sendEmail.py
                 fi
             }
-            fi
         elif [ "$testType" == "gui" ];then
             runTestInFold 
         elif [ "$testType" == "lkp" ];then
@@ -327,7 +326,7 @@ elif [ "$r_v" == "r" ];then
                     python sendEmail.py
                 fi
             }
-            fi
+       fi
 
     
     elif [ "$run_install" == "installTest" ];then
@@ -400,7 +399,7 @@ elif [ "$r_v" == "r" ];then
         echo 'install CtsDeviceAdmin.apk!!!!!'
         adb -s $ip_android:5555 install ../android-cts/repository/testcases/CtsDeviceAdmin.apk
         adb -s $ip_android:5555 push device_policies.xml data/system/device_policies.xml
-	adb -s $ip_android:5555 push commitId.txt data/
+    	adb -s $ip_android:5555 push commitId.txt data/
         sleep 1 
         echo "install finished!"
         ###reboot to  linux
