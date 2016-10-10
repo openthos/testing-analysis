@@ -21,6 +21,6 @@ adb -s $androidIP:$port shell chmod 777 /data/gputrace/gputrace-gen
 adb -s $androidIP:$port shell am start -a android.intent.action.VIEW -d file:///storage/emulated/legacy/DCIM/Camera/$VIDEO -t video/* -n org.videolan.vlc/org.videolan.vlc.StartActivity
 adb -s $androidIP:$port shell < script
 adb -s $androidIP:$port pull /data/gputrace/gputracelog $foldName/
-line=`cat gputracelog |grep drm_vblank_event|wc -l`
+line=`cat $foldName/gputracelog |grep drm_vblank_event|wc -l`
 frame=`expr $line / 150`
 echo $frame > $foldName/testResult
