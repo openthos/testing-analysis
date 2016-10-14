@@ -24,12 +24,16 @@ pip install PyEmail
  1. 可以只安装android-x86_64
  1. 如果已经安装好了android-x86_64，则可以选择只测试不安装，测试有4种类型——cts，lkp，gui或者all
      1. 测试全部，configs如下
+     
      ```r 192.168.2.16 PC2 /dev/sda40 run all "-p android.acceleration --disable-reboot"```
      1. 只测cts，configs如下
+     
      ```r 192.168.2.16 PC2 /dev/sda40 run cts "-p android.acceleration --disable-reboot" ```
      1. 只测gui，configs如下，包括apk测试以及帧率测试，目前状态下，将lkp的benchmark（ebizzy和nbench）也并到了gui下面
+     
      ```r 192.168.2.16 PC2 /dev/sda40 run gui```
      1. 只测lkp，configs如下，不过目前lkp还未集成到平台，所以还无法测试
+     
      ```r 192.168.2.16 PC2 /dev/sda40 run lkp```
  1. 如果没有安装android-x86_64，则可以先安装android-x86_64，然后进行测试（**建议使用**）；
 * 只需要调整相应的输入参数即可以达到相应的效果;
@@ -55,20 +59,25 @@ pip install PyEmail
             
             ```./paraRun.sh android_x86_64-a3fe26d154ef92a708b7faa488571899aa5bcab4-5.1.iso```
         * 如果只测一台机器，也可以直接运行autoTest.sh（不推荐）
+        
             ```./autoTest.sh 52001 r 192.168.2.16 PC1 /dev/sda40 installTest android_x86_64-a3fe26d154ef92a708b7faa488571899aa5bcab4-5.1.iso "-p android.acceleration --disable-reboot" ```
     * 已经装好android-x86，不需要安装只测试
         * 推荐用法
             * 修改configs,例如改成 一下（参考configs）：
+            
             ```r 192.168.2.16 PC1 /dev/sda40 run cts "-p android.acceleration --disable-reboot" ```
             * 然后执行
+            
             ```./paraRun.sh ```
         * 当然也可以直接运行autoTest.sh，方法与以上类似（不推荐）
 
 ###在模拟器中测试
 * 测试举例：
     * 修改configs文件
+    
         ```v localhost QEMU1 android-x86_64.raw  installTest ../android_x86_64-a3fe26d154ef92a708b7faa488571899aa5bcab4-5.1.iso "-p android.acceleration --disable-reboot" ```
     * 执行paraRun.sh
+    
         ```./paraRun.sh```
 
 ###多台机器安装测试
