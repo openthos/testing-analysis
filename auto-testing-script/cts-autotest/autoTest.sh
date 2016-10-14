@@ -170,10 +170,10 @@ if [ "$r_v" == "v" ]; then
             echo 'waiting for android boot !!!!!'
             adb connect $ip_linux_client:$adbPort
             sleep 2
+            adb -s $ip_linux_client:$adbPort shell svc power stayon true
             adb -s $ip_linux_client:$adbPort shell system/checkAndroidDesktop.sh
             sleep 5
             ##keep screen active
-            adb -s $ip_linux_client:$adbPort shell svc power stayon true
             ## install CtsDeviceAdmin.apk
             echo 'install CtsDeviceAdmin.apk!!!!!'
             adb -s $ip_linux_client:$adbPort install ../android-cts/repository/testcases/CtsDeviceAdmin.apk
@@ -342,10 +342,10 @@ elif [ "$r_v" == "r" ];then
         echo ${ip_android}
         adb connect ${ip_android}
         wait
-        adb -s $ip_android:$adbPort shell system/checkAndroidDesktop.sh
-
         ##keep screen active
         adb -s $ip_android:$adbPort shell svc power stayon true
+        adb -s $ip_android:$adbPort shell system/checkAndroidDesktop.sh
+
         echo 'install CtsDeviceAdmin.apk!!!!!'
         adb -s $ip_android:$adbPort install ../android-cts/repository/testcases/CtsDeviceAdmin.apk
         adb -s $ip_android:$adbPort push device_policies.xml data/system/device_policies.xml
@@ -392,10 +392,10 @@ elif [ "$r_v" == "r" ];then
         echo ${ip_android}
         adb connect ${ip_android}
         wait
-        adb -s $ip_android:5555 shell system/checkAndroidDesktop.sh
-
         ##keep screen active
         adb -s $ip_android:5555 shell svc power stayon true
+        adb -s $ip_android:5555 shell system/checkAndroidDesktop.sh
+
         echo 'install CtsDeviceAdmin.apk!!!!!'
         adb -s $ip_android:5555 install ../android-cts/repository/testcases/CtsDeviceAdmin.apk
         adb -s $ip_android:5555 push device_policies.xml data/system/device_policies.xml
