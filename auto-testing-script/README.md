@@ -22,7 +22,7 @@ pip install PyEmail
 ###测试机制和安装机制
 * CTS包含三套机制：
  1. 可以只安装android-x86_64
- 1. 如果已经安装好了android-x86_64，则可以选择只测试不安装，测试有两种类型——cts，lkp，gui或者all
+ 1. 如果已经安装好了android-x86_64，则可以选择只测试不安装，测试有4种类型——cts，lkp，gui或者all
      1. 测试全部，configs如下
      ```r 192.168.2.16 PC2 /dev/sda40 run all "-p android.acceleration --disable-reboot"```
      1. 只测cts，configs如下
@@ -49,11 +49,13 @@ pip install PyEmail
     * 安装并测试，其中iso的名字规则为 XXX-版本号-5.1.iso
         * 推荐用法
             * 修改configs,例如改成 一下（参考configs）：
+
             ```r 192.168.2.16 PC1 /dev/sda40 installTest $iso  "-p android.acceleration --disable-reboot" ```
             * 然后执行
+            
             ```./paraRun.sh android_x86_64-a3fe26d154ef92a708b7faa488571899aa5bcab4-5.1.iso```
-         * 如果只测一台机器，也可以直接运行autoTest.sh（不推荐）
-             ```./autoTest.sh 52001 r 192.168.2.16 PC1 /dev/sda40 installTest android_x86_64-a3fe26d154ef92a708b7faa488571899aa5bcab4-5.1.iso "-p android.acceleration --disable-reboot" ```
+        * 如果只测一台机器，也可以直接运行autoTest.sh（不推荐）
+            ```./autoTest.sh 52001 r 192.168.2.16 PC1 /dev/sda40 installTest android_x86_64-a3fe26d154ef92a708b7faa488571899aa5bcab4-5.1.iso "-p android.acceleration --disable-reboot" ```
     * 已经装好android-x86，不需要安装只测试
         * 推荐用法
             * 修改configs,例如改成 一下（参考configs）：
