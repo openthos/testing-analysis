@@ -12,24 +12,26 @@
 ##########################################################################################################################
 ## $1 : listen port(start from 52001)
 ## $2 : virtual mechine or real mechine (v/r)
-## $3 : ip of client linux system, if you test local android_x86, use localhost or 127.0.0.1
-## $4: path of disk(/dev/sda40) or virtual disk(../rawiso/android_x86.raw)
-## $5 : run android_x86(run) or install android_x86.iso(install), install and run the testcase(installTest)
-## if $5 == install || $5 == installTest
-    ## $6: location of android_x86.iso
-## if $5 == run
-    ## $6: type of test(lkp/cts/all)
-        ## if $6 == cts || $6 == all
-            ## $7: cts command that need to be excuted
-        ## if $6 == lkp
+## $3 : ip of client linux system, if you test local android_x86, use localhost or 127.0.0.1 
+## $4 : host name for distinguish the machine
+## $5: path of disk(/dev/sda40) or virtual disk(../rawiso/android_x86.raw)
+## $6 : run android_x86(run) or install android_x86.iso(install), install and run the testcase(installTest)
+## if $6 == install || $6 == installTest
+    ## $7: location of android_x86.iso
+## if $6 == run
+    ## $7: type of test(lkp/cts/all)
+        ## if $7 == cts || $7 == all
+            ## $8: cts command that need to be excuted
+        ## if $7 == lkp
             ## It's enough
 
-## eg: ./autoTest.sh 52001 r 192.168.2.16 /dev/sda40 install android_x86.iso
-## eg: ./autoTest.sh 52001 r 192.168.2.16 /dev/sda40 installTest android_x86.iso "-p android.acceleration --disable-reboot"
-## eg: ./autoTest.sh 52001 r 192.168.2.16 /dev/sda40 run cts "-p android.acceleration --disable-reboot"
-## eg: ./autoTest.sh 52001 r 192.168.2.16 /dev/sda40 run all "-p android.acceleration --disable-reboot"
-## eg: ./autoTest.sh 52001 r 192.168.2.16 /dev/sda40 run lkp 
-## eg: ./autoTest.sh 52001 v localhost /media/aquan/000D204000041550/android-x86.raw  installTest ../xyl_android_x86_64_5.1.iso "-p android.acceleration --disable-reboot" 
+## eg: ./autoTest.sh 52001 r 192.168.2.16 PC1 /dev/sda40 install android_x86_64-a3fe26d154ef92a708b7faa488571899aa5bcab4-5.1.iso
+## eg: ./autoTest.sh 52001 r 192.168.2.16 PC1 /dev/sda40 installTest android_x86_64-a3fe26d154ef92a708b7faa488571899aa5bcab4-5.1.iso "-p android.acceleration --disable-reboot"
+## eg: ./autoTest.sh 52001 r 192.168.2.16 PC1 /dev/sda40 run cts "-p android.acceleration --disable-reboot"
+## eg: ./autoTest.sh 52001 r 192.168.2.16 PC1 /dev/sda40 run all "-p android.acceleration --disable-reboot"
+## eg: ./autoTest.sh 52001 r 192.168.2.16 PC2 /dev/sda40 run lkp 
+## eg: ./autoTest.sh 52001 r 192.168.2.16 PC2 /dev/sda40 run gui
+## eg: ./autoTest.sh 52001 v localhost QEMU1 /media/aquan/000D204000041550/android-x86.raw  installTest android_x86_64-a3fe26d154ef92a708b7faa488571899aa5bcab4-5.1.iso "-p android.acceleration --disable-reboot" 
 
 cd "$(dirname "$0")"
 
@@ -39,9 +41,10 @@ ListenPort=$1
 adbPort=$(($ListenPort+100))
 
 r_v=$2
-ip_linux_client=$3
-disk_path=$4
-run_install=$5 
+ip_linux_client=$3 
+host=$4
+disk_path=$5
+run_install=$6 
 
 ip_linux_host=`/sbin/ifconfig -a|grep inet|grep -v 127.0.0.1|grep -v inet6|awk '{print $2}'|tr -d "addr:"|grep 192`
 
@@ -49,6 +52,9 @@ ip_android="0.0.0.0"
 iso_loc="default"
 
 testcaseFold="../kernelci-analysis/testcases"
+#qemuCMD="/home/oto/qemu-2.7.0/build/x86_64-softmmu/qemu-system-x86_64 -device virtio-gpu-pci,virgl"
+qemuCMD="/usr/local/bin/qemu-system-x86_64 -m 4G"
+
 #check whether the ip address
 function checkIP()
 {
@@ -155,13 +161,14 @@ if [ "$r_v" == "v" ]; then
 
     if [ "$run_install" == "installTest" ] || [ "$run_install" == "install" ];then
         ## install iso and then test the android-x86
-        iso_loc=$6
+        iso_loc=$7
         getCommitId
         ./fastboot_vir.sh $disk_path flashall $iso_loc;
         EditBoot
         
         ## install CtsDeviceAdmin.apk and active the device adminstrators, this setting will take effect after reboot 
-        /usr/local/bin/qemu-system-x86_64 -m 2G -vga vmware --enable-kvm -net nic -net user,hostfwd=tcp::$adbPort-:5555 $disk_path -vnc :1 &
+        #/usr/local/bin/qemu-system-x86_64 -m 2G -vga vmware --enable-kvm -net nic -net user,hostfwd=tcp::$adbPort-:5555 $disk_path -vnc :1 &
+        $qemuCMD -vga vmware --enable-kvm -net nic -net user,hostfwd=tcp::$adbPort-:5555 $disk_path -vnc :1 &
         {
             echo v1v1v1v1!!!!!!!!!!!!!!!!!!!!!
             nc -lp $ListenPort
@@ -186,7 +193,7 @@ if [ "$r_v" == "v" ]; then
     if [ "$run_install" == "installTest" ];then
 
         #EditBoot
-        /usr/local/bin/qemu-system-x86_64 -m 2G -vga vmware --enable-kvm -net nic -net user,hostfwd=tcp::$adbPort-:5555 $disk_path -vnc :2 &
+        $qemuCMD -vga vmware --enable-kvm -net nic -net user,hostfwd=tcp::$adbPort-:5555 $disk_path -vnc :2 &
         {
             qemuPid=$!
             echo v2v2v2!!!!!!!!!!!!!!!!!!!!!
@@ -198,7 +205,7 @@ if [ "$r_v" == "v" ]; then
             sleep 2
             adb -s localhost:$adbPort shell system/checkAndroidDesktop.sh
             sleep 5
-            cts_cmd="$7"       
+            cts_cmd="$8"       
 
             ### monitor script, if network is down, reboot to linux
             ./testAliveSend.sh localhost $adbPort $r_v &
@@ -220,7 +227,7 @@ if [ "$r_v" == "v" ]; then
     if [ "$run_install" == "run" ];then
 
         EditBoot
-        /usr/local/bin/qemu-system-x86_64 -m 2G -vga vmware --enable-kvm -net nic -net user,hostfwd=tcp::$adbPort-:5555 $disk_path -vnc :3 &
+        $qemuCMD -vga vmware --enable-kvm -net nic -net user,hostfwd=tcp::$adbPort-:5555 $disk_path -vnc :3 &
         {
             pid=$!
             echo v3v3v3!!!!!!!!!!!!!!!!!!!!!!!!
@@ -238,9 +245,9 @@ if [ "$r_v" == "v" ]; then
             ### monitor script, if network is down, reboot to linux
             ./testAliveSend.sh localhost $adbPort $r_v &
 
-            testType=$6 
+            testType=$7 
             if [ "$testType" == "cts" ];then
-                cts_cmd="$7"
+                cts_cmd="$8"
                # echo "exit" | ../android-cts/tools/cts-tradefed run cts $cts_cmd 
                 echo "exit" | ../android-cts/tools/cts-tradefed run cts $cts_cmd &
                 {
@@ -256,7 +263,7 @@ if [ "$r_v" == "v" ]; then
             elif [ "$testType" == "lkp" ];then
                 echo "no lkp testcase!"
             elif [ "$testType" == "all" ];then
-                cts_cmd="$7"
+                cts_cmd="$8"
                 runTestInFold
                 sleep 2
                 echo "exit" | ../android-cts/tools/cts-tradefed run cts $cts_cmd &
@@ -295,9 +302,9 @@ elif [ "$r_v" == "r" ];then
         ### monitor script, if network is down, reboot to linux
         ./testAliveSend.sh $ip_android 5555 $r_v &
 
-        testType=$6
+        testType=$7
         if [ "$testType" == "cts" ];then
-            cts_cmd="$7"
+            cts_cmd="$8"
             echo "exit" | ../android-cts/tools/cts-tradefed run cts -s $ip_android:$adbPort $cts_cmd &
             {
                 tradefedMonitor $!
@@ -313,7 +320,7 @@ elif [ "$r_v" == "r" ];then
         elif [ "$testType" == "lkp" ];then
             echo "no lkp testcase!"
         elif [ "$testType" == "all" ];then
-            cts_cmd="$7"
+            cts_cmd="$8"
             runTestInFold 
             sleep 2 
             echo "exit" | ../android-cts/tools/cts-tradefed run cts -s $ip_android:$adbPort $cts_cmd &
@@ -331,7 +338,7 @@ elif [ "$r_v" == "r" ];then
     
     elif [ "$run_install" == "installTest" ];then
         ## install android-x86 and then test
-        iso_loc=$6
+        iso_loc=$7
         getCommitId
         ./auto2.sh $ip_linux_client $iso_loc $disk_path $ListenPort $ip_linux_host;
 
@@ -363,7 +370,7 @@ elif [ "$r_v" == "r" ];then
         wait
         adb -s $ip_android:$adbPort shell system/checkAndroidDesktop.sh
         #sleep 5
-        cts_cmd="$7"
+        cts_cmd="$8"
         echo 'testing'
         ### monitor script, if network is down, reboot to linux
         ./testAliveSend.sh $ip_android $adbPort $r_v &
@@ -383,7 +390,7 @@ elif [ "$r_v" == "r" ];then
 
     elif [ "$run_install" == "install" ];then
         ## install android-x86 and then test
-        iso_loc=$6
+        iso_loc=$7
         ./auto2.sh $ip_linux_client $iso_loc $disk_path $ListenPort $ip_linux_host;
         echo r5r5r5!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         ip_android=`nc -lp $ListenPort`
@@ -392,10 +399,10 @@ elif [ "$r_v" == "r" ];then
         echo ${ip_android}
         adb connect ${ip_android}
         wait
-        ##keep screen active
-        adb -s $ip_android:5555 shell svc power stayon true
         adb -s $ip_android:5555 shell system/checkAndroidDesktop.sh
 
+        ##keep screen active
+        adb -s $ip_android:5555 shell svc power stayon true
         echo 'install CtsDeviceAdmin.apk!!!!!'
         adb -s $ip_android:5555 install ../android-cts/repository/testcases/CtsDeviceAdmin.apk
         adb -s $ip_android:5555 push device_policies.xml data/system/device_policies.xml
@@ -417,7 +424,7 @@ fi
 ## set some parameter
 result=/mnt/freenas/result
 testarg=default
-host=$ip_android:$adbPort
+#host=$4
 rootfs=android
 kconfig=android_x86
 cc=gcc
