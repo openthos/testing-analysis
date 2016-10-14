@@ -81,7 +81,7 @@ pip install PyEmail
         ```v localhost QEMU1 android-x86_64.raw  installTest ../android_x86_64-a3fe26d154ef92a708b7faa488571899aa5bcab4-5.1.iso "-p android.acceleration --disable-reboot" ```
     * 执行paraRun.sh
     
-        ```./paraRun.sh```
+        ``` ./paraRun.sh ```
 
 ###多台机器安装测试
 * 在configs中填写多条测试配置文件，运行paraRun.sh即可(参考configs)
