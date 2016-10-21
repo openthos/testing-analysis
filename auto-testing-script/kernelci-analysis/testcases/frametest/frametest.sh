@@ -11,7 +11,6 @@ port=$2
 foldName=$3
 cd "$(dirname "$0")"
 mkdir $foldName
-adb connect $androidIP
 adb -s $androidIP:$port install vlc.apk
 adb -s $androidIP:$port push $VIDEO /storage/emulated/legacy/DCIM/Camera/$VIDEO
 adb -s $androidIP:$port shell mkdir /data/gputrace
@@ -21,6 +20,9 @@ adb -s $androidIP:$port shell chmod 777 /data/gputrace/gputrace-gen
 adb -s $androidIP:$port shell am start -a android.intent.action.VIEW -d file:///storage/emulated/legacy/DCIM/Camera/$VIDEO -t video/* -n org.videolan.vlc/org.videolan.vlc.StartActivity
 adb -s $androidIP:$port shell < script
 adb -s $androidIP:$port pull /data/gputrace/gputracelog $foldName/
+adb -s $androidIP:$port shell rm /storage/emulated/legacy/DCIM/Camera/$VIDEO
+adb -s $androidIP:$port shell rm /data/gputrace/gputracelog
+adb -s $androidIP:$port shell rm /data/gputrace/gputrace-gen
 line=`cat $foldName/gputracelog |grep drm_vblank_event|wc -l`
 frame=`expr $line / 150`
 echo $frame > $foldName/testResult
