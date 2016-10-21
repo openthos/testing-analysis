@@ -5,7 +5,7 @@
 
 * ### 不允许进行adb connect 以及adb disconnect操作（测试框架已经帮我们连接上adb，不需要我们操作）
 
-* ### 所有拷贝进android-x86中的文件，在测试结束后全部删除卸载或者
+* ### 所有拷贝进android-x86中的文件，在测试结束后全部删除或者卸载
 
 
 * 位置：auto-testing-script/kernelci-analysis/testcases/
