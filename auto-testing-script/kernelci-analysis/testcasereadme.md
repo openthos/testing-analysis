@@ -7,6 +7,8 @@
 
 * ### 所有拷贝进android-x86中的文件，在测试结束后全部删除或者卸载
 
+* ### 测试用例打开的程序需要关闭全部，以防影响的后面测试
+
 
 * 位置：auto-testing-script/kernelci-analysis/testcases/
 * 功能：测试框架只为测试用例提供一个全新的android-x86，不提供额外的设置，所需要或依赖的apk等其他程序需要在测试脚本自己解决
