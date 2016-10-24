@@ -1,6 +1,14 @@
 #!/bin/bash
 
 dirname_path=$(cd `dirname $0`; pwd)
+############################
+## git pull test source code
+git pull
+        if [ $? -ne 0 ]; then
+        echo -e "test source code pull ERROR, use the tpreviou sest code!"
+        fi  
+############################
+
 
 build_sh="$dirname_path/build.sh"
 tmp_branch="$dirname_path/tmp_branch"
@@ -37,3 +45,26 @@ else
 fi
 #for loop
 done
+
+
+## after 10 minutes, start test again
+minuteNow=`date "+%M"`
+hourNow=`date "+%H"`
+timeInterval=10
+minuteNext=`expr $minuteNow + $timeInterval`
+hourNext=$hourNow
+
+if [ $minuteNext -ge 60 ];then
+    minuteNext=`expr $minuterNow - 60`
+    hourNext=`expr $hourNext + 1`
+    if [ $hourNext -ge 24 ];then
+        hourNext=00
+    fi
+fi
+nextCrontabTime="$minuteNext $hourNext"
+
+cronTail=`tail -1 /var/spool/cron/crontabs/root`
+if [ "${cronTail:0:1}" != "#" ];then
+    sed '$d' -i /var/spool/cron/crontabs/root
+fi
+echo "$nextCrontabTime * * * /home/oto/openthos-test/kernelci-analysis/updateGIT.sh >> /mnt/freenas/result/cronout 2>&1" >>/var/spool/cron/crontabs/root
