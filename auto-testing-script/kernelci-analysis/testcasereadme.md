@@ -37,4 +37,4 @@ adb -s $androidIP:$port shell /data/local/tmp/ebizzy > $foldName/restResult
 
 
 ---
-目前先到的就这些，编写测试用例的人员有别的需求也可以找**敖权**协商
+目前想到的就这些，编写测试用例的人员有别的需求也可以找**敖权**协商
