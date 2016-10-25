@@ -1,0 +1,60 @@
+adb server is out of date.  killing...
+* daemon started successfully *
+connected to 192.168.0.80:5555
+151 KB/s (6592 bytes in 0.042s)
+WARNING: linker: [vdso]: unused DT entry: type 0x6ffffef5 arg 0x160
+WARNING: linker: [vdso]: unused DT entry: type 0x6ffffef5 arg 0x160
+WARNING: linker: [vdso]: unused DT entry: type 0x6ffffef5 arg 0x160
+INSTRUMENTATION_STATUS: numtests=1
+INSTRUMENTATION_STATUS: stream=
+com.autoTestUI.firefox:
+INSTRUMENTATION_STATUS: id=UiAutomatorTestRunner
+INSTRUMENTATION_STATUS: test=testfirefox
+INSTRUMENTATION_STATUS: class=com.autoTestUI.firefox
+INSTRUMENTATION_STATUS: current=1
+INSTRUMENTATION_STATUS_CODE: 1
+----execCmd:  am start -n org.mozilla.firefox/org.mozilla.firefox.App
+Starting: Intent { cmp=org.mozilla.firefox/.App }
+INSTRUMENTATION_STATUS: numtests=1
+INSTRUMENTATION_STATUS: stream=
+Error in testfirefox:
+java.lang.NullPointerException: Attempt to invoke virtual method 'char[] java.lang.String.toCharArray()' on a null object reference
+	at java.io.File.fixSlashes(File.java:185)
+	at java.io.File.<init>(File.java:134)
+	at com.autoTestUI.otoDisplayRun.saveToFile(otoDisplayRun.java:101)
+	at com.autoTestUI.otoDisplayRun.execCmd(otoDisplayRun.java:79)
+	at com.autoTestUI.firefox.testfirefox(firefox.java:25)
+	at com.android.uiautomator.testrunner.UiAutomatorTestRunner.start(UiAutomatorTestRunner.java:160)
+	at com.android.uiautomator.testrunner.UiAutomatorTestRunner.run(UiAutomatorTestRunner.java:96)
+	at com.android.commands.uiautomator.RunTestCommand.run(RunTestCommand.java:91)
+	at com.android.commands.uiautomator.Launcher.main(Launcher.java:83)
+	at com.android.internal.os.RuntimeInit.nativeFinishInit(Native Method)
+	at com.android.internal.os.RuntimeInit.main(RuntimeInit.java:249)
+
+INSTRUMENTATION_STATUS: id=UiAutomatorTestRunner
+INSTRUMENTATION_STATUS: test=testfirefox
+INSTRUMENTATION_STATUS: class=com.autoTestUI.firefox
+INSTRUMENTATION_STATUS: stack=java.lang.NullPointerException: Attempt to invoke virtual method 'char[] java.lang.String.toCharArray()' on a null object reference
+	at java.io.File.fixSlashes(File.java:185)
+	at java.io.File.<init>(File.java:134)
+	at com.autoTestUI.otoDisplayRun.saveToFile(otoDisplayRun.java:101)
+	at com.autoTestUI.otoDisplayRun.execCmd(otoDisplayRun.java:79)
+	at com.autoTestUI.firefox.testfirefox(firefox.java:25)
+	at com.android.uiautomator.testrunner.UiAutomatorTestRunner.start(UiAutomatorTestRunner.java:160)
+	at com.android.uiautomator.testrunner.UiAutomatorTestRunner.run(UiAutomatorTestRunner.java:96)
+	at com.android.commands.uiautomator.RunTestCommand.run(RunTestCommand.java:91)
+	at com.android.commands.uiautomator.Launcher.main(Launcher.java:83)
+	at com.android.internal.os.RuntimeInit.nativeFinishInit(Native Method)
+	at com.android.internal.os.RuntimeInit.main(RuntimeInit.java:249)
+
+INSTRUMENTATION_STATUS: current=1
+INSTRUMENTATION_STATUS_CODE: -1
+INSTRUMENTATION_STATUS: stream=
+Test results for WatcherResultPrinter=.E
+Time: 0.104
+
+FAILURES!!!
+Tests run: 1,  Failures: 0,  Errors: 1
+
+
+INSTRUMENTATION_STATUS_CODE: -1

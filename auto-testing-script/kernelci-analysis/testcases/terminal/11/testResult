@@ -1,0 +1,42 @@
+adb server is out of date.  killing...
+* daemon started successfully *
+connected to 192.168.0.80:5555
+141 KB/s (6122 bytes in 0.042s)
+WARNING: linker: [vdso]: unused DT entry: type 0x6ffffef5 arg 0x160
+WARNING: linker: [vdso]: unused DT entry: type 0x6ffffef5 arg 0x160
+WARNING: linker: [vdso]: unused DT entry: type 0x6ffffef5 arg 0x160
+INSTRUMENTATION_STATUS: numtests=1
+INSTRUMENTATION_STATUS: stream=
+com.autoTestUI.terminal:
+INSTRUMENTATION_STATUS: id=UiAutomatorTestRunner
+INSTRUMENTATION_STATUS: test=testterminal
+INSTRUMENTATION_STATUS: class=com.autoTestUI.terminal
+INSTRUMENTATION_STATUS: current=1
+INSTRUMENTATION_STATUS_CODE: 1
+-------------Start time： 2016-10-20 09:50:225555
+<ERROR>WARNING: linker: [vdso]: unused DT entry: type 0x6ffffef5 arg 0x160
+<ERROR>WARNING: linker: [vdso]: unused DT entry: type 0x6ffffef5 arg 0x160
+<ERROR>Warning: Activity not started, its current task has been brought to the front
+----Process judgment :  ps  | grep jackpal.androidterm
+<ERROR>WARNING: linker: [vdso]: unused DT entry: type 0x6ffffef5 arg 0x160
+-------------结束时间： 2016-10-20 09:50:22
+-------------APP launch 时间： 314ms
+<ERROR>WARNING: linker: [vdso]: unused DT entry: type 0x6ffffef5 arg 0x160
+<ERROR>WARNING: linker: [vdso]: unused DT entry: type 0x6ffffef5 arg 0x160
+<ERROR>WARNING: linker: [vdso]: unused DT entry: type 0x6ffffef5 arg 0x160
+<ERROR>WARNING: linker: [vdso]: unused DT entry: type 0x6ffffef5 arg 0x160
+INSTRUMENTATION_STATUS: numtests=1
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: id=UiAutomatorTestRunner
+INSTRUMENTATION_STATUS: test=testterminal
+INSTRUMENTATION_STATUS: class=com.autoTestUI.terminal
+INSTRUMENTATION_STATUS: current=1
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: stream=
+Test results for WatcherResultPrinter=.
+Time: 26.165
+
+OK (1 test)
+
+
+INSTRUMENTATION_STATUS_CODE: -1
