@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash -ex
 otoid=$1
 result=/mnt/freenas
 ctsautotest=../cts-autotest
@@ -20,12 +20,11 @@ now=$(date "+%s")
 time=$((now-start))
 echo "compile time:$time s"
 
-cp ../android-x86.raw ../cts-autotest/
+#cp ../android-x86.raw ../cts-autotest/
 $ctsautotest/paraRun.sh $iso
 now1=$(date "+%s")
 time=$((now1-now))
 echo "deploy time:$time s"
-#./test.sh
 now=$(date "+%s")
 time=$((now-now1))
 num=3

@@ -1,6 +1,8 @@
-#!/bin/bash
+#!/bin/bash -x
 
 dirname_path=$(cd `dirname $0`; pwd)
+cd $dirname_path
+
 ############################
 ## git pull test source code
 git pull
@@ -51,20 +53,32 @@ done
 minuteNow=`date "+%M"`
 hourNow=`date "+%H"`
 timeInterval=10
+minuteNow=`echo $minuteNow | sed 's/^[0]//'`
+hourNow=`echo $hourNow | sed 's/^[0]//'`
 minuteNext=`expr $minuteNow + $timeInterval`
 hourNext=$hourNow
 
 if [ $minuteNext -ge 60 ];then
-    minuteNext=`expr $minuterNow - 60`
+    minuteNext=`expr $minuteNow - 60`
     hourNext=`expr $hourNext + 1`
     if [ $hourNext -ge 24 ];then
         hourNext=00
     fi
 fi
+len=`echo $minuteNext | wc -L`
+if [ $len == "1" ];then
+    minuteNext="0"$minuteNext
+fi
+len=`echo $hourNext | wc -L`
+if [ $len == "1" ];then
+    hourNext="0"$hourNext
+fi
+
+
 nextCrontabTime="$minuteNext $hourNext"
 
 cronTail=`tail -1 /var/spool/cron/crontabs/root`
 if [ "${cronTail:0:1}" != "#" ];then
     sed '$d' -i /var/spool/cron/crontabs/root
 fi
-echo "$nextCrontabTime * * * /home/oto/openthos-test/kernelci-analysis/updateGIT.sh >> /mnt/freenas/result/cronout 2>&1" >>/var/spool/cron/crontabs/root
+echo "$nextCrontabTime * * * /home/oto/openthos/testing-analysis/auto-testing-script/kernelci-analysis/updateGIT.sh >> /mnt/freenas/result/cronout 2>&1" >>/var/spool/cron/crontabs/root

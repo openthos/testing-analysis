@@ -52,6 +52,8 @@ ip_android="0.0.0.0"
 iso_loc="default"
 
 testcaseFold="../kernelci-analysis/testcases"
+#testcaseLKP="../../../oto_lkp"
+#testcaseGUI="../../../oto_Uitest"
 #qemuCMD="/home/oto/qemu-2.7.0/build/x86_64-softmmu/qemu-system-x86_64 -device virtio-gpu-pci,virgl"
 qemuCMD="/usr/local/bin/qemu-system-x86_64 -m 4G"
 
@@ -149,10 +151,15 @@ function tradefedMonitor()
 ## run all the testcase in ../kernelci-analysis 
 function runTestInFold()
 {
-    for testcase in `ls $testcaseFold`
+    testcaseFold=$1 
+    pwdBefore=`pwd`
+    cd $testcaseFold
+    for testcase in `ls -d */|sed 's|[/]||g'`
     do 
-        $testcaseFold/$testcase/$testcase".sh" $ip_android $adbPort $ip_android"_"$adbPort"_"$commitId
+        $testcase/$testcase".sh" $ip_android $adbPort $ip_android"_"$adbPort"_"$commitId 
     done
+    cd $pwdBefore
+        
 }
 
 ## according to where it's virtual mechine(qemu) or real mechine, we should change the network model
@@ -175,18 +182,20 @@ if [ "$r_v" == "v" ]; then
             ## waiting for a message from android-x86, this ip address is useful in real mechine test, but in virtural mechine ,we adopt nat address mapping ,
             ## so it's just a symbol that android-x86 is running 
             echo 'waiting for android boot !!!!!'
-            adb connect $ip_linux_client:$adbPort
+            adb connect $ip_android:$adbPort
             sleep 2
-            adb -s $ip_linux_client:$adbPort shell svc power stayon true
-            adb -s $ip_linux_client:$adbPort shell system/checkAndroidDesktop.sh
-            sleep 5
+            adb -s $ip_android:$adbPort shell svc power stayon true
+            adb -s $ip_android:$adbPort shell system/checkAndroidDesktop.sh
+            sleep 30
+            adb -s $ip_android:$adbPort push bin/firstlogin.jar /data/local/tmp
+            adb -s $ip_android:$adbPort shell uiautomator runtest firstlogin.jar -c com.firstlogin.firstlogin
             ##keep screen active
             ## install CtsDeviceAdmin.apk
             echo 'install CtsDeviceAdmin.apk!!!!!'
-            adb -s $ip_linux_client:$adbPort install ../android-cts/repository/testcases/CtsDeviceAdmin.apk
-            adb -s $ip_linux_client:$adbPort push device_policies.xml data/system/device_policies.xml
-            adb -s $ip_linux_client:$adbPort push commitId.txt data/
-            adb -s $ip_linux_client:$adbPort shell poweroff
+            adb -s $ip_android:$adbPort install ../android-cts/repository/testcases/CtsDeviceAdmin.apk
+            adb -s $ip_android:$adbPort push device_policies.xml data/system/device_policies.xml
+            adb -s $ip_android:$adbPort push commitId.txt data/
+            adb -s $ip_android:$adbPort shell poweroff
         }
     fi
 
@@ -201,22 +210,24 @@ if [ "$r_v" == "v" ]; then
             echo 'waiting for android boot !!!!!'  
 
             ## gui haven't been loaded completely for android_x86-5.1 
-            adb connect localhost:$adbPort
+            adb connect $ip_android:$adbPort
             sleep 2
-            adb -s localhost:$adbPort shell system/checkAndroidDesktop.sh
-            sleep 5
+            adb -s $ip_android:$adbPort shell system/checkAndroidDesktop.sh
+            sleep 30
             cts_cmd="$8"       
 
             ### monitor script, if network is down, reboot to linux
-            ./testAliveSend.sh localhost $adbPort $r_v &
+            ./testAliveSend.sh $ip_android $adbPort $r_v &
             
-            runTestInFold 
+            #runTestInFold $testcaseLKP
+            #runTestInFold $testcaseGUI
+            runTestInFold $testcaseFold
             sleep 2 
-            echo "exit" | ../android-cts/tools/cts-tradefed run cts $cts_cmd &
+            echo "exit" | ../android-cts/tools/cts-tradefed run cts -s $ip_android:$adbPort $cts_cmd &
             {
                 tradefedMonitor $!
                 if [ $? -eq 0 ];then
-                    adb -s localhost:$adbPort shell poweroff
+                    adb -s $ip_android:$adbPort shell poweroff
                 else
                     python sendEmail.py
                 fi
@@ -234,43 +245,45 @@ if [ "$r_v" == "v" ]; then
             nc -lp $ListenPort
             echo 'waiting for android boot !!!!!'  
 
-            adb connect localhost:$adbPort
+            adb connect $ip_android:$adbPort
             sleep 2
-            adb -s localhost:$adbPort shell system/checkAndroidDesktop.sh
+            adb -s $ip_android:$adbPort shell system/checkAndroidDesktop.sh
             tmp=`adb -s localhost:adbPort shell cat data/commitId.txt | grep commitIdi -v WARNING` 
             commitId=${tmp##*:}
             commitId=${commitId%?}
             sleep 5
         
             ### monitor script, if network is down, reboot to linux
-            ./testAliveSend.sh localhost $adbPort $r_v &
+            ./testAliveSend.sh $ip_android $adbPort $r_v &
 
             testType=$7 
             if [ "$testType" == "cts" ];then
                 cts_cmd="$8"
                # echo "exit" | ../android-cts/tools/cts-tradefed run cts $cts_cmd 
-                echo "exit" | ../android-cts/tools/cts-tradefed run cts $cts_cmd &
+                echo "exit" | ../android-cts/tools/cts-tradefed run cts -s $ip_android:$adbPort $cts_cmd &
                 {
                     tradefedMonitor $!
                     if [ $? -eq 0 ];then
-                        adb -s localhost:$adbPort shell poweroff
+                        adb -s $ip_android:$adbPort shell poweroff
                     else
                         python sendEmail.py
                     fi
                 }
             elif [ "$testType" == "gui" ];then
-                runTestInFold
+                #runTestInFold $testcaseGUI
             elif [ "$testType" == "lkp" ];then
-                echo "no lkp testcase!"
+                #runTestInFold $testcaseLKP
             elif [ "$testType" == "all" ];then
                 cts_cmd="$8"
-                runTestInFold
+                #runTestInFold $testcaseGUI
+                #runTestInFold $testcaseLKP
+                runTestInFold $testcaseFold
                 sleep 2
-                echo "exit" | ../android-cts/tools/cts-tradefed run cts $cts_cmd &
+                echo "exit" | ../android-cts/tools/cts-tradefed run cts -s $ip_android:$adbPort $cts_cmd &
                 {
                     tradefedMonitor $!
                     if [ $? -eq 0 ];then
-                        adb -s localhost:$adbPort shell poweroff
+                        adb -s $ip_android:$adbPort shell poweroff
                     else
                         python sendEmail.py
                     fi
@@ -289,7 +302,7 @@ elif [ "$r_v" == "r" ];then
         ip_android=`nc -lp $ListenPort`
         echo $ip_android
         adb connect $ip_android
-        wait
+        sleep 2
         echo 'waiting for android boot !!!!!' 
         adb -s $ip_android:5555 shell system/checkAndroidDesktop.sh
 
@@ -316,12 +329,14 @@ elif [ "$r_v" == "r" ];then
                 fi
             }
         elif [ "$testType" == "gui" ];then
-            runTestInFold 
+            #runTestInFold $testcaseGUI
         elif [ "$testType" == "lkp" ];then
-            echo "no lkp testcase!"
+            #runTestInFold $testcaseLKP
         elif [ "$testType" == "all" ];then
             cts_cmd="$8"
-            runTestInFold 
+            #runTestInFold $testcaseGUI
+            #runTestInFold $testcaseLKP
+            runTestInFold $testcaseFold
             sleep 2 
             echo "exit" | ../android-cts/tools/cts-tradefed run cts -s $ip_android:$adbPort $cts_cmd &
             {
@@ -348,10 +363,13 @@ elif [ "$r_v" == "r" ];then
         #sleep 30
         echo ${ip_android}
         adb connect ${ip_android}
-        wait
+        sleep 2
         ##keep screen active
         adb -s $ip_android:$adbPort shell svc power stayon true
         adb -s $ip_android:$adbPort shell system/checkAndroidDesktop.sh
+        sleep 30
+        adb -s $ip_android:$adbPort push bin/firstlogin.jar /data/local/tmp
+        adb -s $ip_android:$adbPort shell uiautomator runtest firstlogin.jar -c com.firstlogin.firstlogin
 
         echo 'install CtsDeviceAdmin.apk!!!!!'
         adb -s $ip_android:$adbPort install ../android-cts/repository/testcases/CtsDeviceAdmin.apk
@@ -364,18 +382,20 @@ elif [ "$r_v" == "r" ];then
         ip_android=`nc -lp $ListenPort`
         echo "android boot success!"
 
-        #sleep 30
         echo ${ip_android}
         adb connect ${ip_android}
-        wait
+        sleep 2
         adb -s $ip_android:$adbPort shell system/checkAndroidDesktop.sh
-        #sleep 5
+        sleep 30
         cts_cmd="$8"
         echo 'testing'
         ### monitor script, if network is down, reboot to linux
         ./testAliveSend.sh $ip_android $adbPort $r_v &
 
-        runTestInFold 
+        #runTestInFold $testcaseGUI
+        #runTestInFold $testcaseLKP
+        runTestInFold $testcaseFold
+        
         sleep 2 
         echo "exit" | ../android-cts/tools/cts-tradefed run cts -s $ip_android:$adbPort $cts_cmd &
         {
@@ -398,11 +418,14 @@ elif [ "$r_v" == "r" ];then
         #sleep 30
         echo ${ip_android}
         adb connect ${ip_android}
-        wait
-        adb -s $ip_android:5555 shell system/checkAndroidDesktop.sh
-
+        sleep 2
         ##keep screen active
         adb -s $ip_android:5555 shell svc power stayon true
+        adb -s $ip_android:5555 shell system/checkAndroidDesktop.sh
+        sleep 30
+        adb -s $ip_android:5555 push bin/firstlogin.jar /data/local/tmp
+        adb -s $ip_android:5555 shell uiautomator runtest firstlogin.jar -c com.firstlogin.firstlogin
+
         echo 'install CtsDeviceAdmin.apk!!!!!'
         adb -s $ip_android:5555 install ../android-cts/repository/testcases/CtsDeviceAdmin.apk
         adb -s $ip_android:5555 push device_policies.xml data/system/device_policies.xml
@@ -439,14 +462,22 @@ do
         fi
 done
 #######################################
-for testcase in `ls $testcaseFold`
-do
-    if [ -d $testcaseFold/$testcase/$ip_android"_"$adbPort"_"$kernel ];then
-        mkdir -p $result/$testcase/$testarg/$host/$rootfs/$kconfig/$cc/$kernel/$no
-        mv $testcaseFold/$testcase/$ip_android"_"$adbPort"_"$kernel/* $result/$testcase/$testarg/$host/$rootfs/$kconfig/$cc/$kernel/$no
-        rm -r $testcaseFold/$testcase/$ip_android"_"$adbPort"_"$kernel
-   fi
-done
+function mvLkpGuiResult
+{
+    testcaseFold=$1
+    for testcase in `ls $testcaseFold`
+    do
+        if [ -d $testcaseFold/$testcase/$ip_android"_"$adbPort"_"$kernel ];then
+            mkdir -p $result/$testcase/$testarg/$host/$rootfs/$kconfig/$cc/$kernel/$no
+            mv $testcaseFold/$testcase/$ip_android"_"$adbPort"_"$kernel/* $result/$testcase/$testarg/$host/$rootfs/$kconfig/$cc/$kernel/$no
+            rm -r $testcaseFold/$testcase/$ip_android"_"$adbPort"_"$kernel
+       fi
+    done
+}
+#mvLkpGuiResult $testcaseLKP
+#mvLkpGuiResult $testcaseGUI
+mvLkpGuiResult $testcaseFold
+
 #########################################
 if [ $run_install == "installTest" ] || [ $cts_cmd == "cts" ] || [ $cts_cmd == "all" ];then
     tmp=`find "testlog"$ListenPort".txt" | xargs grep -a "Created result dir"`

@@ -1,8 +1,7 @@
-#!/bin/bash -xe
+#!/bin/bash -ex
 otoid=$1
 android_repo=/mnt/freenas/work
-
-/usr/sbin/ntpdate cn.ntp.org.cn
+/usr/sbin/ntpdate s2a.time.edu.cn
 cd $android_repo
 ../OTO/repo sync
 #source build/envsetup.sh
@@ -15,6 +14,10 @@ cd $android_repo
 #    make -j8 iso_img
 #fi
 echo "sync finished!"
+if [ -f  /mnt/freenas/compile/compileFinished ];then 
+    rm /mnt/freenas/compile/compileFinished
+fi
+
 docker start oto
 
 count=0
@@ -22,12 +25,13 @@ while true
 do
     ## compileFinished is a flag which means the compile is finished
     if [ -f  /mnt/freenas/compile/compileFinished ];then
-        rm /mnt/freenas/compile/compileFinished
-        if [ `cat  /mnt/freenas/compile/compileFinished` == "compile fail" ];then
+        if [ "`cat  /mnt/freenas/compile/compileFinished`" == "compile fail" ];then
             echo "compile failed"
+            rm /mnt/freenas/compile/compileFinished
             exit -1
         else
             echo "compile success"
+            rm /mnt/freenas/compile/compileFinished
             break
         fi
     fi
