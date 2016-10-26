@@ -8,5 +8,3 @@ mkdir $foldName
 #touch $foldName/testResult
 java -jar testuiauto.jar $androidIP $port otoAutoTest.jar $foldName/testResult
 adb -s $androidIP:$port shell pm uninstall -k com.netease.cloudmusic
-
-adb -s $androidIP:$port shell pm uninstall -k com.netease.cloudmusic
