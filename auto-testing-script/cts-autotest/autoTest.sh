@@ -271,8 +271,10 @@ if [ "$r_v" == "v" ]; then
                 }
             elif [ "$testType" == "gui" ];then
                 #runTestInFold $testcaseGUI
+                echo "gui test not available!"
             elif [ "$testType" == "lkp" ];then
                 #runTestInFold $testcaseLKP
+                echo "lkp test not available!"
             elif [ "$testType" == "all" ];then
                 cts_cmd="$8"
                 #runTestInFold $testcaseGUI
@@ -330,8 +332,10 @@ elif [ "$r_v" == "r" ];then
             }
         elif [ "$testType" == "gui" ];then
             #runTestInFold $testcaseGUI
+            echo "gui test not available!"
         elif [ "$testType" == "lkp" ];then
             #runTestInFold $testcaseLKP
+            echo "lkp test not available!"
         elif [ "$testType" == "all" ];then
             cts_cmd="$8"
             #runTestInFold $testcaseGUI
