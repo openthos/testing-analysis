@@ -5,10 +5,10 @@ cd $dirname_path
 
 ############################
 ## git pull test source code
-git pull
-        if [ $? -ne 0 ]; then
-        echo -e "test source code pull ERROR, use the tpreviou sest code!"
-        fi  
+#git pull
+#        if [ $? -ne 0 ]; then
+#        echo -e "test source code pull ERROR, use the tpreviou sest code!"
+#        fi  
 ############################
 
 
@@ -59,7 +59,7 @@ minuteNext=`expr $minuteNow + $timeInterval`
 hourNext=$hourNow
 
 if [ $minuteNext -ge 60 ];then
-    minuteNext=`expr $minuteNow - 60`
+    minuteNext=`expr $minuteNext - 60`
     hourNext=`expr $hourNext + 1`
     if [ $hourNext -ge 24 ];then
         hourNext=00
