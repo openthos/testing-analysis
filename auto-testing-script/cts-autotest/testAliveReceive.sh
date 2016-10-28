@@ -17,8 +17,10 @@ do
 done
 
 if [ $hostType = "v" ];then
+    touch poweroffByTestAvlive
     poweroff
 else
+    touch rebootByTestAvlive
     [ -f grub_tmp ] || mkdir grub_tmp
     busybox mount /dev/block/sda2 grub_tmp/ 
     sed -i 's/set default=\"[0-9]*\"/set default=\"1\"/g' grub_tmp/boot/grub/grub.cfg

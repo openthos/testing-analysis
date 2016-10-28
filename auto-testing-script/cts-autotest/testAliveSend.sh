@@ -1,4 +1,5 @@
-#!/bin/bash -e
+#!/bin/bash -ex
+echo "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
 ip=$1
 port=$2
 hostType=$3
@@ -29,7 +30,10 @@ do
         fi
     else
         ping $ip -c 1 > /dev/null 
-        if [[ $? -eq 0 ]];then
+        con1=$?
+        adb devices | grep $ip
+        con2=$?
+        if [ $con1 -eq 0 -a $con2 -eq 0 ];then
             adb -s $ip:$port push alive.txt data/
         else
             #echo "adb push failed, network does not work!"
@@ -42,4 +46,5 @@ adb devices | grep "$ip:$port"
 if [[ $? -eq 0 ]];then
     adb disconnect $ip:$port
 fi
+echo "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"
 exit 0
