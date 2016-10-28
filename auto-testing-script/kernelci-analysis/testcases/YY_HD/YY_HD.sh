@@ -7,6 +7,4 @@ cd "$(dirname "$0")"
 mkdir $foldName
 #touch $foldName/testResult
 java -jar testuiauto.jar $androidIP $port otoAutoTest.jar $foldName/testResult
-adb shell pm uninstall -k com.netease.cloudmusic
-
 adb -s $androidIP:$port shell pm uninstall -k com.duowan.pad
