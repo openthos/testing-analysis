@@ -7,4 +7,4 @@ cd "$(dirname "$0")"
 mkdir $foldName
 #touch $foldName/testResult
 java -jar testuiauto.jar $androidIP $port otoAutoTest.jar $foldName/testResult
-
+mv apkresult $foldName
