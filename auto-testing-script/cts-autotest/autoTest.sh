@@ -478,7 +478,7 @@ function mvLkpGuiResult
        fi
     done
 }
-#mvLkpGuiResult $testcaseLKP
+mvLkpGuiResult $testcaseLKP
 #mvLkpGuiResult $testcaseGUI
 mvLkpGuiResult $testcaseFold
 
