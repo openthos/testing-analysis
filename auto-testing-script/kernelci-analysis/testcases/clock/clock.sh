@@ -6,5 +6,4 @@ cd "$(dirname "$0")"
 #./install_apk.sh $androidIP $port
 mkdir $foldName
 #touch $foldName/testResult
-java -jar testuiauto.jar $androidIP $port otoAutoTest.jar $foldName/testResult
-mv apkresult $foldName
+java -jar testuiauto.jar $androidIP $port otoAutoTest.jar $foldName
