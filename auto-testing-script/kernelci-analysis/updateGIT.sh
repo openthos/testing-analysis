@@ -5,10 +5,10 @@ cd $dirname_path
 
 ############################
 ## git pull test source code
-#git pull
-#        if [ $? -ne 0 ]; then
-#        echo -e "test source code pull ERROR, use the tpreviou sest code!"
-#        fi  
+git pull
+        if [ $? -ne 0 ]; then
+        echo -e "test source code pull ERROR, use the previous code and testcases set!"
+        fi  
 ############################
 
 
@@ -20,35 +20,33 @@ source $tmp_branch/envar
 cd $linux_repo
 
 git pull
-        if [ $? -ne 0 ]; then
-        echo -e "git pull ERROR!"
-        exit
-        fi  
+if [ $? -eq 0 ]; then
 
-#remote_branches=$(git branch -r | sed -e "1d" -e  "s/origin\///")
-#echo -e "All branches: ($remote_branches)"
-remote_branches="master"
-
-for br_ in $remote_branches
-do 
-
-	old_br_com=(`cat $tmp_branch/$br_`) #old_branch_commit
-
-br_com=(`git log -1 --pretty=format:"%H %cd" --date=raw` )
-
-if [ "${old_br_com[0]}"x = "${br_com[0]}"x ]
-then
-	echo `date` nothing new
-	continue
+    #remote_branches=$(git branch -r | sed -e "1d" -e  "s/origin\///")
+    #echo -e "All branches: ($remote_branches)"
+    remote_branches="master"
+    
+    for br_ in $remote_branches
+    do 
+    
+    	old_br_com=(`cat $tmp_branch/$br_`) #old_branch_commit
+    
+    br_com=(`git log -1 --pretty=format:"%H %cd" --date=raw` )
+    
+    if [ "${old_br_com[0]}"x = "${br_com[0]}"x ]
+    then
+    	echo `date` nothing new
+    	continue
+    else
+    	echo `date` something new
+    	echo ${br_com[@]} > $tmp_branch/$br_
+    	/bin/bash $build_sh ${br_com[0]} > /mnt/freenas/summary/`date +%Y%m%d`-${br_com[0]}
+    fi
+    #for loop
+    done
 else
-	echo `date` something new
-	echo ${br_com[@]} > $tmp_branch/$br_
-	/bin/bash $build_sh ${br_com[0]} > /mnt/freenas/summary/`date +%Y%m%d`-${br_com[0]}
+    echo "oto git pull error!"
 fi
-#for loop
-done
-
-
 ## after 10 minutes, start test again
 minuteNow=`date "+%M"`
 hourNow=`date "+%H"`

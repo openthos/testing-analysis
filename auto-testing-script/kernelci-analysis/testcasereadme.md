@@ -35,6 +35,25 @@ adb -s $androidIP:$port shell /data/local/tmp/ebizzy > $foldName/restResult
 ```
 * 目前所有的测试的结果只有一个文件，所以统一命名为了testResult，并放入`$foldName`，当然后期如果结果是多个文件，那么可以根据自己的需要进行命名，只需要放入`$foldName`文件夹即可
 
+* LKP中monitor输出的文件名的命名规则
+```
+monitor执行脚本叫什么名字，输出的文件也叫什么名字，并且加上对应的后缀即可。
+例如
+$LKP_SRC/monitors/目录下面有如下3个monitor
+$LKP_SRC/monitors/vmstat
+$LKP_SRC/monitors/softirqs
+$LKP_SRC/monitors/slabinfo
+则在最后生成的结果$result_root目录中会有如下的monitor结果文件
+$result_root/monitors/vmstat
+$result_root/monitors/softirqs.gz
+$result_root/monitors/slabinfo.gz
 
+
+$result_root/monitors/vmstat.json
+$result_root/monitors/softirqs.json.gz
+$result_root/monitors/slabinfo.json.gz
+
+其中softirqs和slabinfo后面多加了.gz表示LKP对结果文件进行了gz压缩。
+```
 ---
 目前想到的就这些，编写测试用例的人员有别的需求也可以找**敖权**协商
