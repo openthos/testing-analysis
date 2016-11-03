@@ -151,9 +151,9 @@ function tradefedMonitor()
 ## run all the testcase in ../kernelci-analysis 
 function runTestInFold()
 {
-    testcaseFold=$1 
+    tmpTestcaseFold=$1 
     pwdBefore=`pwd`
-    cd $testcaseFold
+    cd $tmpTestcaseFold
     for testcase in `ls -d */|sed 's|[/]||g'`
     do 
         $testcase/$testcase".sh" $ip_android $adbPort $ip_android"_"$adbPort"_"$commitId 
