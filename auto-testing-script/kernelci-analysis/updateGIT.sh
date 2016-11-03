@@ -56,7 +56,7 @@ hourNow=`echo $hourNow | sed 's/^[0]//'`
 minuteNext=`expr $minuteNow + $timeInterval`
 hourNext=$hourNow 
 
-crontDate=`date +%y%m%d%H%M`
+crontDate=`date +%y%m%d`
 
 if [ $minuteNext -ge 60 ];then
     minuteNext=`expr $minuteNext - 60`
