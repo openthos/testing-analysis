@@ -54,7 +54,9 @@ timeInterval=10
 minuteNow=`echo $minuteNow | sed 's/^[0]//'`
 hourNow=`echo $hourNow | sed 's/^[0]//'`
 minuteNext=`expr $minuteNow + $timeInterval`
-hourNext=$hourNow
+hourNext=$hourNow 
+
+crontDate=`date +%y%m%d%H%M`
 
 if [ $minuteNext -ge 60 ];then
     minuteNext=`expr $minuteNext - 60`
@@ -79,4 +81,4 @@ cronTail=`tail -1 /var/spool/cron/crontabs/root`
 if [ "${cronTail:0:1}" != "#" ];then
     sed '$d' -i /var/spool/cron/crontabs/root
 fi
-echo "$nextCrontabTime * * * /home/oto/openthos/testing-analysis/auto-testing-script/kernelci-analysis/updateGIT.sh >> /mnt/freenas/result/cronout 2>&1" >>/var/spool/cron/crontabs/root
+echo "$nextCrontabTime * * * /home/oto/openthos/testing-analysis/auto-testing-script/kernelci-analysis/updateGIT.sh >> /mnt/freenas/result/cronout$crontDate 2>&1" >>/var/spool/cron/crontabs/root
