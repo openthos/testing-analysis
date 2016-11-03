@@ -6,6 +6,5 @@ cd "$(dirname "$0")"
 ./install_apk.sh $androidIP $port
 mkdir $foldName
 #touch $foldName/testResult
-java -jar testuiauto.jar $androidIP $port otoAutoTest.jar $foldName/testResult
-
+java -jar testuiauto.jar $androidIP $port otoAutoTest.jar $foldName
 adb -s $androidIP:$port shell pm uninstall -k com.tencent.qqlive
