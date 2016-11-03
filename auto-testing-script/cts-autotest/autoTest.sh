@@ -52,7 +52,7 @@ ip_android="0.0.0.0"
 iso_loc="default"
 
 testcaseFold="../kernelci-analysis/testcases"
-#testcaseLKP="../../../oto_lkp"
+testcaseLKP="../../../oto_lkp/testcase"
 #testcaseGUI="../../../oto_Uitest"
 #qemuCMD="/home/oto/qemu-2.7.0/build/x86_64-softmmu/qemu-system-x86_64 -device virtio-gpu-pci,virgl"
 qemuCMD="/usr/local/bin/qemu-system-x86_64 -m 4G"
@@ -219,7 +219,7 @@ if [ "$r_v" == "v" ]; then
             ### monitor script, if network is down, reboot to linux
             ./testAliveSend.sh $ip_android $adbPort $r_v &
             
-            #runTestInFold $testcaseLKP
+            runTestInFold $testcaseLKP
             #runTestInFold $testcaseGUI
             runTestInFold $testcaseFold
             sleep 2 
@@ -273,12 +273,12 @@ if [ "$r_v" == "v" ]; then
                 #runTestInFold $testcaseGUI
                 echo "gui test not available!"
             elif [ "$testType" == "lkp" ];then
-                #runTestInFold $testcaseLKP
+                runTestInFold $testcaseLKP
                 echo "lkp test not available!"
             elif [ "$testType" == "all" ];then
                 cts_cmd="$8"
                 #runTestInFold $testcaseGUI
-                #runTestInFold $testcaseLKP
+                runTestInFold $testcaseLKP
                 runTestInFold $testcaseFold
                 sleep 2
                 echo "exit" | ../android-cts/tools/cts-tradefed run cts -s $ip_android:$adbPort $cts_cmd &
@@ -334,12 +334,12 @@ elif [ "$r_v" == "r" ];then
             #runTestInFold $testcaseGUI
             echo "gui test not available!"
         elif [ "$testType" == "lkp" ];then
-            #runTestInFold $testcaseLKP
+            runTestInFold $testcaseLKP
             echo "lkp test not available!"
         elif [ "$testType" == "all" ];then
             cts_cmd="$8"
             #runTestInFold $testcaseGUI
-            #runTestInFold $testcaseLKP
+            runTestInFold $testcaseLKP
             runTestInFold $testcaseFold
             sleep 2 
             echo "exit" | ../android-cts/tools/cts-tradefed run cts -s $ip_android:$adbPort $cts_cmd &
@@ -397,7 +397,7 @@ elif [ "$r_v" == "r" ];then
         ./testAliveSend.sh $ip_android $adbPort $r_v &
 
         #runTestInFold $testcaseGUI
-        #runTestInFold $testcaseLKP
+        runTestInFold $testcaseLKP
         runTestInFold $testcaseFold
         
         sleep 2 
@@ -478,7 +478,7 @@ function mvLkpGuiResult
        fi
     done
 }
-#mvLkpGuiResult $testcaseLKP
+mvLkpGuiResult $testcaseLKP
 #mvLkpGuiResult $testcaseGUI
 mvLkpGuiResult $testcaseFold
 
