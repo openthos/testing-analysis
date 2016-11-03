@@ -219,7 +219,7 @@ if [ "$r_v" == "v" ]; then
             ### monitor script, if network is down, reboot to linux
             ./testAliveSend.sh $ip_android $adbPort $r_v &
             
-            runTestInFold $testcaseLKP
+            #runTestInFold $testcaseLKP
             #runTestInFold $testcaseGUI
             runTestInFold $testcaseFold
             sleep 2 
@@ -273,7 +273,7 @@ if [ "$r_v" == "v" ]; then
                 #runTestInFold $testcaseGUI
                 echo "gui test not available!"
             elif [ "$testType" == "lkp" ];then
-                runTestInFold $testcaseLKP
+                #runTestInFold $testcaseLKP
                 echo "lkp test not available!"
             elif [ "$testType" == "all" ];then
                 cts_cmd="$8"

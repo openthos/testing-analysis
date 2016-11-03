@@ -47,6 +47,7 @@ if [ $? -eq 0 ]; then
 else
     echo "oto git pull error!"
 fi
+
 ## after 10 minutes, start test again
 minuteNow=`date "+%M"`
 hourNow=`date "+%H"`
