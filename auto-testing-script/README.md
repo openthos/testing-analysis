@@ -9,15 +9,16 @@
 1. 测试机（运行脚本的机器）安装adb，apt-get install android-tools-adb
 1. 安装ntp，apt-get install ntp
 1. 下载自动化测试的程序，[下载地址](https://github.com/openthos/testing-analysis)
-1. 测试机下载cts测试包，[下载地址]( https://dl.google.com/dl/android/cts/android-cts-5.1_r4-linux_x86-x86.zip),并将解压后的文件夹放到auto-testing-script目录下,替代原先的android-cts目录
+1. 测试机下载cts测试包，[下载地址]( https://dl.google.com/dl/android/cts/android-cts-5.1_r4-linux_x86-x86.zip),并将解压后的文件夹**放到testing-analysis的同一级目录下**（注意，原先是放在auto-testing-script目录下）
 1. 进入到auto-testing-script/cts-autotest目录中，修改根据所需configs文件，其中configs文件是所需要执行的paraRun.sh的各个参数,指定iso时使用$iso即可（请参考paraRun.sh脚本代码）。其中paraRun.sh最终会调用autoTest.sh，用户也可以直接运行autoTest.sh，运行autoTesh.sh需要指定端口号。
 1. 如果编译iso，可进入到auto-testing-script/kernelci-analysis,修改build.sh中的参数，[参考曹睿东编译帮助](kernelci-analysis/README.md)
-1. 如果需要进行模拟器的测试,还需要准备一个android-x86.raw的镜像放在auto-testing-scrip文件夹下，该android-x86.raw建议16G，并且需要事先分好区，关于分区的方法可以[参考曹瑞东android-x86.raw模拟器安装](https://github.com/xyongcn/openthos-testing/blob/master/doc/Openthos4Qemu2016.md)，目前采用的方法是先按曹睿东方法手动安装一遍，将该raw拷贝到auto-testing-scrip/
+1. 如果需要进行模拟器的测试,还需要准备一个android-x86.raw的镜像放在testing-analysis文件夹下(放在别的文件夹下也可以，只不过需要configs中raw镜像的路径即可)，该android-x86.raw建议16G，并且需要事先分好区，关于分区的方法可以[参考曹瑞东android-x86.raw模拟器安装](https://github.com/xyongcn/openthos-testing/blob/master/doc/Openthos4Qemu2016.md)，目前采用的方法是先按曹睿东方法手动安装一遍，将该raw拷贝到auto-testing-scrip/
 1. 安装python pip，然后安装PyEmail模块
 ```
 sudo apt-get install python-pip
 pip install PyEmail
 ```
+1. 由于chroot在ubuntu16.04上无法正常运行（apt-get报错），**建议被测试机安装ubuntu15.10**，目前ubuntu14.04能否正常工作还需要验证。
 
 ###测试机制和安装机制
 * CTS包含三套机制：
