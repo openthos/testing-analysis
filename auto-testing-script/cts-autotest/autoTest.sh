@@ -468,7 +468,7 @@ done
 #######################################
 function mvLkpGuiResult
 {
-    testcaseFold=$1
+    tmptestcaseFold=$1
     for testcase in `ls $testcaseFold`
     do
         if [ -d $testcaseFold/$testcase/$ip_android"_"$adbPort"_"$kernel ];then
