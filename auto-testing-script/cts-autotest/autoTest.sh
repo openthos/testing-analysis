@@ -53,6 +53,7 @@ iso_loc="default"
 
 testcaseFold="../kernelci-analysis/testcases"
 testcaseLKP="../../../oto_lkp/testcase"
+testcaseCTS="../../../android-cts"
 #testcaseGUI="../../../oto_Uitest"
 #qemuCMD="/home/oto/qemu-2.7.0/build/x86_64-softmmu/qemu-system-x86_64 -device virtio-gpu-pci,virgl"
 qemuCMD="/usr/local/bin/qemu-system-x86_64 -m 4G"
@@ -192,7 +193,7 @@ if [ "$r_v" == "v" ]; then
             ##keep screen active
             ## install CtsDeviceAdmin.apk
             echo 'install CtsDeviceAdmin.apk!!!!!'
-            adb -s $ip_android:$adbPort install ../android-cts/repository/testcases/CtsDeviceAdmin.apk
+            adb -s $ip_android:$adbPort install $testcaseCTS/repository/testcases/CtsDeviceAdmin.apk
             adb -s $ip_android:$adbPort push device_policies.xml data/system/device_policies.xml
             adb -s $ip_android:$adbPort push commitId.txt data/
             adb -s $ip_android:$adbPort shell poweroff
@@ -223,7 +224,7 @@ if [ "$r_v" == "v" ]; then
             #runTestInFold $testcaseGUI
             runTestInFold $testcaseFold
             sleep 2 
-            echo "exit" | ../android-cts/tools/cts-tradefed run cts -s $ip_android:$adbPort $cts_cmd &
+            echo "exit" | $testcaseCTS/tools/cts-tradefed run cts -s $ip_android:$adbPort $cts_cmd &
             {
                 tradefedMonitor $!
                 if [ $? -eq 0 ];then
@@ -259,8 +260,7 @@ if [ "$r_v" == "v" ]; then
             testType=$7 
             if [ "$testType" == "cts" ];then
                 cts_cmd="$8"
-               # echo "exit" | ../android-cts/tools/cts-tradefed run cts $cts_cmd 
-                echo "exit" | ../android-cts/tools/cts-tradefed run cts -s $ip_android:$adbPort $cts_cmd &
+                echo "exit" | $testcaseCTS/tools/cts-tradefed run cts -s $ip_android:$adbPort $cts_cmd &
                 {
                     tradefedMonitor $!
                     if [ $? -eq 0 ];then
@@ -281,7 +281,7 @@ if [ "$r_v" == "v" ]; then
                 runTestInFold $testcaseLKP
                 runTestInFold $testcaseFold
                 sleep 2
-                echo "exit" | ../android-cts/tools/cts-tradefed run cts -s $ip_android:$adbPort $cts_cmd &
+                echo "exit" | $testcaseCTS/tools/cts-tradefed run cts -s $ip_android:$adbPort $cts_cmd &
                 {
                     tradefedMonitor $!
                     if [ $? -eq 0 ];then
@@ -320,7 +320,7 @@ elif [ "$r_v" == "r" ];then
         testType=$7
         if [ "$testType" == "cts" ];then
             cts_cmd="$8"
-            echo "exit" | ../android-cts/tools/cts-tradefed run cts -s $ip_android:$adbPort $cts_cmd &
+            echo "exit" | $testcaseCTS/tools/cts-tradefed run cts -s $ip_android:$adbPort $cts_cmd &
             {
                 tradefedMonitor $!
                 if [ $? -eq 0 ];then
@@ -342,7 +342,7 @@ elif [ "$r_v" == "r" ];then
             runTestInFold $testcaseLKP
             runTestInFold $testcaseFold
             sleep 2 
-            echo "exit" | ../android-cts/tools/cts-tradefed run cts -s $ip_android:$adbPort $cts_cmd &
+            echo "exit" | $testcaseCTS/tools/cts-tradefed run cts -s $ip_android:$adbPort $cts_cmd &
             {
                 tradefedMonitor $!
                 if [ $? -eq 0 ];then
@@ -376,7 +376,7 @@ elif [ "$r_v" == "r" ];then
         adb -s $ip_android:$adbPort shell uiautomator runtest firstlogin.jar -c com.firstlogin.firstlogin
 
         echo 'install CtsDeviceAdmin.apk!!!!!'
-        adb -s $ip_android:$adbPort install ../android-cts/repository/testcases/CtsDeviceAdmin.apk
+        adb -s $ip_android:$adbPort install $testcaseCTS/repository/testcases/CtsDeviceAdmin.apk
         adb -s $ip_android:$adbPort push device_policies.xml data/system/device_policies.xml
         adb -s $ip_android:$adbPort push commitId.txt data/
         ./android_fastboot.sh  ${ip_android} bios_reboot 
@@ -401,7 +401,7 @@ elif [ "$r_v" == "r" ];then
         runTestInFold $testcaseFold
         
         sleep 2 
-        echo "exit" | ../android-cts/tools/cts-tradefed run cts -s $ip_android:$adbPort $cts_cmd &
+        echo "exit" | $testcaseCTS/tools/cts-tradefed run cts -s $ip_android:$adbPort $cts_cmd &
         {
             tradefedMonitor $!
             if [ $? -eq 0 ];then
@@ -431,7 +431,7 @@ elif [ "$r_v" == "r" ];then
         adb -s $ip_android:5555 shell uiautomator runtest firstlogin.jar -c com.firstlogin.firstlogin
 
         echo 'install CtsDeviceAdmin.apk!!!!!'
-        adb -s $ip_android:5555 install ../android-cts/repository/testcases/CtsDeviceAdmin.apk
+        adb -s $ip_android:5555 install $testcaseCTS/repository/testcases/CtsDeviceAdmin.apk
         adb -s $ip_android:5555 push device_policies.xml data/system/device_policies.xml
     	adb -s $ip_android:5555 push commitId.txt data/
         sleep 1 
@@ -468,13 +468,13 @@ done
 #######################################
 function mvLkpGuiResult
 {
-    tmptestcaseFold=$1
-    for testcase in `ls $testcaseFold`
+    tmpTestcaseFold=$1
+    for testcase in `ls $tmpTestcaseFold`
     do
-        if [ -d $testcaseFold/$testcase/$ip_android"_"$adbPort"_"$kernel ];then
+        if [ -d $tmpTestcaseFold/$testcase/$ip_android"_"$adbPort"_"$kernel ];then
             mkdir -p $result/$testcase/$testarg/$host/$rootfs/$kconfig/$cc/$kernel/$no
-            mv $testcaseFold/$testcase/$ip_android"_"$adbPort"_"$kernel/* $result/$testcase/$testarg/$host/$rootfs/$kconfig/$cc/$kernel/$no
-            rm -r $testcaseFold/$testcase/$ip_android"_"$adbPort"_"$kernel
+            mv $tmpTestcaseFold/$testcase/$ip_android"_"$adbPort"_"$kernel/* $result/$testcase/$testarg/$host/$rootfs/$kconfig/$cc/$kernel/$no
+            rm -r $tmpTestcaseFold/$testcase/$ip_android"_"$adbPort"_"$kernel
        fi
     done
 }
@@ -487,12 +487,12 @@ if [ $run_install == "installTest" ] || [ $cts_cmd == "cts" ] || [ $cts_cmd == "
     tmp=`find "testlog"$ListenPort".txt" | xargs grep -a "Created result dir"`
     resultDirName=${tmp##* }
     ### edit result, add commit id
-    ./addCommitId.sh $resultDirName $commitId
+    ./addCommitId.sh $resultDirName $commitId $testcaseCTS
     if [ $resultDirName"x" != "x" ];then
         if [[ ! -d  $result/cts/$testarg/$host/$rootfs/$kconfig/$cc/$kernel ]];then
             mkdir -p $result/cts/$testarg/$host/$rootfs/$kconfig/$cc/$kernel
         fi
-        cp -r ../android-cts/repository/results/$resultDirName $result/cts/$testarg/$host/$rootfs/$kconfig/$cc/$kernel
+        cp -r $testcaseCTS/repository/results/$resultDirName $result/cts/$testarg/$host/$rootfs/$kconfig/$cc/$kernel
         mv "testlog"$ListenPort".txt" $result/cts/$testarg/$host/$rootfs/$kconfig/$cc/$kernel/$resultDirName/cmdLog
     fi 
 fi 
