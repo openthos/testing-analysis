@@ -1,11 +1,14 @@
 #!/usr/bin/python
 
+#python ctsResultTojson.py 参数1(xml文件) 参数2(结果存放目录)
+
 from lxml import etree
 import json
 import collections
+import sys
 
-f = open('cts_result.json','wb')
-tree = etree.parse('testResult.xml')
+f = open(sys.argv[2] + '/cts_result.json','wb')
+tree = etree.parse(sys.argv[1])
 root = tree.getroot()
 root1 = root.xpath('TestPackage')
 dic = collections.OrderedDict()
