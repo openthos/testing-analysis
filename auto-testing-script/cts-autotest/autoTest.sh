@@ -34,7 +34,7 @@
 ## eg: ./autoTest.sh 52001 v localhost QEMU1 /media/aquan/000D204000041550/android-x86.raw  installTest android_x86_64-a3fe26d154ef92a708b7faa488571899aa5bcab4-5.1.iso "-p android.acceleration --disable-reboot" 
 
 cd "$(dirname "$0")"
-
+localpwd=`pwd`
 
 # listening port, user should specify it when parallel tesing 
 ListenPort=$1
@@ -163,6 +163,36 @@ function runTestInFold()
         
 }
 
+function runLkpTestInFold()
+{
+    tmpTestcaseFold=$1 
+    pwdBefore=`pwd`
+    cd $tmpTestcaseFold
+    for testcase in `ls -d */|sed 's|[/]||g'`
+    do 
+        $testcase/$testcase".sh" $ip_android $adbPort $ip_android"_"$adbPort"_"$commitId 
+        cd $testcase/$ip_android"_"$adbPort"_"$commitId/result/*/*/localhost/*/*/*/
+        mv * $commitId
+        cd ../../../../ 
+        mv * $host 
+        cd $pwdBefore
+        cd $tmpTestcaseFold
+        mv $testcase/$ip_android"_"$adbPort"_"$commitId/result/* $testcase/$ip_android"_"$adbPort"_"$commitId/ 
+        rm -r $testcase/$ip_android"_"$adbPort"_"$commitId/result
+        $localpwd/android_fastboot.sh  ${ip_android} bios_reboot 
+        ##second boot
+        echo lkp test rebooting!!
+        ip_android=`nc -lp $ListenPort`
+        echo "android boot success!"
+        echo ${ip_android}
+        adb connect ${ip_android}
+        sleep 2
+        adb -s $ip_android:$adbPort shell system/checkAndroidDesktop.sh
+        sleep 30
+    done
+    cd $pwdBefore
+        
+}
 ## according to where it's virtual mechine(qemu) or real mechine, we should change the network model
 if [ "$r_v" == "v" ]; then
     ip_android="localhost"
@@ -278,7 +308,7 @@ if [ "$r_v" == "v" ]; then
             elif [ "$testType" == "all" ];then
                 cts_cmd="$8"
                 #runTestInFold $testcaseGUI
-                runTestInFold $testcaseLKP
+                #runTestInFold $testcaseLKP
                 runTestInFold $testcaseFold
                 sleep 2
                 echo "exit" | $testcaseCTS/tools/cts-tradefed run cts -s $ip_android:$adbPort $cts_cmd &
@@ -334,12 +364,12 @@ elif [ "$r_v" == "r" ];then
             #runTestInFold $testcaseGUI
             echo "gui test not available!"
         elif [ "$testType" == "lkp" ];then
-            runTestInFold $testcaseLKP
+            runLkpTestInFold $testcaseLKP
             echo "lkp test not available!"
         elif [ "$testType" == "all" ];then
             cts_cmd="$8"
             #runTestInFold $testcaseGUI
-            runTestInFold $testcaseLKP
+            runLkpTestInFold $testcaseLKP
             runTestInFold $testcaseFold
             sleep 2 
             echo "exit" | $testcaseCTS/tools/cts-tradefed run cts -s $ip_android:$adbPort $cts_cmd &
@@ -397,7 +427,7 @@ elif [ "$r_v" == "r" ];then
         ./testAliveSend.sh $ip_android $adbPort $r_v &
 
         #runTestInFold $testcaseGUI
-        runTestInFold $testcaseLKP
+        runLkpTestInFold $testcaseLKP
         runTestInFold $testcaseFold
         
         sleep 2 
@@ -466,7 +496,7 @@ do
         fi
 done
 #######################################
-function mvLkpGuiResult
+function mvGuiResult
 {
     tmpTestcaseFold=$1
     for testcase in `ls $tmpTestcaseFold`
@@ -478,9 +508,21 @@ function mvLkpGuiResult
        fi
     done
 }
-mvLkpGuiResult $testcaseLKP
+function mvLkpResult
+{
+    tmpTestcaseFold=$1
+    for testcase in `ls $tmpTestcaseFold`
+    do
+        if [ -d $tmpTestcaseFold/$testcase/$ip_android"_"$adbPort"_"$kernel ];then
+            mv $tmpTestcaseFold/$testcase/$ip_android"_"$adbPort"_"$kernel/* $result/
+            rm -r $tmpTestcaseFold/$testcase/$ip_android"_"$adbPort"_"$kernel 
+       fi
+    done
+}
+
+mvGuiResult $testcaseLKP
 #mvLkpGuiResult $testcaseGUI
-mvLkpGuiResult $testcaseFold
+mvLkpResult $testcaseFold
 
 #########################################
 if [ $run_install == "installTest" ] || [ $cts_cmd == "cts" ] || [ $cts_cmd == "all" ];then
