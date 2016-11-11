@@ -1,3 +1,4 @@
+#coding=utf-8
 #!/usr/bin/python
 
 #python ctsResultTojson.py 参数1(xml文件) 参数2(结果存放目录)

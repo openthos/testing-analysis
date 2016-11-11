@@ -171,14 +171,12 @@ function runLkpTestInFold()
     for testcase in `ls -d */|sed 's|[/]||g'`
     do 
         $testcase/$testcase".sh" $ip_android $adbPort $ip_android"_"$adbPort"_"$commitId 
-        cd $testcase/$ip_android"_"$adbPort"_"$commitId/result/*/*/localhost/*/*/*/
+        cd $testcase/$ip_android"_"$adbPort"_"$commitId/*/*/*/*/*/*/
         mv * $commitId
-        cd ../../../../ 
+        cd ../../../..
         mv * $host 
         cd $pwdBefore
         cd $tmpTestcaseFold
-        mv $testcase/$ip_android"_"$adbPort"_"$commitId/result/* $testcase/$ip_android"_"$adbPort"_"$commitId/ 
-        rm -r $testcase/$ip_android"_"$adbPort"_"$commitId/result
         $localpwd/android_fastboot.sh  ${ip_android} bios_reboot 
         ##second boot
         echo lkp test rebooting!!
@@ -489,7 +487,7 @@ kernel=$commitId
 ##########################################    
 for i in {0..99}
 do
-        if [ ! -d $result/ebizzy/$testarg/$host/$rootfs/$kconfig/$cc/$kernel/$i ]
+        if [ ! -d $result/2048/$testarg/$host/$rootfs/$kconfig/$cc/$kernel/$i ]
         then
                 no=$i
                 break
@@ -514,15 +512,19 @@ function mvLkpResult
     for testcase in `ls $tmpTestcaseFold`
     do
         if [ -d $tmpTestcaseFold/$testcase/$ip_android"_"$adbPort"_"$kernel ];then
-            mv $tmpTestcaseFold/$testcase/$ip_android"_"$adbPort"_"$kernel/* $result/
-            rm -r $tmpTestcaseFold/$testcase/$ip_android"_"$adbPort"_"$kernel 
+#            tmppwd=`pwd`
+#            cd $tmpTestcaseFold/$testcase/$ip_android"_"$adbPort"_"$kernel/*/*/*/*/*/*
+#            mv * $no 
+#            cd $tmppwd
+            cp $tmpTestcaseFold/$testcase/$ip_android"_"$adbPort"_"$kernel/* $result/
+#            rm -r $tmpTestcaseFold/$testcase/$ip_android"_"$adbPort"_"$kernel 
        fi
     done
 }
 
-mvGuiResult $testcaseLKP
+mvLkpResult $testcaseLKP
 #mvLkpGuiResult $testcaseGUI
-mvLkpResult $testcaseFold
+mvGuiResult $testcaseFold
 
 #########################################
 if [ $run_install == "installTest" ] || [ $cts_cmd == "cts" ] || [ $cts_cmd == "all" ];then
