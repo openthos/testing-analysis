@@ -9,3 +9,5 @@ mkdir $foldName
 java -jar testuiauto.jar $androidIP $port otoAutoTest.jar $foldName
 
 adb -s $androidIP:$port shell pm uninstall -k com.digiplex.game
+
+python TmpTojson.py $foldName/tmpResultToJson $foldName
