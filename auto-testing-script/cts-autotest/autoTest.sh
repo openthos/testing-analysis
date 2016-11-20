@@ -78,6 +78,11 @@ function checkIP()
             echo -e "\033[31mip is down!\033[0m"
         fi
         count=$(($count+1))
+        if [ $count -eq 120 ];then
+            ## ip cannot access
+            echo ip cannot access
+            exit
+        fi
     done
 }
 
@@ -152,12 +157,27 @@ function tradefedMonitor()
 ## run all the testcase in ../kernelci-analysis 
 function runTestInFold()
 {
+    needreboot=`grep GUI $localpwd/testcaseReboot.txt`
+    needreboot=${needreboot##*:}
+
     tmpTestcaseFold=$1 
     pwdBefore=`pwd`
     cd $tmpTestcaseFold
     for testcase in `ls -d */|sed 's|[/]||g'`
     do 
         $testcase/$testcase".sh" $ip_android $adbPort $ip_android"_"$adbPort"_"$commitId 
+        if [ $needreboot -eq 1 ];then
+            $localpwd/android_fastboot.sh  ${ip_android} bios_reboot 
+            ##second boot
+            echo gui test rebooting!!
+            ip_android=`nc -lp $ListenPort`
+            echo "android boot success!"
+            echo ${ip_android}
+            adb connect ${ip_android}
+            sleep 2
+            adb -s $ip_android:$adbPort shell system/checkAndroidDesktop.sh
+            sleep 30
+        fi
     done
     cd $pwdBefore
         
@@ -165,6 +185,9 @@ function runTestInFold()
 
 function runLkpTestInFold()
 {
+    needreboot=`grep GUI $localpwd/testcaseReboot.txt`
+    needreboot=${needreboot##*:}
+
     tmpTestcaseFold=$1 
     pwdBefore=`pwd`
     cd $tmpTestcaseFold
@@ -177,16 +200,18 @@ function runLkpTestInFold()
         mv * $host 
         cd $pwdBefore
         cd $tmpTestcaseFold
-        $localpwd/android_fastboot.sh  ${ip_android} bios_reboot 
-        ##second boot
-        echo lkp test rebooting!!
-        ip_android=`nc -lp $ListenPort`
-        echo "android boot success!"
-        echo ${ip_android}
-        adb connect ${ip_android}
-        sleep 2
-        adb -s $ip_android:$adbPort shell system/checkAndroidDesktop.sh
-        sleep 30
+        if [ $needreboot -ne 0 ];then
+            $localpwd/android_fastboot.sh  ${ip_android} bios_reboot 
+            ##second boot
+            echo lkp test rebooting!!
+            ip_android=`nc -lp $ListenPort`
+            echo "android boot success!"
+            echo ${ip_android}
+            adb connect ${ip_android}
+            sleep 2
+            adb -s $ip_android:$adbPort shell system/checkAndroidDesktop.sh
+            sleep 30
+        fi
     done
     cd $pwdBefore
         
@@ -277,7 +302,7 @@ if [ "$r_v" == "v" ]; then
             adb connect $ip_android:$adbPort
             sleep 2
             adb -s $ip_android:$adbPort shell system/checkAndroidDesktop.sh
-            tmp=`adb -s localhost:adbPort shell cat data/commitId.txt | grep commitIdi -v WARNING` 
+            tmp=`adb -s localhost:adbPort shell cat data/commitId.txt | grep commitId -v WARNING` 
             commitId=${tmp##*:}
             commitId=${commitId%?}
             sleep 5
@@ -516,7 +541,7 @@ function mvLkpResult
 #            cd $tmpTestcaseFold/$testcase/$ip_android"_"$adbPort"_"$kernel/*/*/*/*/*/*
 #            mv * $no 
 #            cd $tmppwd
-            cp $tmpTestcaseFold/$testcase/$ip_android"_"$adbPort"_"$kernel/* $result/
+            cp -r $tmpTestcaseFold/$testcase/$ip_android"_"$adbPort"_"$kernel/* $result/
 #            rm -r $tmpTestcaseFold/$testcase/$ip_android"_"$adbPort"_"$kernel 
        fi
     done
