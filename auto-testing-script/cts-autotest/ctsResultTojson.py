@@ -32,7 +32,7 @@ def try_find_child(parent,init_str):
             dic[ret_str + 'errorMessage'] = child.get('message')
 
 for element in root1:
-    dic[element.get('abi') + element.get('appPackageName') + '.url'] = 'http://os.cs.tsinghua.edu.cn/openthos/' + sys.argv[2] + '/' + sys.argv[1] + '#' + element.get('appPackageName')
+    dic[element.get('abi') + element.get('appPackageName') + '.url'] = 'testResult.xml#' + element.get('appPackageName')
     init_str = '{abi}.{app_package}#'.format(abi=element.get('abi'),app_package=element.get('appPackageName'))
     for subelement  in element.xpath('./*'):
         try_find_child(subelement,init_str)
