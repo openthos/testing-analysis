@@ -6,17 +6,14 @@ if [[ $? -ne 0 ]];then
 fi
 
 adb connect $1
-wait
-#sleep 2
+sleep 2
 
 adb -s $1:5555 shell mkdir /data/grub_tmp
-wait
-#sleep 1
+sleep 1
 
 adb -s $1:5555 shell busybox mount /dev/block/sda2 /data/grub_tmp/
 
-wait
-#sleep 1
+sleep 1
 
 
 if [ "$2" = "bios_reboot" ]
@@ -35,12 +32,10 @@ sed -i 's/set default=\"[0-9]*\"/set default=\"1\"/g' /data/grub_tmp/boot/grub/g
 exit
 EOF
 fi
-wait
-#sleep 3
+sleep 3
 adb -s $1:5555 shell busybox umount /dev/block/sda2
 
-wait
-#sleep 1
+sleep 1
 
 adb -s $1:5555 reboot &
 {
