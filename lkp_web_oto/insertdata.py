@@ -6,7 +6,7 @@ import os
 from optparse import OptionParser
 
 def insertdata(filename):
-	MySelectPath = '/root/oto_lkp/testcase/lkp'+filename+'/lkp_tmp_result/result/'+filename+'/'+filename+'.csv'
+	MySelectPath = '/var/www/html/result'+filename+'.csv'
         OutPath = '/var/www/html/lkp_web_oto/csv/'+filename+'.csv'
 
 	csvfiler = file(MySelectPath,'rb')

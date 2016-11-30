@@ -5,7 +5,7 @@ import os
 from optparse import OptionParser
 
 def scan_save(file,prefix=None):
-    MySelectPath = '/root/oto_lkp/testcase/lkp'+file+'/lkp_tmp_result/result/'+file
+    MySelectPath = '/var/www/html/result'+file
     OutPath = '/var/www/html/lkp_web_oto/path/'+file+'.txt'
     files_list=[]
      
