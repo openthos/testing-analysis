@@ -43,11 +43,6 @@ def insertdata(filename):
 		for i in range(num+1):
 		    if i == 0:
 		            continue
-                    print i
-		    print data[titles[7]]
-                    print  rows[i][0] 
-                    print data[titles[8]]
-                    print rows[i][1]
 		    if (data[titles[7]] == float(rows[i][0]) and data[titles[8]] == float(rows[i][1])):
 			#append data
 			line = []
