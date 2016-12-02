@@ -1,2 +1,0 @@
-/root/oto_lkp/testcase/lkpebizzy/lkp_tmp_result/result/ebizzy/200%-5x-5s/localhost/ubuntu/defconfig/gcc-5/c268d38f062c71acd01c4d5a621e6f7b752c17b7/avg.json
-/root/oto_lkp/testcase/lkpebizzy/lkp_tmp_result/result/ebizzy/200%-5x-5s/localhost/ubuntu/defconfig/gcc-5/4.4.10-android-x86_64/avg.json
