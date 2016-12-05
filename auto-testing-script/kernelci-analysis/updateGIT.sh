@@ -1,4 +1,9 @@
 #!/bin/bash -x
+##delete the crontab for avoiding rerun the updateGIT.sh while it is running
+cronTail=`tail -1 /var/spool/cron/crontabs/root`
+if [ "${cronTail:0:1}" != "#" ];then
+    sed '$d' -i /var/spool/cron/crontabs/root
+fi
 
 dirname_path=$(cd `dirname $0`; pwd)
 cd $dirname_path

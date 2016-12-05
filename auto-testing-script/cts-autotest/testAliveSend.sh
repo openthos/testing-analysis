@@ -10,12 +10,7 @@ if [[ $? -eq 1 ]];then
 fi
 adb -s $ip:$port push alive.txt data/ 
 adb -s $ip:$port push testAliveReceive.sh data/
-#adb -s $ip:$port shell chmod +x data/testAliveReceive.sh
 adb -s $ip:$port shell "busybox nohup data/testAliveReceive.sh alive.txt $hostType" &
-#pid=$!
-#sleep 2
-#pkill $pid
-#./runTestAliveReceive.sh $ip $port &
 
 while true
 do
