@@ -2,7 +2,7 @@
 
 
 
-##代码部署方法：
+##代码第一次部署方法：
 
 cd ~/workdir/ 
 
@@ -17,24 +17,19 @@ cd ~/workdir/testing-analysis/lkp_result_web
 在浏览器输入http://localhost/result.php查看结果 
 
 
-##修改并同步到github上面的方法： 
+##部署完成后修改并同步到github上面的方法： 
 
-cd ~/workdir/testing-analysis/lkp_result_web 
-
+cd  
+cd /var/www/html/
 
 修改代码。。。。 
+然后在浏览器输入http://localhost/result.php 查看结果，调试
 
-执行以下脚本进行部署 
-
-./crea_symbol.sh 
-
-
-然后在浏览器输入http://localhost/result.php查看结果 
 
 如果没有问题 
-
-执行以下命令提交到github上面 
-
+执行以下以下命令，提交到github上面 
+cp ./*.sh ./*.php ./*.js ./*.py  ./*.md  ~/workdir/testing-analysis/lkp_result_web                
+cp lkp_web_oto/ -R  ~/workdir/testing-analysis/lkp_result_web
 
 cd ~/workdir/testing-analysis/ 
 
