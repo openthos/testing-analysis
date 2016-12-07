@@ -19,15 +19,21 @@ cd ~/workdir/testing-analysis/lkp_result_web
 
 ##部署完成后修改并同步到github上面的方法： 
 
-cd  
-cd /var/www/html/
+cd /var/www/html/ 
+
 
 修改代码。。。。 
-然后在浏览器输入http://localhost/result.php 查看结果，调试
+
+然后在浏览器输入http://localhost/result.php 查看结果，调试 
+
 
 
 如果没有问题 
+
 执行以下以下命令，提交到github上面 
+
+
+```
 cp ./*.sh ./*.php ./*.js ./*.py  ./*.md  ~/workdir/testing-analysis/lkp_result_web                
 cp lkp_web_oto/ -R  ~/workdir/testing-analysis/lkp_result_web
 
@@ -40,6 +46,7 @@ git add .
 git commit -am "xxx.x.x" 
 
 git push origin master 
+```
 
 
 提交完毕 
