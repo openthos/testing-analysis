@@ -1,0 +1,8 @@
+/var/www/html/result/jishigou/1x/pc1-Z8302/ubuntu/defconfig/gcc-5/5be9590cf017403e2a91238995ecfb206eaed6ef/avg.json
+/var/www/html/result/jishigou/1x/pc1-Z8302/ubuntu/defconfig/gcc-5/3616a6f7e91bcf691868a7c2c6673e2e09f83fcd/avg.json
+/var/www/html/result/jishigou/1x/pc1-Z8302/ubuntu/defconfig/gcc-5/dd33bd82bcc72632f204ac3d92a9adfc2453fe11/avg.json
+/var/www/html/result/jishigou/1x/laptop1-T43U/ubuntu/defconfig/gcc-5/5be9590cf017403e2a91238995ecfb206eaed6ef/avg.json
+/var/www/html/result/jishigou/1x/laptop1-T43U/ubuntu/defconfig/gcc-5/1fb7c13554384de0aadfabc943a7dd579157056d/avg.json
+/var/www/html/result/jishigou/1x/laptop1-T43U/ubuntu/defconfig/gcc-5/3616a6f7e91bcf691868a7c2c6673e2e09f83fcd/avg.json
+/var/www/html/result/jishigou/1x/laptop1-T43U/ubuntu/defconfig/gcc-5/dd33bd82bcc72632f204ac3d92a9adfc2453fe11/avg.json
+/var/www/html/result/jishigou/1x/laptop1-T43U/ubuntu/defconfig/gcc-5/f3cd681f58ce60f13de35a715b916ba50b426b61/avg.json

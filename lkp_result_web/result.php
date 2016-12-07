@@ -569,26 +569,6 @@ summary  <select id="summary" name="summary"  onchange="changeselect(this.id)">
 </br>
 
 
-<h3>summary 表格展示<h3>
-<form action="./lkp_summary_table/get_table.php" method="get" accept-charset="utf-8">
-commit<select id="commit"  name="commit">
-                        <option value="cmmmit1">commit1</option>
-                        <option value="commit2">commit1</option>
-
-</select>
-
-tbox_group <select id="tbox_group" name="tbox_group" >
-                        <option value="pc1">pc1</option>
-                        <option value="pc2">pc1</option>
-
-</select>
-
-
-                        <input class="btn btn-success" type="submit" value="SUBMIT" >
-                        <input class="btn btn-inverse" type="reset" value="CLEAR" >
-                        </form>
-
-</br>
 
 
 </body>
