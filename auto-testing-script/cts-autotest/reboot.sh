@@ -1,11 +1,5 @@
 #!/bin/bash -x
 cd "$(dirname "$0")"
-ip_android=$1
-adbPort=$2
-ListenPort=$3
-r_v=$4
-qemuCMD="$5"
-disk_path=$6
 if [ "$r_v" == "r" ];then
     ./android_fastboot.sh  ${ip_android} bios_reboot 
     ip_android=`nc -lp $ListenPort`                                                                                                                                  
@@ -16,6 +10,7 @@ if [ "$r_v" == "r" ];then
     sleep 30
 else
     adb -s $ip_android:$adbPort shell poweroff
+    sleep 3
     adb disconnect $ip_android:$adbPort
     $qemuCMD -vga vmware --enable-kvm -net nic -net user,hostfwd=tcp::$adbPort-:5555 $disk_path -vnc :3 &
     {

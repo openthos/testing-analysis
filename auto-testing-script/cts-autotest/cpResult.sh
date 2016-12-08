@@ -1,18 +1,6 @@
 #!/bin/bash -eux
 ## cp the result to a specified fold
 ###########################################
-ip_android=$1
-adbPort=$2 
-commitId=$3 
-host=$4
-run_install=$5
-testType=$6
-ListenPort=$7
-testcaseFold=$8
-testcaseLKP=$9
-testcaseGui=$10
-testcaseCTS=$11
-
 
 ## set some parameter
 result=/mnt/freenas/result

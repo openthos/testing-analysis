@@ -35,24 +35,36 @@
 
 cd "$(dirname "$0")"
 localpwd=`pwd`
+export localpwd
 
 # listening port, user should specify it when parallel tesing 
-ListenPort=$1
-adbPort=$(($ListenPort+100))
-r_v=$2
+ListenPort=$1 
+export ListenPort
+adbPort=$(($ListenPort+100)) 
+export adbPort
+r_v=$2 
+export r_v
 ip_linux_client=$3 
-host=$4
-disk_path=$5
+host=$4 
+export host
+disk_path=$5 
+export disk_path
 run_install=$6 
+export run_install
 ip_linux_host=`/sbin/ifconfig -a|grep inet|grep -v 127.0.0.1|grep -v inet6|awk '{print $2}'|tr -d "addr:"|grep 192`
+export ip_linux_host
 ip_android="0.0.0.0"
 iso_loc="default"
 testcaseFold="../kernelci-analysis/testcases"
+export testcaseFold
 testcaseLKP="../../../oto_lkp/testcase"
+export testcaseLKP
 testcaseCTS="../../../android-cts"
+export testcaseCTS
 testcaseGUI="../../../oto_Uitest"
-#qemuCMD="/home/oto/qemu-2.7.0/build/x86_64-softmmu/qemu-system-x86_64 -device virtio-gpu-pci,virgl"
+export testcaseGUI
 qemuCMD="/usr/local/bin/qemu-system-x86_64 -m 4G"
+export qemuCMD
 
 testType="default"
 
@@ -60,7 +72,7 @@ function assert()
 {
     ret=$1 
     if [ $ret -ne 0 ];then 
-        ./cpResult.sh $ip_android $adbPort $commitId $host $run_install $testType $ListenPort $testcaseFold $testcaseLKP $testcaseGUI 
+        ./cpResult.sh
         ./android_fastboot.sh  ${ip_android}  reboot_bootloader
         exit 1 
     fi
@@ -72,7 +84,7 @@ function assert_v()
     qemuPid=$2
     if [ $ret -ne 0 ];then 
         kill $qemuPid
-        ./cpResult.sh $ip_android $adbPort $commitId $host $run_install $testType $ListenPort $testcaseFold $testcaseLKP $testcaseGUI 
+        ./cpResult.sh
         exit 1 
     fi
 }
@@ -82,7 +94,7 @@ ls ip_android*  && rm ip_android*
 
 #check the ip address
 ./checkIP.sh $ip_linux_client 
-if [ $? -ne 0];then
+if [ $? -ne 0 ];then
     exit 1 
 fi
 
@@ -92,6 +104,7 @@ function getCommitId()
     tmp=${iso_loc##*/}
     tmp=${tmp#*-}
     commitId=${tmp%-*}
+    export commitId
 }
 
 function tradefedMonitor()
@@ -119,18 +132,19 @@ function tradefedMonitor()
 ## according to where it's virtual mechine(qemu) or real mechine, we should change the network model
 if [ "$r_v" == "v" ]; then
     ip_android="localhost"
+    export ip_android
 
     if [ "$run_install" == "installTest" ] || [ "$run_install" == "install" ];then
         ## install iso and then test the android-x86
         iso_loc=$7
+        export iso_loc
         getCommitId
-        ./fastboot_vir.sh $disk_path flashall $iso_loc;
-        ./editBoot.sh $disk_path $ip_linux_host $ListenPort 
+        ./fastboot_vir.sh flashall
+        ./editBoot.sh 
         #assert $?
         
 
         ## install CtsDeviceAdmin.apk and active the device adminstrators, this setting will take effect after reboot 
-        #/usr/local/bin/qemu-system-x86_64 -m 2G -vga vmware --enable-kvm -net nic -net user,hostfwd=tcp::$adbPort-:5555 $disk_path -vnc :1 &
         $qemuCMD -vga vmware --enable-kvm -net nic -net user,hostfwd=tcp::$adbPort-:5555 $disk_path -vnc :1 &
         {
             echo v1v1v1v1!!!!!!!!!!!!!!!!!!!!!
@@ -167,11 +181,11 @@ if [ "$r_v" == "v" ]; then
             sleep 30
             cts_cmd="$8"       
             
-            ./runGuiTestInFold.sh $testcaseFold $localpwd $ip_android $adbPort $ListenPort $commitId $host $r_v "$qemuCMD" $disk_path
+             ./runGuiTestInFold.sh $testcaseFold 
             assert_v $? $qemuPid
             sleep 2 
             ### monitor script, if network is down, reboot to linux
-            ./testAliveSend.sh $ip_android $adbPort $r_v &
+            ./testAliveSend.sh &
             echo "exit" | $testcaseCTS/tools/cts-tradefed run cts -s $ip_android:$adbPort $cts_cmd &
             {
                 tradefedMonitor $!
@@ -187,7 +201,7 @@ if [ "$r_v" == "v" ]; then
 
     if [ "$run_install" == "run" ];then
 
-        ./editBoot.sh $disk_path $ip_linux_host $ListenPort 
+        ./editBoot.sh
         assert $?
         $qemuCMD -vga vmware --enable-kvm -net nic -net user,hostfwd=tcp::$adbPort-:5555 $disk_path -vnc :3 &
         {
@@ -205,9 +219,10 @@ if [ "$r_v" == "v" ]; then
             sleep 5
         
             ### monitor script, if network is down, reboot to linux
-            ./testAliveSend.sh $ip_android $adbPort $r_v &
+            ./testAliveSend.sh &
 
             testType=$7 
+            export testType
             if [ "$testType" == "cts" ];then
                 cts_cmd="$8"
                 echo "exit" | $testcaseCTS/tools/cts-tradefed run cts -s $ip_android:$adbPort $cts_cmd &
@@ -220,18 +235,18 @@ if [ "$r_v" == "v" ]; then
                     fi
                 }
             elif [ "$testType" == "gui" ];then
-                #./runGuiTestInFold.sh $testcaseGUI $localpwd $ip_android $adbPort $ListenPort $commitId $host $r_v "$qemuCMD" $disk_path
+                #./runGuiTestInFold.sh $testcaseFold 
                 #assert $?
                 echo "gui test not available!"
             elif [ "$testType" == "lkp" ];then
-                #./runLkpTestInFold.sh $testcaseLKP $localpwd $ip_android $adbPort $ListenPort $commitId $host $r_v "$qemuCMD" $disk_path
+                #./runGuiTestInFold.sh $testcaseFold
                 #assert $?
                 echo "lkp test not available!"
             elif [ "$testType" == "all" ];then
                 cts_cmd="$8"
                 #runTestInFold $testcaseGUI
                 #runTestInFold $testcaseLKP
-                ./runGuiTestInFold.sh $testcaseFold $localpwd $ip_android $adbPort $ListenPort $commitId $host $r_v "$qemuCMD" $disk_path
+                ./runGuiTestInFold.sh $testcaseFold
                 assert $?
                 sleep 2
                 echo "exit" | $testcaseCTS/tools/cts-tradefed run cts -s $ip_android:$adbPort $cts_cmd &
@@ -248,13 +263,15 @@ if [ "$r_v" == "v" ]; then
     fi
     
 elif [ "$r_v" == "r" ];then
-    adbPort=5555
+    adbPort=5555 
+    export adbPort
     if [ "$run_install" == "run" ];then
         ## real mechine
         rsync   -avz -e ssh ./scriptReboot1 root@${ip_linux_client}:~/;
         ssh root@${ip_linux_client} "~/scriptReboot1/reboot.sh $disk_path $ip_linux_host $ListenPort";
         echo r1r1r1!!!!!!!!!!!!!!!!
         ip_android=`nc -lp $ListenPort`
+        export ip_android
         echo $ip_android
         adb connect $ip_android
         sleep 2
@@ -268,9 +285,10 @@ elif [ "$r_v" == "r" ];then
 
         echo 'testing'
         ### monitor script, if network is down, reboot to linux
-        ./testAliveSend.sh $ip_android 5555 $r_v &
+        ./testAliveSend.sh &
 
         testType=$7
+        export testType
         if [ "$testType" == "cts" ];then
             cts_cmd="$8"
             echo "exit" | $testcaseCTS/tools/cts-tradefed run cts -s $ip_android:$adbPort $cts_cmd &
@@ -284,34 +302,34 @@ elif [ "$r_v" == "r" ];then
                 fi
             }
         elif [ "$testType" == "gui" ];then
-            #./runGuiTestInFold.sh $testcaseGUI $localpwd $ip_android $adbPort $ListenPort $commitId $host $r_v "$qemuCMD" $disk_path
+            #./runGuiTestInFold.sh $testcaseFold
             #ret=$?
             #ip_android=`cat "ip_android"$ListenPort`
             #assert $ret
             echo "gui test not available!"
         elif [ "$testType" == "lkp" ];then
-            ./runLkpTestInFold.sh $testcaseLKP $localpwd $ip_android $adbPort $ListenPort $commitId $host $r_v "$qemuCMD" $disk_path
+            ./runLkpTestInFold.sh $testcaseLKP
             ret=$?
             ip_android=`cat "ip_android"$ListenPort`
             assert $ret
             echo "lkp test not available!"
         elif [ "$testType" == "all" ];then
             cts_cmd="$8"
-            ./runLkpTestInFold.sh $testcaseLKP $localpwd $ip_android $adbPort $ListenPort $commitId $host $r_v "$qemuCMD" $disk_path 
+            ./runLkpTestInFold.sh $testcaseLKP
             ret=$?
             ip_android=`cat "ip_android"$ListenPort`
             assert $ret
             ################################################### 
 
             ################################################### 
-            ./reboot.sh $ip_android $adbPort $ListenPort $r_v "$qemuCMD" $disk_path
+            ./reboot.sh
             ip_android=`cat "ip_android"$ListenPort`
-            ./runGuiTestInFold.sh $testcaseFold $localpwd $ip_android $adbPort $ListenPort $commitId $host $r_v "$qemuCMD" $disk_path
+            ./runGuiTestInFold.sh $testcaseFold
             ret=$?
             ip_android=`cat "ip_android"$ListenPort`
             assert $ret
             sleep 2 
-            ./testAliveSend.sh $ip_android $adbPort $r_v &
+            ./testAliveSend.sh &
             echo "exit" | $testcaseCTS/tools/cts-tradefed run cts -s $ip_android:$adbPort $cts_cmd &
             {
                 tradefedMonitor $!
@@ -327,11 +345,13 @@ elif [ "$r_v" == "r" ];then
     elif [ "$run_install" == "installTest" ];then
         ## install android-x86 and then test
         iso_loc=$7
+        export iso_loc
         getCommitId
         ./auto2.sh $ip_linux_client $iso_loc $disk_path $ListenPort $ip_linux_host;
 
         echo r2r2r2!!!!!!!!!!!!!!!!!!
         ip_android=`nc -lp $ListenPort`
+        export ip_android
         echo "android boot success!"
         #sleep 30
         echo ${ip_android}
@@ -350,20 +370,20 @@ elif [ "$r_v" == "r" ];then
         adb -s $ip_android:$adbPort push commitId.txt data/
         
         ##################################################
-        ./reboot.sh $ip_android $adbPort $ListenPort $r_v "$qemuCMD" $disk_path
+        ./reboot.sh
         ip_android=`cat "ip_android"$ListenPort`
         cts_cmd="$8"
         #runTestInFold $testcaseFold
-        ./runLkpTestInFold.sh $testcaseLKP $localpwd $ip_android $adbPort $ListenPort $commitId $host $r_v "$qemuCMD" $disk_path
+        ./runLkpTestInFold.sh $testcaseLKP
         ret=$?
         ip_android=`cat "ip_android"$ListenPort`
         assert $ret
         ################################################### 
 
         ################################################### 
-        ./reboot.sh $ip_android $adbPort $ListenPort $r_v "$qemuCMD" $disk_path
-        ip_android=`cat "ip_android"$ListenPort`
-        ./runGuiTestInFold.sh $testcaseFold $localpwd $ip_android $adbPort $ListenPort $commitId $host $r_v "$qemuCMD" $disk_path
+        #./reboot.sh
+        #ip_android=`cat "ip_android"$ListenPort`
+        ./runGuiTestInFold.sh $testcaseFold
         ret=$?
         ip_android=`cat "ip_android"$ListenPort`
         assert $ret
@@ -371,7 +391,7 @@ elif [ "$r_v" == "r" ];then
         
         sleep 2 
         ### monitor script, if network is down, reboot to linux
-        ./testAliveSend.sh $ip_android $adbPort $r_v &
+        ./testAliveSend.sh &
         echo "exit" | $testcaseCTS/tools/cts-tradefed run cts -s $ip_android:$adbPort $cts_cmd &
         {
             tradefedMonitor $!
@@ -386,9 +406,11 @@ elif [ "$r_v" == "r" ];then
     elif [ "$run_install" == "install" ];then
         ## install android-x86 and then test
         iso_loc=$7
+        export iso_loc
         ./auto2.sh $ip_linux_client $iso_loc $disk_path $ListenPort $ip_linux_host;
         echo r5r5r5!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         ip_android=`nc -lp $ListenPort`
+        export ip_android
         echo "android boot success!"
         #sleep 30
         echo ${ip_android}
@@ -417,7 +439,7 @@ if [ "$run_install" == "install" ];then
 fi
 
 ## copy result
-./cpResult.sh $ip_android $adbPort $commitId $host $run_install $testType $ListenPort $testcaseFold $testcaseLKP $testcaseGUI $testcaseCTS
+./cpResult.sh
 
 ## remove tmp file
 ls ip_android*  && rm ip_android*
