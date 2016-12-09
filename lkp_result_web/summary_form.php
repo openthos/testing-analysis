@@ -20,6 +20,28 @@
 
 </div>
 
+<?php
+  $vcompile=  $_GET["summary"];
+  $vcompile=str_replace("%","%25",$vcompile);
+  $com=substr($vcompile,9)
+  system("python getdata.py ".$com);
+?>
+
+<div id="restable"></div>
+
+<script src="jquery-1.11.3.min.js"></script>
+<script src="jquery.columns.min.js"></script>
+<script>
+	$.ajax({
+                url:'data.json',
+                dataType: 'json',
+                success: function(json) {
+                     restable = $('#restable').columns({
+                        data:json
+                    });
+                }
+        });
+</script>
+
 </body>
-</div>
 </html>
