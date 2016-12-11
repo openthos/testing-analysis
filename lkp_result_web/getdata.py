@@ -26,13 +26,25 @@ def getresult(fn, r):
                 r=line[-4]
     return r
 
+def getdirlist(path,dirlist):
+    files = os.listdir(path)
+    for n in files:
+        if(os.path.isdir(path + '/' + n)):
+            if(n[0] == '.'):
+                pass
+            else:
+                dirlist.append(n)
+    return
+
 d = open('data.json' , 'wb')
 r = ''
 data = []
+dirlist=[]
 path = '/var/www/html/result'
-files = os.listdir(path)
 
-for name in files:
+getdirlist(path,dirlist)
+print dirlist
+for name in dirlist:
     t = []
     dic = collections.OrderedDict({"测试用例":name})
     findfiles(path + '/' + name,t)
