@@ -192,8 +192,9 @@ if [ "$r_v" == "v" ]; then
                 if [ $? -eq 0 ];then
                     adb -s $ip_android:$adbPort shell poweroff
                 else
-                    kill qemuPid
-                    python sendEmail.py
+                    kill qemuPid 
+                    cp ../../../android_x86.backup.raw $disk_path
+                    python sendEmail.py "something went wrong while run cts test in QEMU!"
                 fi
             }
         }
@@ -231,7 +232,8 @@ if [ "$r_v" == "v" ]; then
                     if [ $? -eq 0 ];then
                         adb -s $ip_android:$adbPort shell poweroff
                     else
-                        python sendEmail.py
+                        cp ../../../android_x86.backup.raw $disk_path
+                        python sendEmail.py "something went wrong while run cts test in QEMU!"
                     fi
                 }
             elif [ "$testType" == "gui" ];then
@@ -255,7 +257,8 @@ if [ "$r_v" == "v" ]; then
                     if [ $? -eq 0 ];then
                         adb -s $ip_android:$adbPort shell poweroff
                     else
-                        python sendEmail.py
+                        cp ../../../android_x86.backup.raw $disk_path
+                        python sendEmail.py "something went wrong while run cts test in QEMU!"
                     fi
                 }
             fi
@@ -298,7 +301,7 @@ elif [ "$r_v" == "r" ];then
                     ###reboot to  linux
                     ./android_fastboot.sh  ${ip_android}  reboot_bootloader
                 else
-                    python sendEmail.py
+                    python sendEmail.py "something went wrong while run cts test in $host, ip is $ip_android"
                 fi
             }
         elif [ "$testType" == "gui" ];then
@@ -337,7 +340,7 @@ elif [ "$r_v" == "r" ];then
                     ###reboot to  linux
                     ./android_fastboot.sh  ${ip_android}  reboot_bootloader
                 else
-                    python sendEmail.py
+                    python sendEmail.py "something went wrong while run cts test in $host, ip is $ip_android"
                 fi
             }
        fi
@@ -399,7 +402,7 @@ elif [ "$r_v" == "r" ];then
                 ###reboot to  linux
                 ./android_fastboot.sh  ${ip_android}  reboot_bootloader
             else
-                python sendEmail.py
+                python sendEmail.py "something went wrong while run cts test in $host, ip is $ip_android"
             fi
         }
 

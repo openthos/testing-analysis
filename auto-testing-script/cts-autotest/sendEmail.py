@@ -1,4 +1,5 @@
 # -*- coding: UTF-8 -*-
+import sys
 import smtplib  
 from email.mime.text import MIMEText
 from email.header import Header
@@ -26,7 +27,7 @@ def send_mail(to_list,sub,content):
         print str(e)  
         return False  
 if __name__ == '__main__':  
-    if send_mail(mailto_list,"testing something wrong","qaoimu, testing is unnormal, maybe caused by the death of android-x86."):  
+    if send_mail(mailto_list,"testing something wrong",sys.argv[1]):  
         print "发送成功"  
     else:  
         print "发送失败"
