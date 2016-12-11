@@ -43,7 +43,6 @@ dirlist=[]
 path = '/var/www/html/result'
 
 getdirlist(path,dirlist)
-print dirlist
 for name in dirlist:
     t = []
     dic = collections.OrderedDict({"测试用例":name})
