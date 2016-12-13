@@ -459,10 +459,19 @@ ifm.contentDocument;
 
 
 <h3>csv 曲线<h3>
-  <form action="./lkp_web_oto/getMETRIC.php" enctype="multipart/form-data" method="post" accept-charset="utf-8">
+  <form action="./lkp_web_oto/getMETRIC.php" enctype="multipart/form-data" method="get" accept-charset="utf-8">
+xAxis:
+            </span></div>
+
+            &nbsp;<input type="radio" name="xaxis" value="benchmark">benchmarks
+            &nbsp;<input type="radio" checked="checked" name="xaxis" value="kernel">kernels
+            &nbsp;<input type="radio" name="xaxis" value="compiler" disabled>compilers (gcc-4.9 or gcc-5)
+            &nbsp;&nbsp;
+
+
 <select id="benchmarks" name="benchmarks" >
 
-                        </select>
+                        </select name="benchmarks" >
 
                         <input class="btn btn-success" type="submit" value="SUBMIT" >
                         <input class="btn btn-inverse" type="reset" value="CLEAR" >

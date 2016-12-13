@@ -35,10 +35,10 @@
 
 			<?php
 
-			$xaxis=$$_GET["xaxis"];
-			$benchmarks=$$_GET["benchmarks"];
-			echo var_dump($xaxis).'<br>';
-			echo var_dump($benchmarks).'<br>';
+			$xaxis=$_GET["xaxis"];
+			$benchmarks=$_GET["benchmarks"];
+			//echo var_dump($xaxis).'<br>';
+			//echo var_dump($benchmarks).'<br>';
 			echo '<h3><a href="chart.php?xaxis='.$xaxis.'&benchmarks='.$benchmarks.'&count=7,8,9">'.$benchmarks.'</a></h3>';
 
 			if(($xaxis == "benchmark") && ($benchmarks == "all")){
@@ -58,6 +58,7 @@
 			}else{
 
 			$csv_path = "csv/".$benchmarks.".csv";
+                        //echo  $csv_path;
 			$handle = fopen($csv_path, "r");
 			$buffer = fgets($handle);
 			fclose($handle);

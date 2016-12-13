@@ -49,7 +49,7 @@
 			//$t_exec = 'python genhtml.py -i '.$csv_path.' -o cache/out.html -m '.$head_data[$head_count].' -b '.$benchmarks.' -c gcc-4.9 -x '.$xaxis ;
                         //gcc-5修改
 			$t_exec = 'python genhtml.py -i '.$csv_path.' -o cache/out.html -m '.$metric.' -b '.$benchmarks.' -c gcc-5 -x '.$xaxis ;
-			#echo $t_exec;
+			echo $t_exec;
 			$shell_result = shell_exec("$t_exec");
 			echo $shell_result;
 

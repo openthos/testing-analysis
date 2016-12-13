@@ -32,8 +32,9 @@ def read_csv(filename):
 		for i in range(length):
 			dic[keys[i]].append(line[i])
 
-	#print keys
+	print keys
 	#print type(dic)
+	print dic
 	return dic
 
 def rmrepeat(l):
@@ -232,6 +233,7 @@ if __name__ == "__main__":
 	(options, args) = parser.parse_args()
 
 	dic = read_csv(options.input)
+        sys.exit()
 
 	output = options.output
 	metric = options.metric
