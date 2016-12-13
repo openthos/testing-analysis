@@ -39,7 +39,11 @@ def getdirlist(path,dirlist):
 d = open('data.json' , 'wb')
 r = ''
 data = []
+<<<<<<< HEAD
 dirlist = []
+=======
+dirlist=[]
+>>>>>>> e2bc8e494ac9874e174c3b2bd45e1761775db5e5
 path = '/var/www/html/result'
 
 getdirlist(path,dirlist)

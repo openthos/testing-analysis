@@ -1,29 +1,19 @@
-#!/bin/bash  -xeu
+#!/bin/bash  -xu
 tmpTestcaseFold=$1 
-localpwd=$2
-ip_android=$3 
-adbPort=$4
-ListenPort=$5
-commitId=$6
-host=$7
-r_v=$8
-qemuCMD="$9"
-disk_path=${10}
-
-
 cd "$(dirname "$0")"
-needreboot=`grep GUI $localpwd/testcaseReboot.txt`
+needreboot=`grep LKP $localpwd/testcaseReboot.txt`
 needreboot=${needreboot##*:}
 pwdBefore=`pwd`
-$localpwd/testAliveSend.sh $ip_android $adbPort $r_v &
+$localpwd/testAliveSend.sh &
 pidAlive=$!
 cd $tmpTestcaseFold
 for testcase in `ls -d */|sed 's|[/]||g'`
 do  
     $testcase/$testcase".sh" $ip_android $adbPort $ip_android"_"$adbPort"_"$commitId &
     pid=$!
-    $localpwd/monitorAdb.sh $pid $ip_android  $ip_android"_"$adbPort"_"$commitId $testcase 30
+    $localpwd/monitorAdb.sh $pid $ip_android  $ip_android"_"$adbPort"_"$commitId $testcase 30 $r_v
     if [ $? -ne 0 ];then
+        #ps -p $pidAlive && kill $pidAlive 
         wait
         exit 1
     fi
@@ -35,18 +25,20 @@ do
     cd $pwdBefore
     cd $tmpTestcaseFold
     if [ $needreboot -ne 0 ];then
-        kill $pidAlive 
-        $localpwd/reboot.sh $ip_android $adbPort $ListenPort $r_v $qemuCMD $disk_path
+        #kill $pidAlive 
+        ps -p $pidAlive && kill $pidAlive 
+        $localpwd/reboot.sh
         ip_android=`cat $localpwd/"ip_android"$ListenPort`
-        $localpwd/testAliveSend.sh $ip_android $adbPort $r_v &
+        $localpwd/testAliveSend.sh &
         pidAlive=$!
     fi  
 done
 if [ $needreboot -eq 0 ];then
-    kill $pidAlive 
-    $localpwd/reboot.sh $ip_android $adbPort $ListenPort $r_v $qemuCMD $disk_path
+    ps -p $pidAlive && kill $pidAlive 
+    $localpwd/reboot.sh 
     ip_android=`cat $localpwd/"ip_android"$ListenPort`
 fi  
+ps -p $pidAlive && kill $pidAlive 
 cd $pwdBefore 
 wait
 echo "@@"$ip_android

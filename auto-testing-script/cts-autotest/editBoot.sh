@@ -1,8 +1,4 @@
 #!/bin/bash -exu
-disk_path=$1
-ip_linux_host=$2
-ListenPort=$3 
-
 
 if [ ! -d "android_disk" ]; then
     mkdir  android_disk

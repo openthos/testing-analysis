@@ -1,35 +1,33 @@
-#!/bin/bash -ex
+#!/bin/bash -ex 
+cd "$(dirname "$0")"
 echo "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-ip=$1
-port=$2
-hostType=$3
-adb devices | grep "$ip:$port"
+adb devices | grep "$ip_android:$adbPort"
 if [[ $? -eq 1 ]];then
-    #adb connect $ip
+    #adb connect $ip_android
     exit
 fi
-adb -s $ip:$port push alive.txt data/ 
-adb -s $ip:$port push testAliveReceive.sh data/
-adb -s $ip:$port shell "busybox nohup data/testAliveReceive.sh alive.txt $hostType" &
+adb -s $ip_android:$adbPort push alive.txt data/ 
+adb -s $ip_android:$adbPort push testAliveReceive.sh data/
+adb -s $ip_android:$adbPort shell "busybox nohup data/testAliveReceive.sh alive.txt $r_v $testType" &
 
 while true
 do
     sleep 100
-    ### if run in qemu. ip=localhost, ping localhost is always success, so we need consider this two situation seperately
-    if [ $hostType = "v" ];then
-        netstat -tunlp | grep $port
+    ### if run in qemu. ip_android=localhost, ping localhost is always success, so we need consider this two situation seperately
+    if [ $r_v = "v" ];then
+        netstat -tunlp | grep $adbPort
         if [[ $? -eq 0 ]];then
-            adb -s $ip:$port push alive.txt data/
+            adb -s $ip_android:$adbPort push alive.txt data/
         else
             break
         fi
     else
-        ping $ip -c 1 > /dev/null 
+        ping $ip_android -c 1 > /dev/null 
         con1=$?
-        adb devices | grep $ip
+        adb devices | grep $ip_android
         con2=$?
         if [ $con1 -eq 0 -a $con2 -eq 0 ];then
-            adb -s $ip:$port push alive.txt data/
+            adb -s $ip_android:$adbPort push alive.txt data/
         else
             #echo "adb push failed, network does not work!"
             break
@@ -37,9 +35,9 @@ do
     fi
 done
 
-adb devices | grep "$ip:$port"
+adb devices | grep "$ip_android:$adbPort"
 if [[ $? -eq 0 ]];then
-    adb disconnect $ip:$port
+    adb disconnect $ip_android:$adbPort
 fi
 echo "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"
 exit 0

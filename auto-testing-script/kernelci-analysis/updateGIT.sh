@@ -1,9 +1,7 @@
 #!/bin/bash -x
 ##delete the crontab for avoiding rerun the updateGIT.sh while it is running
-cronTail=`tail -1 /var/spool/cron/crontabs/root`
-if [ "${cronTail:0:1}" != "#" ];then
-    sed '$d' -i /var/spool/cron/crontabs/root
-fi
+croncmdOld="/home/oto/openthos/testing-analysis/auto-testing-script/kernelci-analysis/updateGIT.sh"
+( crontab -l | grep -v -F "$croncmdOld" ) | crontab -
 
 dirname_path=$(cd `dirname $0`; pwd)
 cd $dirname_path
@@ -83,8 +81,7 @@ fi
 
 nextCrontabTime="$minuteNext $hourNext"
 
-cronTail=`tail -1 /var/spool/cron/crontabs/root`
-if [ "${cronTail:0:1}" != "#" ];then
-    sed '$d' -i /var/spool/cron/crontabs/root
-fi
-echo "$nextCrontabTime * * * /home/oto/openthos/testing-analysis/auto-testing-script/kernelci-analysis/updateGIT.sh >> /mnt/freenas/result/cronout$crontDate 2>&1" >>/var/spool/cron/crontabs/root
+croncmdNew="$nextCrontabTime * * * /home/oto/openthos/testing-analysis/auto-testing-script/kernelci-analysis/updateGIT.sh >> /mnt/freenas/result/cronout$crontDate 2>&1"
+( crontab -l | grep -v -F "$croncmdOld" ) | crontab -
+( crontab -l | grep -v -F "$croncmdNew" ; echo "$croncmdNew" ) | crontab -
+
