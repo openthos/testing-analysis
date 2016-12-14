@@ -37,20 +37,22 @@ def getdirlist(path,dirlist):
     return
 
 d = open('data.json' , 'wb')
-r = ''
+r = '无测试结果'
 data = []
-dirlist = []
+dirlist=[]
 path = '/var/www/html/result'
 
 getdirlist(path,dirlist)
 for name in dirlist:
     t = []
-    dic = collections.OrderedDict({"测试用例":name})
+    dic = collections.OrderedDict()
     findfiles(path + '/' + name,t)
     for fn in t:
-        pn = fn.split('/')
-        if(sys.argv[1] in fn and '.json' in fn):
+        if(sys.argv[1] in fn and 'testResult.json' in fn):
+            pn = fn.split('/')
+            dic['测试用例'] = name
             dic[pn[7]] = getresult(fn,r)
-    dic.update(dic)
-    data.append(dic)
+    if(dic):
+        dic.update(dic)
+        data.append(dic)
 d.write(json.dumps(data,indent=1))
