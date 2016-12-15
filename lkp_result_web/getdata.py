@@ -3,7 +3,6 @@
 
 import os
 import json
-import collections
 import sys
 
 def findfiles(path, t):
@@ -36,23 +35,56 @@ def getdirlist(path,dirlist):
                 dirlist.append(n)
     return
 
-d = open('data.json' , 'wb')
-r = '无测试结果'
-data = []
-dirlist=[]
-path = '/var/www/html/result'
+def count(li,data):
+    dic={}
+    dic['tbox']=li[0]
+    dic['pass']=li.count('1')
+    dic['failed']=li.count('0')
+    dic['untest']=li.count(None)
+    dic['sum']=len(li)-1
+    data.append(dic)
+    return
 
+def geturl(fn,start,end):
+    startIndex=fn.index(start)
+    if(startIndex>=0):
+        startIndex += len(start)
+    endIndex=fn.index(end)
+    return fn[startIndex:endIndex]
+
+d = open('data.json' , 'wb')
+r = ''
+data = []
+
+list1=['qemu1']
+list2=['pc1-Z8302']
+list3=['pc2-Z8000']
+list4=['laptop1-T43U']
+list5=['laptop2-T45']
+
+path = '/var/www/html/result'
+dirlist=[]
 getdirlist(path,dirlist)
 for name in dirlist:
     t = []
-    dic = collections.OrderedDict()
+    dic = {}
     findfiles(path + '/' + name,t)
     for fn in t:
         if(sys.argv[1] in fn and 'testResult.json' in fn):
             pn = fn.split('/')
-            dic['测试用例'] = name
+            dic['testcase'] = name
             dic[pn[7]] = getresult(fn,r)
+            dic[pn[7]+'url']=geturl(fn,'/var/www/html','testResult.json')
     if(dic):
         dic.update(dic)
         data.append(dic)
+        list1.append(dic.get('qemu1'))
+        list2.append(dic.get('pc1-Z8302'))
+        list3.append(dic.get('pc2-Z8000'))
+        list4.append(dic.get('laptop1-T43U'))
+        list5.append(dic.get('laptop2-T45'))
+
+for li in [list1,list2,list3,list4,list5]:
+    count(li,data)
+
 d.write(json.dumps(data,indent=1))
