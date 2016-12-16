@@ -27,7 +27,7 @@
 ?>
 <h4>汇总如下：</h4>
 <div id="sumtable"></div>
-<h4>详细列表：(0表示不通过，1表示通过，undefined表示未测试)</h4>
+<h4>详细列表：(0表示不通过，1表示通过，空白表示未测试)</h4>
 <div id="restable"></div>
 
 <script src="jquery-1.11.3.min.js"></script>
