@@ -22,19 +22,22 @@ def read_csv(filename):
 	keys = []
 
 	for line in reader:
+		#print line
 		keys = line
+		#print keys
 		for metric in line:
 			dic[metric] = []
 		break
 	length = len(dic.keys())
-
+#	i = 0
 	for line in reader:
+#		i = i+1
+#		print i
 		for i in range(length):
 			dic[keys[i]].append(line[i])
 
-	print keys
+	#print dic
 	#print type(dic)
-	print dic
 	return dic
 
 def rmrepeat(l):
@@ -56,36 +59,56 @@ def genhtml(dic, metric, xAxis, benchmark, kernel, compiler, output):
 
 	#Obtain series
 	series = {}
-
 	benchmarks = dic["benchmark"]
 	#kernels = dic["kernel"]
 	kernels = dic["commit"]
 	compilers = dic["compiler"]
-
+	
 	length = len(benchmarks)
-
+	#print benchmarks
+#	print length
 	newseries = []
 	all_metric=metric.split(',')
+#	combine = []
 	for metric_s in all_metric:
+#		print metric_s
 		values = dic[metric_s]
+		#print values
 		if not cmp("benchmark", xAxis):
 			for i in range(length):
 				if not cmp(kernel, kernels[i]) and not cmp(compiler, compilers[i]):
 					series[benchmarks[i]] = float(values[i])
 		elif not cmp("kernel", xAxis):
 			for i in range(length):
+				str = dic["config2"][i]
+#				combine.append(dic["config2"][i]+"--"+kernels[i])
+				
 				if not cmp(benchmark, benchmarks[i]) and not cmp(compiler, compilers[i]):
+					#not have metric put null!!!!
 					if not values[i]:
-						values[i]=0
+		#				print i
+						series[str[0:str.find('-')]+"-"+kernels[i]] = "null"
+		#				print dic["config2"][i]+"--"+kernels[i]
+		#				print series[dic["config2"][i]+"--"+kernels[i]]
+		#				print "*****"
 					#print values[i]
-					series[kernels[i]] = float(values[i])
+					else:
+		#				print i
+						series[str[0:str.find('-')]+"-"+kernels[i]] = float(values[i])
+		#				print dic["config2"][i]+"--"+kernels[i]
+		#				print series[dic["config2"][i]+"--"+kernels[i]]
+		#				print "####"
+		#	print series.keys()			
+			#keylist = series.keys()
+			#print keylist
+			#print len(keylist)			
 		elif not cmp("compiler", xAxis):
 			for i in range(length):
 				if not cmp(benchmark, benchmarks[i]) and not cmp(kernel, kernels[i]):
 					series[compilers[i]] = float(values[i])
 		#m_c += 1
 		tmpdic = {}
-	#m_c = 0
+        	#m_c = 0
                 #print series
 		tmpdic["FLAGnameFLAG"] = metric_s
 		tmpdic["FLAGdataFLAG"] = series.values()
@@ -119,10 +142,18 @@ def genhtml(dic, metric, xAxis, benchmark, kernel, compiler, output):
 	if not cmp("benchmark", strx):
 		xAxis["FLAGcategoriesFLAG"] = benchmarks
 	elif not cmp("kernel", strx):
-		xAxis["FLAGcategoriesFLAG"] = kernels
+		xAxis["FLAGcategoriesFLAG"] = series.keys()
 	elif not cmp("compiler", strx):
 		xAxis["FLAGcategoriesFLAG"] = compilers
-        #print xAxis
+        xAxis["FLAGminFLAG"] = 0
+	if len(series.keys()) < 10:
+		xAxis["FLAGmaxFLAG"] = len(series.keys())-1
+	else:
+		xAxis["FLAGmaxFLAG"] = 10
+	#print xAxis
+	
+	scrollbar = {}
+	scrollbar["FLAGenabledFLAG"] = "true"	
 
 	yAxis = {}
 	ytitle = {}
@@ -159,6 +190,8 @@ def genhtml(dic, metric, xAxis, benchmark, kernel, compiler, output):
 	htmldict["FLAGyAxisFLAG"] = yAxis
 	htmldict["FLAGxAxisFLAG"] = xAxis	
 	htmldict["FLAGtitleFLAG"] = title
+	if len(series.keys())> 10:
+		htmldict["FLAGscrollbarFLAG"] = scrollbar
         #print htmldict
 
 	jsonstr = JSONEncoder().encode(htmldict)
@@ -233,7 +266,6 @@ if __name__ == "__main__":
 	(options, args) = parser.parse_args()
 
 	dic = read_csv(options.input)
-        sys.exit()
 
 	output = options.output
 	metric = options.metric
