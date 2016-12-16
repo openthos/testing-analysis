@@ -14,9 +14,10 @@
 读取csv数据，对指定benchmark、指定metric的信息利用折线图进行展示
 ### 6、getfilelist.py:
 扫描测试用例结果路径下所有的avg.json，将路径保存在以测试用例命名的txt文件中
-### 7、insertdata.py:
+### 7、insertdata.py:（被collect.py替代）
 根据“测试用例.txt”文件中的路径信息，对lkp测试结果csv的配置信息进行补充，生成新的csv
-
+### 8、collect.py:
+根据每一个benchmark测试结果的avg.json文件，在/var/www/html/lkp_web_oto/csv中生成相应的$benchmark.csv文件
 
 # 运行流程：
 ### 1、apache安装
@@ -37,12 +38,26 @@ chmod -R 777 cache
 cd /var/www/html/lkp_web_oto
 
 python getfilelist.py -f ebizzy（测试用例名字）在/var/www/html/lkp_web_oto/path下生成ebizzy（测试用例名字）测试结果路径文件 
- 
-Python insertdata.py -f ebizzy（测试用例名字）在/var/www/html/lkp_web_oto/csv下生成ebizzy（测试用例名字）测试结果完整csv文件 
+
+Python collect.py -f ebizzy（测试用例名字）在/var/www/html/lkp_web_oto/csv下生成ebizzy（测试用例名字）测试结果完整csv文件
+(Python insertdata.py -f ebizzy（测试用例名字）在/var/www/html/lkp_web_oto/csv下生成ebizzy（测试用例名字）测试结果完整csv文件) 
 
 **注意**
 
-1. getfilelist.py和insertdata.py中MySelectPath根据实际情况进行修改，分别为测试用例测试结果根路径和测试用例测试结果csv文件路径
+1. getfilelist.py和collect.py(insertdata.py)中MySelectPath根据实际情况进行修改，分别为测试用例测试结果根路径和测试用例测试结果csv
+
+1. collect.py中代码需要根据实际情况进行修改
+    * 查看path文件夹下ebizzy.txt内容格式：
+/var/www/html/result/ebizzy/200%-5x-5s/pc1-Z8302/ubuntu/defconfig/gcc-5/3c57ab41ca9ecc75c0e1d8b7fe698d7d71f74d4e/avg.json
+    * ebizzy、200%-5x-5s、pc1-Z8302、ubuntu、defconfig、gcc-5、3c57ab41ca9ecc75c0e1d8b7fe698d7d71f74d4e是配置信息，在路径中为第5到11项
+    * 将代码进行如下修改：
+        BINDEX = 5
+	CONFIG1 = 6
+	CONFIG2 = 7
+	CONFIG3 = 8
+	KINDEX = 9
+	CINDEX = 10
+	COMMIT = 11
 
 1. insertdata.py中代码需要根据实际情况进行修改
 
@@ -51,6 +66,6 @@ Python insertdata.py -f ebizzy（测试用例名字）在/var/www/html/lkp_web_o
     * ebizzy、200%-5x-5s、pc1-Z8302、ubuntu、defconfig、gcc-5、3c57ab41ca9ecc75c0e1d8b7fe698d7d71f74d4e是配置信息，在路径中为第5到11项
     * 将代码中n的循环定为5到11，即：
         n = 5  while n<=11
-    
+
 ### 7、浏览器访问：
 http://localhost（或者IP）/lkp_web_oto/
