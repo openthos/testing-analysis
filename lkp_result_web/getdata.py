@@ -74,7 +74,7 @@ for name in dirlist:
             pn = fn.split('/')
             dic['testcase'] = name
             dic[pn[7]] = getresult(fn,r)
-            dic[pn[7]+'url']=geturl(fn,'/var/www/html','testResult.json')
+            dic[pn[7]+'url']=geturl(fn,'/var/www/html/','testResult.json')
     if(dic):
         dic.update(dic)
         data.append(dic)
