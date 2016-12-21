@@ -35,27 +35,27 @@
 
 			<?php
 
-			$xaxis=$_GET["xaxis"];
+			#$xaxis=$_GET["xaxis"];
 			$benchmarks=$_GET["benchmarks"];
-			//echo var_dump($xaxis).'<br>';
-			//echo var_dump($benchmarks).'<br>';
-			echo '<h3><a href="chart.php?xaxis='.$xaxis.'&benchmarks='.$benchmarks.'&count=7,8,9">'.$benchmarks.'</a></h3>';
+			#echo var_dump($xaxis).'<br>';
+			#echo var_dump($benchmarks).'<br>';
+			#echo '<h3><a href="chart.php?xaxis='.$xaxis.'&benchmarks='.$benchmarks.'&count=7,8,9">'.$benchmarks.'</a></h3>';
+           # echo '<h3>'.$benchmarks.'</h3>';
+			#if(($xaxis == "benchmark") && ($benchmarks == "all")){
 
-			if(($xaxis == "benchmark") && ($benchmarks == "all")){
-
-			$shell_result0 = shell_exec("./benchmarks_count.sh");
+			#$shell_result0 = shell_exec("./benchmarks_count.sh");
 			#echo $shell_result;
+            
+			#echo '
+			#	<iframe src="cache/count.html"
+			#	width="100%" height="2500"
+			#	frameborder="no">
+			#	<a href="cache/count.html">CHART</a>
+			#	</iframe>
+			#	<div class="clearfix"></div>
+			#';
 
-			echo '
-				<iframe src="cache/count.html"
-				width="100%" height="2500"
-				frameborder="no">
-				<a href="cache/count.html">CHART</a>
-				</iframe>
-				<div class="clearfix"></div>
-			';
-
-			}else{
+			#}else{
 
 			$csv_path = "csv/".$benchmarks.".csv";
                         //echo  $csv_path;
@@ -71,15 +71,22 @@
 			#echo $shell_result;
 */
 
+                        echo ' <form action="chart.php?" method="post" >';
+                        echo ' <input type="text" name="benchmarks" value="'.$benchmarks.'" readonly="true"><br>';
+                        echo '<input type="submit" value="提交">';
 			echo '<ul type="disc">';
 			$head_count=0;
 			foreach ($head_data as $value){
-				echo '<li><a href="chart.php?xaxis='.$xaxis.'&benchmarks='.$benchmarks.'&count='.$head_count.'">'.$value.'</a></li>';
-				$head_count++;
+				#echo '<li><a href="chart.php?xaxis='.$xaxis.'&benchmarks='.$benchmarks.'&count='.$head_count.'">'.$value.'</a></li>';
+                                echo '<li><input type="checkbox" name="count[]" value='.$head_count.'>'.$value.'</li>';
+				echo '<li><a href="chart.php?&benchmarks='.$benchmarks.'&count='.$head_count.'">'.$value.'</a></li>';
+                $head_count++;
 			}
 			echo '</ul>';
 			//echo var_dump($head_data).'<br>';
-			}
+			#}
+                         
+                        echo '</form>'
 
 			?>
 

@@ -52,49 +52,51 @@ def rmquotes(jsonstr):
 	#return re.sub(strre,"",jsonstr.replace("\"FLAG", "").replace("FLAG\"", ""))
 	return jsonstr.replace("\"FLAG", "").replace("FLAG\"", "")	
 
-def genhtml(dic, metric, xAxis, benchmark, kernel, compiler, output):
-	#inputL parms
+#def genhtml(dic, metric, xAxis, benchmark, kernel, compiler, output):
+def genhtml(dic, metric, benchmark, kernel, compiler, output):	
+    #inputL parms
 	#output: nothing
 	#function: genhtml
 
 	#Obtain series
-	series = {}
-	benchmarks = dic["benchmark"]
+    series = {}
+    benchmarks = dic["benchmark"]
 	#kernels = dic["kernel"]
-	kernels = dic["commit"]
-	compilers = dic["compiler"]
+    kernels = dic["commit"]
+    compilers = dic["compiler"]
 	
-	length = len(benchmarks)
+    length = len(benchmarks)
 	#print benchmarks
 #	print length
-	newseries = []
-	all_metric=metric.split(',')
+    newseries = []
+    all_metric=metric.split(',')
 #	combine = []
-	for metric_s in all_metric:
+       
+    for metric_s in all_metric:
 #		print metric_s
 		values = dic[metric_s]
 		#print values
-		if not cmp("benchmark", xAxis):
-			for i in range(length):
-				if not cmp(kernel, kernels[i]) and not cmp(compiler, compilers[i]):
-					series[benchmarks[i]] = float(values[i])
-		elif not cmp("kernel", xAxis):
-			for i in range(length):
-				str = dic["config2"][i]
+		#if not cmp("benchmark", xAxis):
+		#	for i in range(length):
+		#		if not cmp(kernel, kernels[i]) and not cmp(compiler, compilers[i]):
+		#			series[benchmarks[i]] = float(values[i])
+		#elif not cmp("kernel", xAxis):
+		for i in range(length):
+			str = dic["config2"][i]
 #				combine.append(dic["config2"][i]+"--"+kernels[i])
 				
-				if not cmp(benchmark, benchmarks[i]) and not cmp(compiler, compilers[i]):
+			if not cmp(benchmark, benchmarks[i]) and not cmp(compiler, compilers[i]):
 					#not have metric put null!!!!
-					if not values[i]:
+				if not values[i]:
 		#				print i
-						series[str[0:str.find('-')]+"-"+kernels[i]] = "null"
+					series[str[0:str.find('-')]+"-"+kernels[i]] = "null"
 		#				print dic["config2"][i]+"--"+kernels[i]
 		#				print series[dic["config2"][i]+"--"+kernels[i]]
 		#				print "*****"
 					#print values[i]
-					else:
+				else:
 		#				print i
-						series[str[0:str.find('-')]+"-"+kernels[i]] = float(values[i])
+					series[str[0:str.find('-')]+"-"+kernels[i]] = float(values[i])
 		#				print dic["config2"][i]+"--"+kernels[i]
 		#				print series[dic["config2"][i]+"--"+kernels[i]]
 		#				print "####"
@@ -102,10 +104,10 @@ def genhtml(dic, metric, xAxis, benchmark, kernel, compiler, output):
 			#keylist = series.keys()
 			#print keylist
 			#print len(keylist)			
-		elif not cmp("compiler", xAxis):
-			for i in range(length):
-				if not cmp(benchmark, benchmarks[i]) and not cmp(kernel, kernels[i]):
-					series[compilers[i]] = float(values[i])
+		#elif not cmp("compiler", xAxis):
+		#	for i in range(length):
+		#		if not cmp(benchmark, benchmarks[i]) and not cmp(kernel, kernels[i]):
+		#			series[compilers[i]] = float(values[i])
 		#m_c += 1
 		tmpdic = {}
         	#m_c = 0
@@ -121,62 +123,64 @@ def genhtml(dic, metric, xAxis, benchmark, kernel, compiler, output):
 #	print newseries
 
 	#generate html file
-	head = ""
-	tailer = ""
+    head = ""
+    tailer = ""
 
-	for line in open("html/head.html"):
+    for line in open("html/head.html"):
 		head += line
-	for line in open("html/tailer.html"):
+    for line in open("html/tailer.html"):
 		tailer += line
 
-	htmldict = {}
+    htmldict = {}
 	
-	title = {}
-	title["FLAGtextFLAG"] = "METRIC: " + metric + " -- XAXIS: " + xAxis
-	title["FLAGxFLAG"] = -20
+    title = {}
+    title["FLAGtextFLAG"] = "METRIC: " + metric + " -- XAXIS: pcname+commitid"
+    title["FLAGxFLAG"] = -20
         #print title["FLAGtextFLAG"]
         #print title["FLAGxFLAG"]
 
-	strx = xAxis
-	xAxis = {}
-	if not cmp("benchmark", strx):
-		xAxis["FLAGcategoriesFLAG"] = benchmarks
-	elif not cmp("kernel", strx):
-		xAxis["FLAGcategoriesFLAG"] = series.keys()
-	elif not cmp("compiler", strx):
-		xAxis["FLAGcategoriesFLAG"] = compilers
-        xAxis["FLAGminFLAG"] = 0
-	if len(series.keys()) < 10:
-		xAxis["FLAGmaxFLAG"] = len(series.keys())-1
-	else:
-		xAxis["FLAGmaxFLAG"] = 10
+    #strx = xAxis
+    xAxis = {}
+    #if not cmp("benchmark", strx):
+	#	xAxis["FLAGcategoriesFLAG"] = benchmarks
+    #elif not cmp("kernel", strx):
+    xAxis["FLAGcategoriesFLAG"] = series.keys()
+    #elif not cmp("compiler", strx):
+	 #   xAxis["FLAGcategoriesFLAG"] = compilers
+    xAxis["FLAGminFLAG"] = 0
+    xAxis["FLAGmaxFLAG"] = len(series.keys())-1
+#    if len(series.keys()) < 10:
+#		xAxis["FLAGmaxFLAG"] = len(series.keys())-1
+ #   else:
+#		xAxis["FLAGmaxFLAG"] = 10
 	#print xAxis
 	
-	scrollbar = {}
-	scrollbar["FLAGenabledFLAG"] = "true"	
+    scrollbar = {}
+    scrollbar["FLAGenabledFLAG"] = "true"	
 
-	yAxis = {}
-	ytitle = {}
-	ytitle["FLAGtextFLAG"] = metric
-	yplotLines = {}
-	yplotLines["FLAGvalueFLAG"] = 0
-	yplotLines["FLAGwidthFLAG"] = 1
-	yplotLines["FLAGcolorFLAG"] = '#808080'
-	yAxis["FLAGtitleFLAG"] = ytitle
-	yAxis["FLAGyplotLinesFLAG"] = yplotLines
+    yAxis = {}
+    ytitle = {}
+    ytitle["FLAGtextFLAG"] = metric
+    yplotLines = {}
+    yplotLines["FLAGvalueFLAG"] = 0
+    yplotLines["FLAGwidthFLAG"] = 1
+    yplotLines["FLAGcolorFLAG"] = '#808080'
+    yAxis["FLAGtitleFLAG"] = ytitle
+    yAxis["FLAGyplotLinesFLAG"] = yplotLines
         #print yAxis
 
-	legend = {}
-	legend["FLAGlayoutFLAG"] = "vertical"
-	legend["FLAGalignFLAG"] = "right"
-	legend["FLAGverticalAlignFLAG"] = "middle"
-	legend["FLAGborderWidthFLAG"] = 0
+    legend = {}
+    legend["FLAGlayoutFLAG"] = "vertical"
+    legend["FLAGalignFLAG"] = "right"
+    legend["FLAGverticalAlignFLAG"] = "middle"
+    legend["FLAGborderWidthFLAG"] = 0
         #print legend
 
-	tooltip = {}
-	tooltip["FLAGuseHTMLFLAG"] = "true"
-	tooltip["FLAGheaderFormatFLAG"] = '<a href="../getTEST.php?benchmarks=' + benchmark + '&xaxis={point.key}">{point.key}</a><br>'
-        #print tooltip
+    tooltip = {}
+    tooltip["FLAGuseHTMLFLAG"] = "true"
+    #tooltip["FLAGheaderFormatFLAG"] = '<a href="../getTEST.php?benchmarks=' + benchmark + '&xaxis={point.key}">{point.key}</a><br>'
+    tooltip["FLAGheaderFormatFLAG"] = "{point.key}<br>"    
+    #print tooltip
 
 	#newseries = []
 	#tmpdic = {}
@@ -184,28 +188,28 @@ def genhtml(dic, metric, xAxis, benchmark, kernel, compiler, output):
 	#tmpdic["FLAGdataFLAG"] = series.values()
 	#newseries.append(tmpdic)
 
-	htmldict["FLAGseriesFLAG"] = newseries
-	htmldict["FLAGlegendFLAG"] = legend
-	htmldict["FLAGtooltipFLAG"] = tooltip
-	htmldict["FLAGyAxisFLAG"] = yAxis
-	htmldict["FLAGxAxisFLAG"] = xAxis	
-	htmldict["FLAGtitleFLAG"] = title
-	if len(series.keys())> 10:
-		htmldict["FLAGscrollbarFLAG"] = scrollbar
+    htmldict["FLAGseriesFLAG"] = newseries
+    htmldict["FLAGlegendFLAG"] = legend
+    htmldict["FLAGtooltipFLAG"] = tooltip
+    htmldict["FLAGyAxisFLAG"] = yAxis
+    htmldict["FLAGxAxisFLAG"] = xAxis	
+    htmldict["FLAGtitleFLAG"] = title
+#    if len(series.keys())> 10:
+#		htmldict["FLAGscrollbarFLAG"] = scrollbar
         #print htmldict
 
-	jsonstr = JSONEncoder().encode(htmldict)
+    jsonstr = JSONEncoder().encode(htmldict)
 
 
-	jsonstr = rmquotes(jsonstr)
+    jsonstr = rmquotes(jsonstr)
 	#print jsonstr
 
-	html = head + jsonstr + tailer
+    html = head + jsonstr + tailer
         #print html
 
-	output = open(output, 'w')
-	output.write(html)
-	output.close()
+    output = open(output, 'w')
+    output.write(html)
+    output.close()
 
 if __name__ == "__main__":
 	parser = OptionParser(usage="%prog [optinos] filename")
@@ -255,13 +259,13 @@ if __name__ == "__main__":
 	                default = ".",
 	                help = "Which compiler do you want to show in this image"
 	                )
-	parser.add_option("-x", "--xAxis",
-	                action = "store",
-	                dest = "xAxis",
-	                type = "string",
-	                default = ".",
-	                help = "Which dimension do you want to set as the xAxis"
-	                )
+	#parser.add_option("-x", "--xAxis",
+	 #               action = "store",
+	  #              dest = "xAxis",
+	   #             type = "string",
+	    #            default = ".",
+	     #           help = "Which dimension do you want to set as the xAxis"
+	             #   )
 
 	(options, args) = parser.parse_args()
 
@@ -272,6 +276,6 @@ if __name__ == "__main__":
 	benchmark = options.benchmark
 	kernel = options.kernel
 	compiler = options.compiler
-	xAxis = options.xAxis
+	#xAxis = options.xAxis
 
-	genhtml(dic, metric, xAxis, benchmark, kernel, compiler, output)
+	genhtml(dic, metric, benchmark, kernel, compiler, output)
