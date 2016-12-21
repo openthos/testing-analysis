@@ -75,11 +75,12 @@
                         echo ' <input type="text" name="benchmarks" value="'.$benchmarks.'" readonly="true"><br>';
                         echo '<input type="submit" value="提交">';
 			echo '<ul type="disc">';
-			$head_count=0;
+			$head_count=7;
+                        $head_data=array_slice($head_data,7);
 			foreach ($head_data as $value){
 				#echo '<li><a href="chart.php?xaxis='.$xaxis.'&benchmarks='.$benchmarks.'&count='.$head_count.'">'.$value.'</a></li>';
                                 echo '<li><input type="checkbox" name="count[]" value='.$head_count.'>'.$value.'</li>';
-				echo '<li><a href="chart.php?&benchmarks='.$benchmarks.'&count='.$head_count.'">'.$value.'</a></li>';
+				#echo '<li><a href="chart.php?&benchmarks='.$benchmarks.'&count='.$head_count.'">'.$value.'</a></li>';
                 $head_count++;
 			}
 			echo '</ul>';

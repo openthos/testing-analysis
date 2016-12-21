@@ -51,8 +51,12 @@
 			//$t_exec = 'python genhtml.py -i '.$csv_path.' -o cache/out.html -m '.$head_data[$head_count].' -b '.$benchmarks.' -c gcc-4.9 -x '.$xaxis ;
                         //gcc-5修改
 			//$t_exec = 'python genhtml.py -i '.$csv_path.' -o cache/out.html -m '.$metric.' -b '.$benchmarks.' -c gcc-5 -x '.$xaxis ;
+                        $t_exec = 'rm -rf ./cache/out.html' ;
+                        echo $t_exec;
+                        $shell_result = shell_exec("$t_exec");
+
 			$t_exec = 'python genhtml.py -i '.$csv_path.' -o cache/out.html -m '.$metric.' -b '.$benchmarks.' -c gcc-5' ;
-            echo $t_exec;
+                        echo $t_exec;
 			$shell_result = shell_exec("$t_exec");
 			#echo $csv_path
 			#echo $shell_result;
