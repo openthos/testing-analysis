@@ -73,7 +73,9 @@
 
                         echo ' <form action="chart.php?" method="post" >';
                         echo ' <input type="text" name="benchmarks" value="'.$benchmarks.'" readonly="true"><br>';
-                        echo '<input type="submit" value="提交">';
+                        echo '<input type="submit" value="SUBMIT">';
+                        echo '     ';
+                        echo '<input type="reset" value="CLEAR" >';
 			echo '<ul type="disc">';
 			$head_count=7;
                         $head_data=array_slice($head_data,7);
