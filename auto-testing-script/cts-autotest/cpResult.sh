@@ -26,8 +26,8 @@ function mvGuiResult
     for testcase in `ls $tmpTestcaseFold`
     do
         if [ -d $tmpTestcaseFold/$testcase/$ip_android"_"$adbPort"_"$kernel ];then
-            mkdir -p $result/$testcase/$testarg/$host/$rootfs/$kconfig/$cc/$kernel/$no
-            mv $tmpTestcaseFold/$testcase/$ip_android"_"$adbPort"_"$kernel/* $result/$testcase/$testarg/$host/$rootfs/$kconfig/$cc/$kernel/$no
+            mkdir -p $result/$testcase"_GUI"/$testarg/$host/$rootfs/$kconfig/$cc/$kernel/$no
+            mv $tmpTestcaseFold/$testcase/$ip_android"_"$adbPort"_"$kernel/* $result/$testcase"_GUI"/$testarg/$host/$rootfs/$kconfig/$cc/$kernel/$no
             rm -r $tmpTestcaseFold/$testcase/$ip_android"_"$adbPort"_"$kernel
        fi
     done

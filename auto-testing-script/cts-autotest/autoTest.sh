@@ -121,7 +121,7 @@ function tradefedMonitor()
         fi
         sleepTimes=$((sleepTimes+1))
     done
-    if [ $sleepTimes -eq 460 ];then
+    if [ $sleepTimes -eq 100 ];then
         kill $tradefedPid
         return -1
     else
