@@ -52,7 +52,11 @@ def geturl(fn,start,end):
     endIndex=fn.index(end)
     return fn[startIndex:endIndex]
 
-d = open('data.json' , 'wb')
+if(os.path.exists('table/'+sys.argv[1]+'_summary.json')):
+    sys.exit(0)
+else:
+    d = open('table/'+sys.argv[1]+'_summary.json' , 'wb')
+
 r = ''
 data = []
 

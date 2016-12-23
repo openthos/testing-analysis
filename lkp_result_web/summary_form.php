@@ -29,8 +29,9 @@
 <script src="jquery-1.11.3.min.js"></script>
 <script src="jquery.columns.min.js"></script>
 <script>
+	var commitid = "<?php echo $com?>";
 	$.ajax({
-                url:'data.json',
+                url:'table/'+commitid+'_summary.json',
                 dataType: 'json',
                 success: function(json) {
                      restable = $('#restable').columns({
