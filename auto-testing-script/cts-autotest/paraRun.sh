@@ -9,6 +9,8 @@ if [ -n "$1" ] ;then
     commitId=${tmp%-*}
     echo "commitId:$commitId" > commitId.txt
 fi
+###build Gui testcase
+./buildGuiTestcase.sh
 
 while read line
 do 
