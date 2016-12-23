@@ -34,7 +34,7 @@ cd /var/www/html/
 
 
 ```
-cp ./*.sh ./*.php ./*.js ./*.py  ./*.md  ~/workdir/testing-analysis/lkp_result_web                
+cp ./*.sh ./*.php ./*.js ./*.py    ~/workdir/testing-analysis/lkp_result_web                
 cp lkp_web_oto/ -R  ~/workdir/testing-analysis/lkp_result_web
 
 cd ~/workdir/testing-analysis/ 

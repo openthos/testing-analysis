@@ -12,19 +12,15 @@
  <?php
   $vcompile=  $_GET["summary"];
   $vcompile=str_replace("%","%25",$vcompile);
+  $com=substr($vcompile,9);
+  system("python getdata.py ".$com);
   $vcompile="summary/".$vcompile;
   echo $vcompile
 ?>
 
 "frameborder="0" ></iframe>
-<!--" marginheight="0" marginwidth="0" frameborder="0" width=100% height=100% id="iframepage" name="iframepage" onLoad="iFrameHeight()" ></iframe> -->
+<!--" marginheight="0" marginwidth="0" frameborder="0" width=100% height=100% id="iframepage" name="iframepage" onLoad="iFrameHeight()" ></iframe>--> 
 
-<?php
-  $vcompile=  $_GET["summary"];
-  $vcompile=str_replace("%","%25",$vcompile);
-  $com=substr($vcompile,9);
-  system("python getdata.py ".$com);
-?>
 <h4>汇总如下：</h4>
 <div id="sumtable"></div>
 <h4>详细列表：(0表示不通过，1表示通过，空白表示未测试)</h4>
@@ -33,8 +29,9 @@
 <script src="jquery-1.11.3.min.js"></script>
 <script src="jquery.columns.min.js"></script>
 <script>
+	var commitid = "<?php echo $com?>";
 	$.ajax({
-                url:'data.json',
+                url:'table/'+commitid+'_summary.json',
                 dataType: 'json',
                 success: function(json) {
                      restable = $('#restable').columns({

@@ -89,7 +89,7 @@ function my_scandir3($dir)
                     {
                         $test =  "./lkp_web_oto/getfilelist.py -f ".$file;
                         $last = system($test);
-                        $test =  "./lkp_web_oto/insertdata.py -f ".$file;
+                        $test =  "./lkp_web_oto/collect.py -f ".$file;
                         $last = system($test);
                         $files[$file]=$file;
                     }
@@ -460,15 +460,15 @@ ifm.contentDocument;
 
 <h3>csv 曲线<h3>
   <form action="./lkp_web_oto/getMETRIC.php" enctype="multipart/form-data" method="get" accept-charset="utf-8">
+<!--
 xAxis:
-            </span></div>
-
-            &nbsp;<input type="radio" name="xaxis" value="benchmark">benchmarks
-            &nbsp;<input type="radio" checked="checked" name="xaxis" value="kernel">kernels
-            &nbsp;<input type="radio" name="xaxis" value="compiler" disabled>compilers (gcc-4.9 or gcc-5)
-            &nbsp;&nbsp;
 
 
+         &nbsp;<input type="radio" name="xaxis" value="benchmark">benchmarks
+        &nbsp;<input type="radio" checked="checked" name="xaxis" value="kernel">kernels
+          &nbsp;<input type="radio" name="xaxis" value="compiler" disabled>compilers (gcc-4.9 or gcc-5)
+
+-->
 <select id="benchmarks" name="benchmarks" >
 
                         </select name="benchmarks" >
