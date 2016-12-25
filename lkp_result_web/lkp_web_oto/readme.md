@@ -49,5 +49,5 @@ Python collect.py -f ebizzy（测试用例名字）在/var/www/html/lkp_web_oto/
 http://localhost（或者IP）/lkp_web_oto/
  
 Python insertdata.py -f ebizzy（测试用例名字）在/var/www/html/lkp_web_oto/csv下生成ebizzy（测试用例名字）测试结果完整csv文件 
-### 8、测试结果可视化显示程序脚本相互关系如下
+### 8、测试结果分析过程中各脚本的相互关系如下
 ![测试结果可视化显示脚本相互关系](https://github.com/openthos/testing-analysis/blob/master/lkp_result_web/lkp_web_oto/image/script_relation.png )
