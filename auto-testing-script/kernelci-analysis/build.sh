@@ -1,4 +1,4 @@
-#!/bin/bash -ex
+#!/bin/bash -e
 otoid=$1
 result=/mnt/freenas
 ctsautotest=../cts-autotest
@@ -28,5 +28,5 @@ echo "deploy time:$time s"
 now=$(date "+%s")
 time=$((now-now1))
 num=3
-echo "exec $num testcases"
+#echo "exec $num testcases"
 #echo "test time:$time s"

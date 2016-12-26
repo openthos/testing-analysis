@@ -14,6 +14,25 @@ git pull
         fi  
 ############################
 
+############################
+## git pull lkp test source code 
+cd ../../../oto_lkp
+git pull
+        if [ $? -ne 0 ]; then
+        echo -e "LKP test source code pull ERROR, use the previous code and testcases set!"
+        fi  
+cd $dirname_path
+############################
+
+############################
+## git pull gui test source code 
+cd ../../../oto_Uitest
+git pull
+        if [ $? -ne 0 ]; then
+        echo -e "GUI test source code pull ERROR, use the previous code and testcases set!"
+        fi  
+cd $dirname_path
+############################
 
 build_sh="$dirname_path/build.sh"
 tmp_branch="$dirname_path/tmp_branch"
@@ -36,20 +55,22 @@ if [ $? -eq 0 ]; then
     
     br_com=(`git log -1 --pretty=format:"%H %cd" --date=raw` )
     
-    if [ "${old_br_com[0]}"x = "${br_com[0]}"x ]
-    then
+    if [ "${old_br_com[0]}"x = "${br_com[0]}"x ];then
     	echo `date` nothing new
     	continue
     else
     	echo `date` something new
     	echo ${br_com[@]} > $tmp_branch/$br_
-    	/bin/bash $build_sh ${br_com[0]} > /mnt/freenas/summary/`date +%Y%m%d`-${br_com[0]}
+    	#/bin/bash $build_sh ${br_com[0]} > /mnt/freenas/summary/`date +%Y%m%d`-${br_com[0]}
+    	/bin/bash $build_sh ${br_com[0]} > `date +%Y%m%d`-${br_com[0]}
     fi
     #for loop
     done
 else
     echo "oto git pull error!"
 fi
+
+mv summary 201* /mnt/freenas/summary/
 
 ## after 10 minutes, start test again
 minuteNow=`date "+%M"`
