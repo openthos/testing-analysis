@@ -124,7 +124,7 @@ my_sort($aaa);
 
 
 
-echo "    var Place_dict = ";
+echo "    var result_dict = ";
 echo json_encode($aaa,JSON_FORCE_OBJECT|JSON_UNESCAPED_SLASHES);
 echo ";";
 
@@ -158,7 +158,7 @@ echo ";";
 function all_init()
 {
  csv_changeselect("init");
- changeselect("init");
+ result_changeselect("init");
  compile_changeselect("init");
  summary_changeselect("init");
 }
@@ -227,18 +227,10 @@ function summary_changeselect(aid)
 
 
 
-
-
-
-
-
-
-
-
-//可以递归调用吗？	changeselect(aid)
+//可以递归调用吗？	result_changeselect(aid)
 //递归调用达到了联动的目的
  
-function changeselect(aid)
+function result_changeselect(aid)
 {
   var A=document.getElementById("testcase")
   var B=document.getElementById("test_config")
@@ -251,115 +243,155 @@ function changeselect(aid)
   
  if(aid=="init") 
   {
-      for(city in Place_dict){ 
+      for(an_dict in result_dict){ 
 
-        var text = "<option>"+city+"</option>";
+        var text = "<option>"+an_dict+"</option>";
 		$("#testcase").append(text);
         console.log(text); 
       }
-  changeselect("testcase");	  
+  result_changeselect("testcase");	  
 }
   
   
 if (aid=="testcase")
  {
-    $("#test_config").empty();			
-	 var n_dict = Place_dict[A.value];
+    $("#test_config").empty();		
+
+   console.log("A.value "+A.value); 	
+	 var n_dict = result_dict[A.value];
 	 
-      for(city in n_dict){  
+      for(an_dict in n_dict){  
         
-        var text = "<option>"+city+"</option>";
+        var text = "<option>"+an_dict+"</option>";
 		$("#test_config").append(text);
+		console.log("aid==testcase"); 
         console.log(text); //用来观察生成的text数据
+		console.log("aid==testcase end"); 
       }	 
-	  changeselect("test_config")
+	  result_changeselect("test_config")
  }
  if (aid=="test_config")
  {
     $("#tbox_group").empty();
-	 var n_dict = Place_dict[A.value][B.value];
+	   console.log("B.value "+B.value); 	
+	if((B.value).length != 0)
+	{
+	 var n_dict = result_dict[A.value][B.value];
 	 
-      for(city in n_dict){  
+      for(an_dict in n_dict){  
        
-        var text = "<option>"+city+"</option>";
+        var text = "<option>"+an_dict+"</option>";
 		$("#tbox_group").append(text);
         console.log(text); //用来观察生成的text数据
-      }	 
-      changeselect("tbox_group")
+      }
+    }	  
+      result_changeselect("tbox_group")
  }
   if (aid=="tbox_group")
  {
     $("#rootfs").empty();
-	 var n_dict = Place_dict[A.value][B.value][C.value];
+	 console.log("C.value "+C.value); 
+		if((C.value).length != 0)
+	{
+	 console.log("line 171"); 
+	 var n_dict = result_dict[A.value][B.value][C.value];
 	 
-      for(city in n_dict){  
+      for(an_dict in n_dict){  
        
-        var text = "<option>"+city+"</option>";
+        var text = "<option>"+an_dict+"</option>";
 		$("#rootfs").append(text);
         console.log(text); //用来观察生成的text数据
       }	 
-      changeselect("rootfs")
+	 }
+      result_changeselect("rootfs")
  }
  
  
    if (aid=="rootfs")
  {
     $("#kconfig").empty();
-	 var n_dict = Place_dict[A.value][B.value][C.value][D.value];
+	console.log("D.value "+D.value); 
+	if((D.value).length != 0)
+	{
+	 var n_dict = result_dict[A.value][B.value][C.value][D.value];
 	 
-      for(city in n_dict){  
+      for(an_dict in n_dict){  
        
-        var text = "<option>"+city+"</option>";
+        var text = "<option>"+an_dict+"</option>";
 		$("#kconfig").append(text);
         console.log(text); //用来观察生成的text数据
       }	 
-      changeselect("kconfig")
+	  }
+      result_changeselect("kconfig")
  }
  
  
    if (aid=="kconfig")
  {
     $("#compiler").empty();
-	 var n_dict = Place_dict[A.value][B.value][C.value][D.value][E.value];
+	console.log("E.value "+E.value); 
+	if((E.value).length != 0)
+	{
+	 var n_dict = result_dict[A.value][B.value][C.value][D.value][E.value];
 	 
-      for(city in n_dict){  
+      for(an_dict in n_dict){  
        
-        var text = "<option>"+city+"</option>";
+        var text = "<option>"+an_dict+"</option>";
 		$("#compiler").append(text);
         console.log(text); //用来观察生成的text数据
       }	 
-      changeselect("compiler")
+	  }
+      result_changeselect("compiler")
  }
  
    if (aid=="compiler")
  {
+
     $("#commit").empty();
-	 var n_dict = Place_dict[A.value][B.value][C.value][D.value][E.value][F.value];
+	console.log("F.value "+F.value); 
+	    if((F.value).length != 0)
+	{
+	 var n_dict = result_dict[A.value][B.value][C.value][D.value][E.value][F.value];
 	 
-      for(city in n_dict){  
+      for(an_dict in n_dict){  
        
-        var text = "<option>"+city+"</option>";
+        var text = "<option>"+an_dict+"</option>";
 		$("#commit").append(text);
         console.log(text); //用来观察生成的text数据
-      }	 
-      changeselect("commit")
+      }	
+    }	  
+      result_changeselect("commit")
  }
  
    if (aid=="commit")
  {
+    
     $("#run").empty();
-	 var n_dict = Place_dict[A.value][B.value][C.value][D.value][E.value][F.value][G.value];
+	console.log("G.value "+G.value); 
+	if((G.value).length != 0)
+	{
+	 var n_dict = result_dict[A.value][B.value][C.value][D.value][E.value][F.value][G.value];
 	 
-      for(city in n_dict){  
+      for(an_dict in n_dict){  
        
-        var text = "<option>"+city+"</option>";
+        var text = "<option>"+an_dict+"</option>";
 		$("#run").append(text);
         console.log(text); //用来观察生成的text数据
       }	 
-      changeselect("run")
+	  }
+      result_changeselect("run")
  }
  
 }
+
+
+
+
+
+
+
+
+ 
 
 function button_click(aid)
 {
@@ -479,7 +511,7 @@ xAxis:
 
 
 
-<h3>testcase信息展示[筛选法]</h3>
+<h3>result信息展示[筛选法]</h3>
 
 <div id="entry" class="ui-widget">
 
@@ -514,38 +546,38 @@ xAxis:
 
 
 </br>
-<h3>testcase信息展示:</h3>
+<h3>result信息展示:</h3>
 <form action="testcase_form.php" method="get">
-testcase <select id="testcase" name="testcase"  onchange="changeselect(this.id)">
+testcase <select id="testcase" name="testcase"  onchange="result_changeselect(this.id)">
 </select>
 
-test_config <select id="test_config" name="test_config" onchange="changeselect(this.id)">
-
-</select>
-
-tbox_group <select id="tbox_group" name="tbox_group" onchange="changeselect(this.id)">
+test_config <select id="test_config" name="test_config" onchange="result_changeselect(this.id)">
 
 </select>
 
-rootfs <select id="rootfs"  name="rootfs" onchange="changeselect(this.id)">
+tbox_group <select id="tbox_group" name="tbox_group" onchange="result_changeselect(this.id)">
 
 </select>
 
-
-kconfig <select id="kconfig" name="kconfig"  onchange="changeselect(this.id)">
+rootfs <select id="rootfs"  name="rootfs" onchange="result_changeselect(this.id)">
 
 </select>
 
 
-compiler <select id="compiler"  name="compiler" onchange="changeselect(this.id)">
+kconfig <select id="kconfig" name="kconfig"  onchange="result_changeselect(this.id)">
 
 </select>
 
- commit<select id="commit"  name="commit"    onchange="changeselect(this.id)">
+
+compiler <select id="compiler"  name="compiler" onchange="result_changeselect(this.id)">
 
 </select>
 
-run <select id="run"  name="run"onchange="changeselect(this.id)">
+ commit<select id="commit"  name="commit"    onchange="result_changeselect(this.id)">
+
+</select>
+
+run <select id="run"  name="run"onchange="result_changeselect(this.id)">
 
 </select>
 </br>
@@ -555,7 +587,7 @@ run <select id="run"  name="run"onchange="changeselect(this.id)">
 </br>
 <h3> compile 信息展示</h3>
 <form action="compile_form.php" method="get">
-compile  <select id="compile" name="compile"  onchange="changeselect(this.id)">
+compile  <select id="compile" name="compile"  onchange="result_changeselect(this.id)">
 </select>
 </br>
 <input type="submit" value="Submit">
@@ -568,7 +600,7 @@ compile  <select id="compile" name="compile"  onchange="changeselect(this.id)">
 </br>
 <h3> summary 信息展示</h3>
 <form action="summary_form.php" method="get">
-summary  <select id="summary" name="summary"  onchange="changeselect(this.id)">
+summary  <select id="summary" name="summary"  onchange="result_changeselect(this.id)">
 </select>
 
 </br>
