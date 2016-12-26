@@ -28,7 +28,7 @@
 			//$xaxis=$_GET["xaxis"];
 			$benchmarks=$_POST["benchmarks"];
 			$head_count=$_POST["count"];
-            echo var_dump($head_count).'<br>'; 
+#            echo var_dump($head_count).'<br>'; 
             $all_head_count=$head_count;
 		   //	$all_head_count=explode(",",$head_count);
 
@@ -52,11 +52,11 @@
                         //gcc-5修改
 			//$t_exec = 'python genhtml.py -i '.$csv_path.' -o cache/out.html -m '.$metric.' -b '.$benchmarks.' -c gcc-5 -x '.$xaxis ;
                         $t_exec = 'rm -rf ./cache/out.html' ;
-                        echo $t_exec;
+#                        echo $t_exec;
                         $shell_result = shell_exec("$t_exec");
 
 			$t_exec = 'python genhtml.py -i '.$csv_path.' -o cache/out.html -m '.$metric.' -b '.$benchmarks.' -c gcc-5' ;
-                        echo $t_exec;
+ #                       echo $t_exec;
 			$shell_result = shell_exec("$t_exec");
 			#echo $csv_path
 			#echo $shell_result;
