@@ -18,7 +18,7 @@
   echo $vcompile
 ?>
 
-"frameborder="0" ></iframe>
+"frameborder="0" width=100% ></iframe>
 <!--" marginheight="0" marginwidth="0" frameborder="0" width=100% height=100% id="iframepage" name="iframepage" onLoad="iFrameHeight()" ></iframe>--> 
 
 <h4>汇总如下：</h4>

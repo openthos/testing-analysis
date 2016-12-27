@@ -52,7 +52,8 @@ def geturl(fn,start,end):
     endIndex=fn.index(end)
     return fn[startIndex:endIndex]
 
-if(os.path.exists('table/'+sys.argv[1]+'_summary.json')):
+table_file='table/'+sys.argv[1]+'_summary.json'
+if(os.path.exists(table_file) and os.path.getsize(table_file) > 5000):
     sys.exit(0)
 else:
     d = open('table/'+sys.argv[1]+'_summary.json' , 'wb')
