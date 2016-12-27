@@ -1,4 +1,4 @@
-#!/bin/bash -ux
+#!/bin/bash -u
 testcaseFold=../kernelci-analysis/testcases
 cd $testcaseFold
 localPwd=`pwd`
