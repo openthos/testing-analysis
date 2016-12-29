@@ -26,6 +26,7 @@
 
 			<?php
 			//$xaxis=$_GET["xaxis"];
+			$hostname=$_POST["hostname"];
 			$benchmarks=$_POST["benchmarks"];
 			$head_count=$_POST["count"];
 #            echo var_dump($head_count).'<br>'; 
@@ -55,8 +56,8 @@
 #                        echo $t_exec;
                         $shell_result = shell_exec("$t_exec");
 
-			$t_exec = 'python genhtml.py -i '.$csv_path.' -o cache/out.html -m '.$metric.' -b '.$benchmarks.' -c gcc-5' ;
- #                       echo $t_exec;
+			$t_exec = 'python genhtml.py -i '.$csv_path.' -o cache/out.html -m '.$metric.' -b '.$benchmarks.' -c gcc-5 ' .'-n '.$hostname;
+                        echo $t_exec;
 			$shell_result = shell_exec("$t_exec");
 			#echo $csv_path
 			#echo $shell_result;

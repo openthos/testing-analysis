@@ -53,7 +53,7 @@ def rmquotes(jsonstr):
 	return jsonstr.replace("\"FLAG", "").replace("FLAG\"", "")	
 
 #def genhtml(dic, metric, xAxis, benchmark, kernel, compiler, output):
-def genhtml(dic, metric, benchmark, kernel, compiler, output):	
+def genhtml(dic, metric, benchmark, kernel, compiler, output,hostname):	
     #inputL parms
 	#output: nothing
 	#function: genhtml
@@ -64,7 +64,6 @@ def genhtml(dic, metric, benchmark, kernel, compiler, output):
 	#kernels = dic["kernel"]
     kernels = dic["commit"]
     compilers = dic["compiler"]
-	
     length = len(benchmarks)
 	#print benchmarks
 #	print length
@@ -85,7 +84,7 @@ def genhtml(dic, metric, benchmark, kernel, compiler, output):
 			str = dic["config2"][i]
 #				combine.append(dic["config2"][i]+"--"+kernels[i])
 				
-			if not cmp(benchmark, benchmarks[i]) and not cmp(compiler, compilers[i]):
+			if not cmp(benchmark, benchmarks[i]) and not cmp(compiler, compilers[i]) and not cmp(hostname,str):
 					#not have metric put null!!!!
 				if not values[i]:
 		#				print i
@@ -259,13 +258,21 @@ if __name__ == "__main__":
 	                default = ".",
 	                help = "Which compiler do you want to show in this image"
 	                )
-	#parser.add_option("-x", "--xAxis",
-	 #               action = "store",
-	  #              dest = "xAxis",
-	   #             type = "string",
-	    #            default = ".",
-	     #           help = "Which dimension do you want to set as the xAxis"
-	             #   )
+	parser.add_option("-n", "--hostname",
+	                action = "store",
+	                dest = "hostname",
+	                type = "string",
+	                default = ".",
+	                help = "Which host do you want to show in this image"
+	                )
+    #parser.add_option("-x", "--xAxis",
+     #               action = "store",                                                                                                               
+      #              dest = "xAxis",
+       #             type = "string",
+        #            default = ".",
+         #           help = "Which dimension do you want to set as the xAxis"
+                 #   )
+
 
 	(options, args) = parser.parse_args()
 
@@ -277,5 +284,8 @@ if __name__ == "__main__":
 	kernel = options.kernel
 	compiler = options.compiler
 	#xAxis = options.xAxis
+	hostname = options.hostname
 
-	genhtml(dic, metric, benchmark, kernel, compiler, output)
+
+
+	genhtml(dic, metric, benchmark, kernel, compiler, output,hostname)

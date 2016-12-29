@@ -1,0 +1,257 @@
+[
+ {
+  "testcase": "gugeginput_GUI", 
+  "qemu1url": "result/gugeginput_GUI/default/qemu1/android/android_x86/gcc/9d2104c1dd77b241b906be9fb12c5b8f7934e1d2/0/", 
+  "qemu1": "0"
+ }, 
+ {
+  "testcase": "Acrobat_GUI", 
+  "qemu1url": "result/Acrobat_GUI/default/qemu1/android/android_x86/gcc/9d2104c1dd77b241b906be9fb12c5b8f7934e1d2/0/", 
+  "qemu1": "0"
+ }, 
+ {
+  "testcase": "toutiao_GUI", 
+  "qemu1url": "result/toutiao_GUI/default/qemu1/android/android_x86/gcc/9d2104c1dd77b241b906be9fb12c5b8f7934e1d2/0/", 
+  "qemu1": "0"
+ }, 
+ {
+  "testcase": "date_GUI", 
+  "qemu1url": "result/date_GUI/default/qemu1/android/android_x86/gcc/9d2104c1dd77b241b906be9fb12c5b8f7934e1d2/0/", 
+  "qemu1": "1"
+ }, 
+ {
+  "testcase": "taobao_GUI", 
+  "qemu1url": "result/taobao_GUI/default/qemu1/android/android_x86/gcc/9d2104c1dd77b241b906be9fb12c5b8f7934e1d2/0/", 
+  "qemu1": "0"
+ }, 
+ {
+  "testcase": "gdmap_GUI", 
+  "qemu1url": "result/gdmap_GUI/default/qemu1/android/android_x86/gcc/9d2104c1dd77b241b906be9fb12c5b8f7934e1d2/0/", 
+  "qemu1": "0"
+ }, 
+ {
+  "testcase": "QQ_GUI", 
+  "qemu1url": "result/QQ_GUI/default/qemu1/android/android_x86/gcc/9d2104c1dd77b241b906be9fb12c5b8f7934e1d2/0/", 
+  "qemu1": "0"
+ }, 
+ {
+  "testcase": "terminal_GUI", 
+  "qemu1url": "result/terminal_GUI/default/qemu1/android/android_x86/gcc/9d2104c1dd77b241b906be9fb12c5b8f7934e1d2/0/", 
+  "qemu1": "0"
+ }, 
+ {
+  "testcase": "tencent_video_GUI", 
+  "qemu1url": "result/tencent_video_GUI/default/qemu1/android/android_x86/gcc/9d2104c1dd77b241b906be9fb12c5b8f7934e1d2/0/", 
+  "qemu1": "1"
+ }, 
+ {
+  "testcase": "gallery_GUI", 
+  "qemu1url": "result/gallery_GUI/default/qemu1/android/android_x86/gcc/9d2104c1dd77b241b906be9fb12c5b8f7934e1d2/0/", 
+  "qemu1": "0"
+ }, 
+ {
+  "testcase": "wpsemail_GUI", 
+  "qemu1url": "result/wpsemail_GUI/default/qemu1/android/android_x86/gcc/9d2104c1dd77b241b906be9fb12c5b8f7934e1d2/0/", 
+  "qemu1": "1"
+ }, 
+ {
+  "testcase": "note_GUI", 
+  "qemu1url": "result/note_GUI/default/qemu1/android/android_x86/gcc/9d2104c1dd77b241b906be9fb12c5b8f7934e1d2/0/", 
+  "qemu1": "1"
+ }, 
+ {
+  "testcase": "Baiduyun_GUI", 
+  "qemu1url": "result/Baiduyun_GUI/default/qemu1/android/android_x86/gcc/9d2104c1dd77b241b906be9fb12c5b8f7934e1d2/0/", 
+  "qemu1": "0"
+ }, 
+ {
+  "testcase": "taijie_video_GUI", 
+  "qemu1url": "result/taijie_video_GUI/default/qemu1/android/android_x86/gcc/9d2104c1dd77b241b906be9fb12c5b8f7934e1d2/0/", 
+  "qemu1": "0"
+ }, 
+ {
+  "testcase": "Setting_GUI", 
+  "qemu1url": "result/Setting_GUI/default/qemu1/android/android_x86/gcc/9d2104c1dd77b241b906be9fb12c5b8f7934e1d2/0/", 
+  "qemu1": "1"
+ }, 
+ {
+  "testcase": "angrybird_GUI", 
+  "qemu1url": "result/angrybird_GUI/default/qemu1/android/android_x86/gcc/9d2104c1dd77b241b906be9fb12c5b8f7934e1d2/0/", 
+  "qemu1": "0"
+ }, 
+ {
+  "testcase": "wpspro_GUI", 
+  "qemu1url": "result/wpspro_GUI/default/qemu1/android/android_x86/gcc/9d2104c1dd77b241b906be9fb12c5b8f7934e1d2/0/", 
+  "qemu1": "1"
+ }, 
+ {
+  "testcase": "xiuxiu_GUI", 
+  "qemu1url": "result/xiuxiu_GUI/default/qemu1/android/android_x86/gcc/9d2104c1dd77b241b906be9fb12c5b8f7934e1d2/0/", 
+  "qemu1": "1"
+ }, 
+ {
+  "testcase": "calc_GUI", 
+  "qemu1url": "result/calc_GUI/default/qemu1/android/android_x86/gcc/9d2104c1dd77b241b906be9fb12c5b8f7934e1d2/0/", 
+  "qemu1": "0"
+ }, 
+ {
+  "testcase": "dazhihui_GUI", 
+  "qemu1url": "result/dazhihui_GUI/default/qemu1/android/android_x86/gcc/9d2104c1dd77b241b906be9fb12c5b8f7934e1d2/0/", 
+  "qemu1": "1"
+ }, 
+ {
+  "testcase": "YY_HD_GUI", 
+  "qemu1url": "result/YY_HD_GUI/default/qemu1/android/android_x86/gcc/9d2104c1dd77b241b906be9fb12c5b8f7934e1d2/0/", 
+  "qemu1": "0"
+ }, 
+ {
+  "testcase": "wps_GUI", 
+  "qemu1url": "result/wps_GUI/default/qemu1/android/android_x86/gcc/9d2104c1dd77b241b906be9fb12c5b8f7934e1d2/0/", 
+  "qemu1": "1"
+ }, 
+ {
+  "testcase": "clock_GUI", 
+  "qemu1url": "result/clock_GUI/default/qemu1/android/android_x86/gcc/9d2104c1dd77b241b906be9fb12c5b8f7934e1d2/0/", 
+  "qemu1": "1"
+ }, 
+ {
+  "testcase": "music_GUI", 
+  "qemu1url": "result/music_GUI/default/qemu1/android/android_x86/gcc/9d2104c1dd77b241b906be9fb12c5b8f7934e1d2/0/", 
+  "qemu1": "0"
+ }, 
+ {
+  "testcase": "CZFileManager_GUI", 
+  "qemu1url": "result/CZFileManager_GUI/default/qemu1/android/android_x86/gcc/9d2104c1dd77b241b906be9fb12c5b8f7934e1d2/0/", 
+  "qemu1": "1"
+ }, 
+ {
+  "testcase": "2048_GUI", 
+  "qemu1url": "result/2048_GUI/default/qemu1/android/android_x86/gcc/9d2104c1dd77b241b906be9fb12c5b8f7934e1d2/0/", 
+  "qemu1": "0"
+ }, 
+ {
+  "testcase": "FM_GUI", 
+  "qemu1url": "result/FM_GUI/default/qemu1/android/android_x86/gcc/9d2104c1dd77b241b906be9fb12c5b8f7934e1d2/0/", 
+  "qemu1": "0"
+ }, 
+ {
+  "testcase": "outlook_GUI", 
+  "qemu1url": "result/outlook_GUI/default/qemu1/android/android_x86/gcc/9d2104c1dd77b241b906be9fb12c5b8f7934e1d2/0/", 
+  "qemu1": "1"
+ }, 
+ {
+  "testcase": "VLC_GUI", 
+  "qemu1url": "result/VLC_GUI/default/qemu1/android/android_x86/gcc/9d2104c1dd77b241b906be9fb12c5b8f7934e1d2/0/", 
+  "qemu1": "1"
+ }, 
+ {
+  "testcase": "wechat_GUI", 
+  "qemu1url": "result/wechat_GUI/default/qemu1/android/android_x86/gcc/9d2104c1dd77b241b906be9fb12c5b8f7934e1d2/0/", 
+  "qemu1": "0"
+ }, 
+ {
+  "testcase": "powerpoint_GUI", 
+  "qemu1url": "result/powerpoint_GUI/default/qemu1/android/android_x86/gcc/9d2104c1dd77b241b906be9fb12c5b8f7934e1d2/0/", 
+  "qemu1": "0"
+ }, 
+ {
+  "testcase": "email_GUI", 
+  "qemu1url": "result/email_GUI/default/qemu1/android/android_x86/gcc/9d2104c1dd77b241b906be9fb12c5b8f7934e1d2/0/", 
+  "qemu1": "0"
+ }, 
+ {
+  "testcase": "wymusic_GUI", 
+  "qemu1url": "result/wymusic_GUI/default/qemu1/android/android_x86/gcc/9d2104c1dd77b241b906be9fb12c5b8f7934e1d2/0/", 
+  "qemu1": "1"
+ }, 
+ {
+  "testcase": "Seafile_GUI", 
+  "qemu1url": "result/Seafile_GUI/default/qemu1/android/android_x86/gcc/9d2104c1dd77b241b906be9fb12c5b8f7934e1d2/0/", 
+  "qemu1": "0"
+ }, 
+ {
+  "testcase": "ESfilemanager_GUI", 
+  "qemu1url": "result/ESfilemanager_GUI/default/qemu1/android/android_x86/gcc/9d2104c1dd77b241b906be9fb12c5b8f7934e1d2/0/", 
+  "qemu1": "0"
+ }, 
+ {
+  "testcase": "wandoujia_GUI", 
+  "qemu1url": "result/wandoujia_GUI/default/qemu1/android/android_x86/gcc/9d2104c1dd77b241b906be9fb12c5b8f7934e1d2/0/", 
+  "qemu1": "1"
+ }, 
+ {
+  "testcase": "firefox_GUI", 
+  "qemu1url": "result/firefox_GUI/default/qemu1/android/android_x86/gcc/9d2104c1dd77b241b906be9fb12c5b8f7934e1d2/0/", 
+  "qemu1": "0"
+ }, 
+ {
+  "testcase": "excel_GUI", 
+  "qemu1url": "result/excel_GUI/default/qemu1/android/android_x86/gcc/9d2104c1dd77b241b906be9fb12c5b8f7934e1d2/0/", 
+  "qemu1": "0"
+ }, 
+ {
+  "testcase": "Termux_GUI", 
+  "qemu1url": "result/Termux_GUI/default/qemu1/android/android_x86/gcc/9d2104c1dd77b241b906be9fb12c5b8f7934e1d2/0/", 
+  "qemu1": "0"
+ }, 
+ {
+  "testcase": "tuniu_GUI", 
+  "qemu1url": "result/tuniu_GUI/default/qemu1/android/android_x86/gcc/9d2104c1dd77b241b906be9fb12c5b8f7934e1d2/0/", 
+  "qemu1": "1"
+ }, 
+ {
+  "testcase": "jd_GUI", 
+  "qemu1url": "result/jd_GUI/default/qemu1/android/android_x86/gcc/9d2104c1dd77b241b906be9fb12c5b8f7934e1d2/0/", 
+  "qemu1": "0"
+ }, 
+ {
+  "testcase": "word_GUI", 
+  "qemu1url": "result/word_GUI/default/qemu1/android/android_x86/gcc/9d2104c1dd77b241b906be9fb12c5b8f7934e1d2/0/", 
+  "qemu1": "0"
+ }, 
+ {
+  "testcase": "onenote_GUI", 
+  "qemu1url": "result/onenote_GUI/default/qemu1/android/android_x86/gcc/9d2104c1dd77b241b906be9fb12c5b8f7934e1d2/0/", 
+  "qemu1": "1"
+ }, 
+ {
+  "testcase": "xiecheng_GUI", 
+  "qemu1url": "result/xiecheng_GUI/default/qemu1/android/android_x86/gcc/9d2104c1dd77b241b906be9fb12c5b8f7934e1d2/0/", 
+  "qemu1": "1"
+ }, 
+ {
+  "failed": 26, 
+  "sum": 44, 
+  "tbox": "qemu1", 
+  "untest": 0, 
+  "pass": 18
+ }, 
+ {
+  "failed": 0, 
+  "sum": 44, 
+  "tbox": "pc1-Z8302", 
+  "untest": 44, 
+  "pass": 0
+ }, 
+ {
+  "failed": 0, 
+  "sum": 44, 
+  "tbox": "pc2-Z8000", 
+  "untest": 44, 
+  "pass": 0
+ }, 
+ {
+  "failed": 0, 
+  "sum": 44, 
+  "tbox": "laptop1-T43U", 
+  "untest": 44, 
+  "pass": 0
+ }, 
+ {
+  "failed": 0, 
+  "sum": 44, 
+  "tbox": "laptop2-T45", 
+  "untest": 44, 
+  "pass": 0
+ }
+]

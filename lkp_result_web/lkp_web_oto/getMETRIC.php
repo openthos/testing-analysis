@@ -8,7 +8,51 @@
 	<link rel="stylesheet" type="text/css" href="./highcharts_files/style.css">
 <script src="./highcharts_files/hm.js"></script><script src="./highcharts_files/share.js"></script><link rel="stylesheet" href="./highcharts_files/share_style0_24.css"></head>
 
-<body>
+
+<script language="JavaScript">
+
+
+
+<?php
+  $benchmarks=$_GET["benchmarks"];
+ $teststr= 'cut -d , -f 3 ./csv/'.$benchmarks.'.csv | grep -v "config2"   | sort  | uniq | ./gethostname.py';
+ echo "//".$teststr."\n";
+ echo " var hostname_dict = ";
+ $test=passthru($teststr);
+ echo ";";
+?>
+
+
+
+function all_init()                                                                                                                                  
+{
+ hostname_changeselect("init");
+}
+
+
+function hostname_changeselect(aid)
+{
+
+
+
+ if(aid=="init")
+  {
+      for(ahostname in hostname_dict){
+
+        var text = "<option>"+ahostname+"</option>";
+                $("#hostname").append(text);
+        console.log(text);
+      }   
+  }                                                                                                                                                  
+
+
+}
+
+</script>
+
+
+
+<body onload="javascript:all_init();">
 
 	<div id="demo" >
 		<div id="demo_content">
@@ -73,6 +117,11 @@
 
                         echo ' <form action="chart.php?" method="post" >';
                         echo ' <input type="text" name="benchmarks" value="'.$benchmarks.'" readonly="true"><br>';
+
+                        echo '  <select id="hostname" name="hostname" > ';
+                         echo      '</select name="hostname" >';
+
+
                         echo '<input type="submit" value="SUBMIT">';
                         echo '     ';
                         echo '<input type="reset" value="CLEAR" >';
