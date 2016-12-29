@@ -1,5 +1,5 @@
 #!/bin/bash -u
-testcaseFold=../kernelci-analysis/testcases
+testcaseFold=./testcases
 cd $testcaseFold
 localPwd=`pwd`
 for testcase in `ls -d */|sed 's|[/]||g'`

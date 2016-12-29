@@ -16,6 +16,9 @@ then
 	exit
 fi
 
+###build Gui testcase
+./buildGuiTestcase.sh > /dev/null 2>&1
+
 now=$(date "+%s")
 time=$((now-start))
 echo "compile time:$time s"

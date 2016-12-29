@@ -70,7 +70,7 @@ else
     echo "oto git pull error!"
 fi
 
-mv summary 201* /mnt/freenas/summary/
+mv summary 20* /mnt/freenas/summary/
 
 ## after 10 minutes, start test again
 minuteNow=`date "+%M"`
