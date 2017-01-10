@@ -38,10 +38,10 @@ def getdirlist(path,dirlist):
 def count(li,data):
     dic={}
     dic['tbox']=li[0]
-    dic['pass']=li.count('1')
-    dic['failed']=li.count('0')
+    dic['pass']=li.count('1')+li.count('1.0')
     dic['untest']=li.count(None)
     dic['sum']=len(li)-1
+    dic['failed']=dic['sum']-dic['pass']-dic['untest']
     data.append(dic)
     return
 
@@ -58,11 +58,11 @@ def hasresult(fn):
             if('result' in line):
 		return 1
 
-table_file='table/'+sys.argv[1]+'_summary.json'
-if(os.path.exists(table_file) and os.path.getsize(table_file) > 20000):
-    sys.exit(0)
-else:
-    d = open('table/'+sys.argv[1]+'_summary.json' , 'wb')
+##table_file='table/'+sys.argv[1]+'_summary.json'
+##if(os.path.exists(table_file) and os.path.getsize(table_file) > 20000):
+##    sys.exit(0)
+##else:
+d = open('table/'+sys.argv[1]+'_summary.json' , 'wb')
 
 r = ''
 data = []
