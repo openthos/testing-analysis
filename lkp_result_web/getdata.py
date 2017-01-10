@@ -22,7 +22,7 @@ def getresult(fn, r):
     with open (fn) as resfile:
         for line in resfile:
             if('result' in line):
-                r=line[-4]
+		r=geturl(line,': ',',')
     return r
 
 def getdirlist(path,dirlist):
@@ -52,8 +52,14 @@ def geturl(fn,start,end):
     endIndex=fn.index(end)
     return fn[startIndex:endIndex]
 
+def hasresult(fn):
+    with open (fn) as resfile:
+        for line in resfile:
+            if('result' in line):
+		return 1
+
 table_file='table/'+sys.argv[1]+'_summary.json'
-if(os.path.exists(table_file) and os.path.getsize(table_file) > 5000):
+if(os.path.exists(table_file) and os.path.getsize(table_file) > 20000):
     sys.exit(0)
 else:
     d = open('table/'+sys.argv[1]+'_summary.json' , 'wb')
@@ -80,6 +86,12 @@ for name in dirlist:
             dic['testcase'] = name
             dic[pn[7]] = getresult(fn,r)
             dic[pn[7]+'url']=geturl(fn,'/var/www/html/','testResult.json')
+        if(sys.argv[1] in fn and 'avg.json' in fn):
+	    if(hasresult(fn)):
+                pn = fn.split('/')
+                dic['testcase'] = name
+                dic[pn[7]] = getresult(fn,r)
+                dic[pn[7]+'url']=geturl(fn,'/var/www/html/','avg.json')
     if(dic):
         dic.update(dic)
         data.append(dic)
