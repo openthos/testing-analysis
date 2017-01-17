@@ -25,45 +25,19 @@
 				<div align="left">
 
 			<?php
-			//$xaxis=$_GET["xaxis"];
-			$hostname=$_POST["hostname"];
-			$benchmarks=$_POST["benchmarks"];
-			$head_count=$_POST["count"];
-#            echo var_dump($head_count).'<br>'; 
-            $all_head_count=$head_count;
-		   //	$all_head_count=explode(",",$head_count);
-
-			//echo var_dump($xaxis).'<br>';
-			//echo var_dump($benchmarks).'<br>';
+			$benchmarks=$_GET["benchmarks"];
+			$hostname=$_GET["hostname"];
+			$metric=$_GET["metric"];
+			$csv_path = "csv/".$benchmarks.".csv";
 			echo '<h3>'.$benchmarks.'</h3>';
 
-			$csv_path = "csv/".$benchmarks.".csv";
-			$handle = fopen($csv_path, "r");
-			$buffer = fgets($handle);
-			fclose($handle);
-			$head_data=explode(",",$buffer);
-			foreach ($all_head_count as $k=>$v ){
-				if($k == 0){
-				$metric=$head_data[$v];
-				}else{
-				$metric .= ",".$head_data[$v];
-				}
-			}
-			header("Location:chart_3args.php?benchmarks=$benchmarks&hostname=$hostname&metric=$metric");
-			//$t_exec = 'python genhtml.py -i '.$csv_path.' -o cache/out.html -m '.$head_data[$head_count].' -b '.$benchmarks.' -c gcc-4.9 -x '.$xaxis ;
-                        //gcc-5修改
-			//$t_exec = 'python genhtml.py -i '.$csv_path.' -o cache/out.html -m '.$metric.' -b '.$benchmarks.' -c gcc-5 -x '.$xaxis ;
-                        #$t_exec = 'rm -rf ./cache/out.html' ;
-#                        echo $t_exec;
-                        #$shell_result = shell_exec("$t_exec");
+                        $t_exec = 'rm -rf ./cache/out.html' ;
+                        #echo $t_exec;
+                        $shell_result = shell_exec("$t_exec");
 
-			#$t_exec = 'python genhtml.py -i '.$csv_path.' -o cache/out.html -m '.$metric.' -b '.$benchmarks.' -c gcc-5 ' .'-n '.$hostname;
-                 #       echo $t_exec;
-			#$shell_result = shell_exec("$t_exec");
-			#echo $csv_path
-			#echo $shell_result;
-			//echo var_dump($head_data).'<br>';
-
+			$t_exec = 'python genhtml.py -i '.$csv_path.' -o cache/out.html -m '.$metric.' -b '.$benchmarks.' -c gcc-5 ' .'-n '.$hostname;
+                        #echo $t_exec;
+			$shell_result = shell_exec("$t_exec");
 			?>
 
 				<iframe src="cache/out.html"
