@@ -6,12 +6,10 @@
 ### 3、index.html:
 将指定的benchmark信息提交到getMETRIC.php
 ### 4、getMETRIC.php:
-读取指定benchmark的csv文件，展示所有的metric列表，指定hostname并选择任意个数的metric，将benchmarks、hostname和count信息提交到chart.php
+读取指定benchmark的csv文件，展示所有的metric列表，点击任意一个metric，将xaxis、benchmarks、count信息提交到chart.php
 ### 5、chart.php:
-读取指定benchmark的csv文件，根据count信息得到要进行展示的metric名字，将benchmark、hostname、metric名字作为参数传递给chart_3args.php
-### 6、chart_3args.php:
-获取benchmark、hostname和metric名参数，并将csv文件路径、输出文件路径、metric名字、benchmark、编译器、xaxis信息作为参数执行python genhtml.py脚本
-### 7、genhtml.py:
+读取指定benchmark的csv文件，根据count信息得到要进行展示的metric名字，将csv文件路径、输出文件路径、metric名字、benchmark、编译器、xaxis信息作为参数执行python genhtml.py脚本
+### 5、genhtml.py:
 读取指定benchmark的csv数据，对指定benchmark、指定metric的信息利用折线图进行展示
 
 # 运行流程：
