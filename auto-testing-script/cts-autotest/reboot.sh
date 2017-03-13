@@ -15,7 +15,27 @@ else
     $qemuCMD -vga vmware --enable-kvm -net nic -net user,hostfwd=tcp::$adbPort-:5555 $disk_path -vnc :3 &
     {
         qemuPid=$!
-        nc -lp $ListenPort
+        nc -lp $ListenPort &
+        ncPid=$!
+        waitTime=0
+        while true
+        do 
+            if [ $waitTime -eq 10 ];then
+                echo qemu reboot fail while GUI test
+                kill $qemuPid 
+                kill $ncPid 
+                exit 1
+            fi
+            
+            sleep 20
+            ps -p $ncPid 
+            if [ $? -eq 0 ];then
+                let waitTime+=1 
+            else 
+                break
+            fi
+        done
+        
         ## gui haven't been loaded completely for android_x86-5.1 
         adb connect $ip_android:$adbPort
         sleep 2

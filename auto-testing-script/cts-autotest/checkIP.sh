@@ -5,8 +5,10 @@ ip=$1
 echo $ip
 while [[ $count -ge 0 ]]
 do 
-    ping -c 1 $ip &>/dev/null
-    if [ $? -eq 0 ];then
+    ping -c 1 $ip &>/dev/null 
+    result=$?
+    echo $result
+    if [ $result -eq 0 ];then
         echo -e "\033[32mip is up!\033[0m"
         if [ $count -gt 0 ];then
             sleep 10  

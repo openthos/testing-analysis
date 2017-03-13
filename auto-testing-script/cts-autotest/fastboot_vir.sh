@@ -20,11 +20,11 @@ mount -o loop,offset=32256 $disk_path  ./android_disk;
 
 echo $disk_path
 echo $boot_cmd
-sleep 2
+sleep 5
 if [ "$boot_cmd" = "flashall" ];then
 
-	rm ./android_disk/android*/system/* -r
-	rm ./android_disk/android*/data/* -r
+	rm -r ./android_disk/android*/system/* 
+	rm -r ./android_disk/android*/data/*
 	rm ./android_disk/android*/kernel
 	rm ./android_disk/android*/initrd.img
 	rm ./android_disk/android*/ramdisk.img
@@ -76,5 +76,5 @@ if [ "$boot_cmd" = "flashall" ];then
 fi
 umount android_mnt;
 umount android_disk;
-rm android_mnt -r;
-rm android_disk -r;
+#rm android_mnt -r;
+#rm android_disk -r;

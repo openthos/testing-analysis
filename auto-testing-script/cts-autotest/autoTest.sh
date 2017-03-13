@@ -40,7 +40,12 @@ export localpwd
 # listening port, user should specify it when parallel tesing 
 ListenPort=$1 
 export ListenPort
-adbPort=$(($ListenPort+100)) 
+adbPort=$(($ListenPort+99)) 
+while true
+do
+    let adbPort+=1
+    lsof -i:$adbPort || break
+done
 export adbPort
 r_v=$2 
 export r_v
@@ -166,6 +171,7 @@ if [ "$r_v" == "v" ]; then
             adb -s $ip_android:$adbPort push device_policies.xml data/system/device_policies.xml
             adb -s $ip_android:$adbPort push commitId.txt data/
             adb -s $ip_android:$adbPort shell poweroff
+	    sleep 5
         }
     fi
 
@@ -190,7 +196,8 @@ if [ "$r_v" == "v" ]; then
             {
                 tradefedMonitor $!
                 if [ $? -eq 0 ];then
-                    adb -s $ip_android:$adbPort shell poweroff
+                    adb -s $ip_android:$adbPort shell poweroff 
+		    sleep 5
                 else
                     kill qemuPid 
                     cp ../../../android_x86.backup.raw $disk_path
@@ -230,7 +237,8 @@ if [ "$r_v" == "v" ]; then
                 {
                     tradefedMonitor $!
                     if [ $? -eq 0 ];then
-                        adb -s $ip_android:$adbPort shell poweroff
+                        adb -s $ip_android:$adbPort shell poweroff 
+			sleep 5
                     else
                         cp ../../../android_x86.backup.raw $disk_path
                         python sendEmail.py "something went wrong while run cts test in QEMU!"
@@ -255,7 +263,8 @@ if [ "$r_v" == "v" ]; then
                 {
                     tradefedMonitor $!
                     if [ $? -eq 0 ];then
-                        adb -s $ip_android:$adbPort shell poweroff
+                        adb -s $ip_android:$adbPort shell poweroff 
+			sleep 5
                     else
                         cp ../../../android_x86.backup.raw $disk_path
                         python sendEmail.py "something went wrong while run cts test in QEMU!"

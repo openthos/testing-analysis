@@ -1,7 +1,9 @@
 #!/bin/bash -x
 ##delete the crontab for avoiding rerun the updateGIT.sh while it is running
-croncmdOld="/home/oto/openthos/testing-analysis/auto-testing-script/kernelci-analysis/updateGIT.sh"
-( crontab -l | grep -v -F "$croncmdOld" ) | crontab -
+#croncmdOld="/home/oto/openthos/testing-analysis/auto-testing-script/kernelci-analysis/updateGIT.sh"
+#( crontab -l | grep -v -F "$croncmdOld" ) | crontab -
+echo "####################################################begin##################################################"
+#[ `ps -axu | grep updateGIT.sh | wc -l` -gt 4 ] && exit
 
 dirname_path=$(cd `dirname $0`; pwd)
 cd $dirname_path
@@ -63,6 +65,7 @@ if [ $? -eq 0 ]; then
     	echo ${br_com[@]} > $tmp_branch/$br_
     	#/bin/bash $build_sh ${br_com[0]} > /mnt/freenas/summary/`date +%Y%m%d`-${br_com[0]}
     	/bin/bash $build_sh ${br_com[0]} > `date +%Y%m%d`-${br_com[0]}
+        mv $linux_repo/20* /mnt/freenas/summary/
     fi
     #for loop
     done
@@ -70,39 +73,4 @@ else
     echo "oto git pull error!"
 fi
 
-mv summary 20* /mnt/freenas/summary/
-
-## after 10 minutes, start test again
-minuteNow=`date "+%M"`
-hourNow=`date "+%H"`
-timeInterval=10
-minuteNow=`echo $minuteNow | sed 's/^[0]//'`
-hourNow=`echo $hourNow | sed 's/^[0]//'`
-minuteNext=`expr $minuteNow + $timeInterval`
-hourNext=$hourNow 
-
-crontDate=`date +%y%m%d`
-
-if [ $minuteNext -ge 60 ];then
-    minuteNext=`expr $minuteNext - 60`
-    hourNext=`expr $hourNext + 1`
-    if [ $hourNext -ge 24 ];then
-        hourNext=00
-    fi
-fi
-len=`echo $minuteNext | wc -L`
-if [ $len == "1" ];then
-    minuteNext="0"$minuteNext
-fi
-len=`echo $hourNext | wc -L`
-if [ $len == "1" ];then
-    hourNext="0"$hourNext
-fi
-
-
-nextCrontabTime="$minuteNext $hourNext"
-
-croncmdNew="$nextCrontabTime * * * /home/oto/openthos/testing-analysis/auto-testing-script/kernelci-analysis/updateGIT.sh >> /mnt/freenas/result/cronout$crontDate 2>&1"
-( crontab -l | grep -v -F "$croncmdOld" ) | crontab -
-( crontab -l | grep -v -F "$croncmdNew" ; echo "$croncmdNew" ) | crontab -
-
+echo "####################################################end##################################################"

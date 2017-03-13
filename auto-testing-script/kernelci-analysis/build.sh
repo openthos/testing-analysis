@@ -18,6 +18,7 @@ fi
 
 ###build Gui testcase
 ./buildGuiTestcase.sh > /dev/null 2>&1
+./buildLkpTestcase.sh > /dev/null 2>&1
 
 now=$(date "+%s")
 time=$((now-start))
@@ -27,7 +28,7 @@ echo "compile time:$time s"
 $ctsautotest/paraRun.sh $iso
 now1=$(date "+%s")
 time=$((now1-now))
-echo "deploy time:$time s"
+echo "deploy and test time:$time s"
 now=$(date "+%s")
 time=$((now-now1))
 num=3

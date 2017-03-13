@@ -15,7 +15,11 @@ do
     if [[ $line"x" == "x" ]];then 
         break
     fi
+    while true
+    do
 	let port+=1
+        lsof -i:$port || break
+    done
 	cmd="./autoTest.sh "
 	#cmd=$cmd"$line"" $port"
 	eval "$cmd $port $line" > testlog$port".txt" &
