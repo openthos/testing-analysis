@@ -135,7 +135,8 @@ function tradefedMonitor()
 }
 
 ## according to where it's virtual mechine(qemu) or real mechine, we should change the network model
-if [ "$r_v" == "v" ]; then
+if [ "$r_v" == "v" ]; then 
+    cp ../../../android-x86.backup.raw $disk_path
     ip_android="localhost"
     export ip_android
 
@@ -150,7 +151,7 @@ if [ "$r_v" == "v" ]; then
         
 
         ## install CtsDeviceAdmin.apk and active the device adminstrators, this setting will take effect after reboot 
-        $qemuCMD -vga vmware --enable-kvm -net nic -net user,hostfwd=tcp::$adbPort-:5555 $disk_path -vnc :1 &
+        $qemuCMD --enable-kvm -net nic -net user,hostfwd=tcp::$adbPort-:5555 $disk_path -vnc :1 &
         {
             echo v1v1v1v1!!!!!!!!!!!!!!!!!!!!!
             nc -lp $ListenPort
@@ -176,7 +177,7 @@ if [ "$r_v" == "v" ]; then
     fi
 
     if [ "$run_install" == "installTest" ];then
-        $qemuCMD -vga vmware --enable-kvm -net nic -net user,hostfwd=tcp::$adbPort-:5555 $disk_path -vnc :2 &
+        $qemuCMD --enable-kvm -net nic -net user,hostfwd=tcp::$adbPort-:5555 $disk_path -vnc :2 &
         {
             qemuPid=$!
             nc -lp $ListenPort
@@ -211,7 +212,7 @@ if [ "$r_v" == "v" ]; then
 
         ./editBoot.sh
         assert $?
-        $qemuCMD -vga vmware --enable-kvm -net nic -net user,hostfwd=tcp::$adbPort-:5555 $disk_path -vnc :3 &
+        $qemuCMD --enable-kvm -net nic -net user,hostfwd=tcp::$adbPort-:5555 $disk_path -vnc :3 &
         {
             pid=$!
             echo v3v3v3!!!!!!!!!!!!!!!!!!!!!!!!

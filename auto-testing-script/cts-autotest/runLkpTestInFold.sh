@@ -49,7 +49,7 @@ do
         pidAlive=$!
     fi  
     ## in order to avoid excessive adb load, program random sleep for a while
-    sleep $(($RANDOM%120))
+    sleep $(($RANDOM%200))
 
 done
 if [ $needreboot -eq 0 ];then

@@ -9,6 +9,7 @@ $localpwd/testAliveSend.sh &
 pidAlive=$!
 for testcase in `ls -d */|sed 's|[/]||g'`
 do  
+    adb connect $ip_android:$adbPort
     $testcase/$testcase".sh" $ip_android $adbPort $ip_android"_"$adbPort"_"$commitId &
     pid=$!
     $localpwd/monitorAdb.sh $pid $ip_android $ip_android"_"$adbPort"_"$commitId $testcase 15 $r_v

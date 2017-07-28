@@ -18,7 +18,8 @@ if [ -f  /mnt/freenas/compile/compileFinished ];then
     rm /mnt/freenas/compile/compileFinished
 fi
 
-docker start oto
+#docker start oto
+docker start oto-test
 
 count=0
 while true

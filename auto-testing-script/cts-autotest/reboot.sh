@@ -2,6 +2,8 @@
 cd "$(dirname "$0")"
 if [ "$r_v" == "r" ];then
     ./android_fastboot.sh  ${ip_android} bios_reboot 
+    ncPid=`lsof -i:$ListenPort | grep nc | awk '{print $2}'`
+    [ ! -n "$ncPid" ] || kill $ncPid
     ip_android=`nc -lp $ListenPort`                                                                                                                                  
     echo ${ip_android}
     adb connect ${ip_android}
@@ -12,6 +14,10 @@ else
     adb -s $ip_android:$adbPort shell poweroff
     sleep 3
     adb disconnect $ip_android:$adbPort
+    sleep 1
+    qemuPid=`ps -axu |grep qemu | grep kvm | awk '{print $2}'`
+    [ ! -n "$qemuPid" ] || kill $qemuPid
+
     $qemuCMD -vga vmware --enable-kvm -net nic -net user,hostfwd=tcp::$adbPort-:5555 $disk_path -vnc :3 &
     {
         qemuPid=$!
