@@ -1,4 +1,4 @@
-#!/bin/bash -eux
+#!/bin/bash -ux
 ## cp the result to a specified fold
 ###########################################
 
@@ -53,6 +53,10 @@ mvGuiResult $testcaseFold
 if [ $run_install == "installTest" ] || [ $testType == "cts" ] || [ $testType  == "all" ];then
     tmp=`find "testlog"$ListenPort".txt" | xargs grep -a "Created result dir"`
     resultDirName=${tmp##* }
+    if [ ! -n $tmp ] || [ ! -n $resultDirName ];then
+	echo "no cts result"
+	exit 1
+    fi
     ### edit result, add commit id
     ./addCommitId.sh $resultDirName $commitId $testcaseCTS
     if [ $resultDirName"x" != "x" ];then

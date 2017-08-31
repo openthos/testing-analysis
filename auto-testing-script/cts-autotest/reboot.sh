@@ -1,14 +1,19 @@
 #!/bin/bash -x
 cd "$(dirname "$0")"
 if [ "$r_v" == "r" ];then
-    ./android_fastboot.sh  ${ip_android} bios_reboot 
+    ./android_fastboot.sh  ${ip_android} bios_reboot
     ncPid=`lsof -i:$ListenPort | grep nc | awk '{print $2}'`
     [ ! -n "$ncPid" ] || kill $ncPid
-    ip_android=`nc -lp $ListenPort`                                                                                                                                  
-    echo ${ip_android}
-    adb connect ${ip_android}
-    sleep 2
-    adb -s $ip_android:$adbPort shell system/checkAndroidDesktop.sh
+    ip_android=`timeout 180 nc -l $ListenPort` || { echo "wait ip failed" ; exit 1 ; }
+    ping $ip_android -c 1 || { echo "cannot ping ip $ip_android, boot failed" ; exit 1 ; }
+    for i in {1..5}
+    do
+        adb connect ${ip_android} && break
+        sleep 2 
+    done
+    [ $i -eq 5 ] && { echo "adb connect failed" ; exit 1 ; }
+    echo $ip_android
+    adb -s $ip_android:$adbPort shell system/checkAndroidDesktop.sh || { echo "check desktop boot failed" ;  exit 1 ; }
     sleep 30
 else
     adb -s $ip_android:$adbPort shell poweroff
@@ -21,7 +26,7 @@ else
     $qemuCMD -vga vmware --enable-kvm -net nic -net user,hostfwd=tcp::$adbPort-:5555 $disk_path -vnc :3 &
     {
         qemuPid=$!
-        nc -lp $ListenPort &
+        nc -l $ListenPort &
         ncPid=$!
         waitTime=0
         while true
@@ -49,5 +54,6 @@ else
         sleep 30 
     }
 fi
-echo "@@"$ip_android
-echo $ip_android > "ip_android"$ListenPort
+#echo "@@"$ip_android
+#echo $ip_android > "ip_android"$ListenPort
+export ip_android

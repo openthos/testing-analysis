@@ -21,15 +21,17 @@ do
         lsof -i:$port || break
     done
 	cmd="./autoTest.sh "
+    echo $port
 	#cmd=$cmd"$line"" $port"
 	eval "$cmd $port $line" > testlog$port".txt" &
 	#echo "done!"
 done < configs
-
 wait
 pkill adb
 pkill nc
-
+kill `ps -axu | grep qemu-system-x86_64 | awk '{print $2}'`
+qemupid=`ps -axu | grep qemu-system-x86_64 | awk '{print $2}'`
+[ ! -n "$qemupid" ] && kill $qemupid
 exit 0
 
 

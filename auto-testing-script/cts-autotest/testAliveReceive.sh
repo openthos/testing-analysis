@@ -1,5 +1,6 @@
 #!/system/bin/sh 
-cd $(dirname "$0")
+#cd $(dirname "$0")
+cd `dirname $0`
 fileName=$1 
 hostType=$2
 testType=$3
@@ -10,11 +11,10 @@ do
     filetime=`stat $fileName | grep Change | awk '{split($3,var,".");print var[1]}'`
     file_datetime=`busybox date -d "$filedate $filetime" +%s`
     timedelta=`expr $current_datetime - $file_datetime`
-    if [ "$timedelta" -gt "300" ];then
+    if [ "$timedelta" -gt "180" ];then
         break
     fi
-     
-    sleep 100
+    sleep 60
 done
 
 if [ $hostType = "v" ];then

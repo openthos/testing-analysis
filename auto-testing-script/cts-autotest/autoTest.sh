@@ -94,12 +94,11 @@ function assert_v()
     fi
 }
 
-## remove tmp file
-ls ip_android*  && rm ip_android*
 
 #check the ip address
 ./checkIP.sh $ip_linux_client 
 if [ $? -ne 0 ];then
+    python sendEmail.py "This computer has something wrong, network is blocked, its ip is: $ip_linux_client" $ip_linux_client
     exit 1 
 fi
 
@@ -154,7 +153,7 @@ if [ "$r_v" == "v" ]; then
         $qemuCMD --enable-kvm -net nic -net user,hostfwd=tcp::$adbPort-:5555 $disk_path -vnc :1 &
         {
             echo v1v1v1v1!!!!!!!!!!!!!!!!!!!!!
-            nc -lp $ListenPort
+            nc -l $ListenPort
             ## waiting for a message from android-x86, this ip address is useful in real mechine test, but in virtural mechine ,we adopt nat address mapping ,
             ## so it's just a symbol that android-x86 is running 
             echo 'waiting for android boot !!!!!'
@@ -180,7 +179,7 @@ if [ "$r_v" == "v" ]; then
         $qemuCMD --enable-kvm -net nic -net user,hostfwd=tcp::$adbPort-:5555 $disk_path -vnc :2 &
         {
             qemuPid=$!
-            nc -lp $ListenPort
+            nc -l $ListenPort
             ## gui haven't been loaded completely for android_x86-5.1 
             adb connect $ip_android:$adbPort
             sleep 2
@@ -202,7 +201,7 @@ if [ "$r_v" == "v" ]; then
                 else
                     kill qemuPid 
                     cp ../../../android_x86.backup.raw $disk_path
-                    python sendEmail.py "something went wrong while run cts test in QEMU!"
+#                    python sendEmail.py "something went wrong while run cts test in QEMU!" $ip_android
                 fi
             }
         }
@@ -216,7 +215,7 @@ if [ "$r_v" == "v" ]; then
         {
             pid=$!
             echo v3v3v3!!!!!!!!!!!!!!!!!!!!!!!!
-            nc -lp $ListenPort
+            nc -l $ListenPort
             echo 'waiting for android boot !!!!!'  
 
             adb connect $ip_android:$adbPort
@@ -242,7 +241,7 @@ if [ "$r_v" == "v" ]; then
 			sleep 5
                     else
                         cp ../../../android_x86.backup.raw $disk_path
-                        python sendEmail.py "something went wrong while run cts test in QEMU!"
+#                        python sendEmail.py "something went wrong while run cts test in QEMU!" $ip_android
                     fi
                 }
             elif [ "$testType" == "gui" ];then
@@ -268,7 +267,7 @@ if [ "$r_v" == "v" ]; then
 			sleep 5
                     else
                         cp ../../../android_x86.backup.raw $disk_path
-                        python sendEmail.py "something went wrong while run cts test in QEMU!"
+#                        python sendEmail.py "something went wrong while run cts test in QEMU!" $ip_android
                     fi
                 }
             fi
@@ -283,7 +282,7 @@ elif [ "$r_v" == "r" ];then
         rsync   -avz -e ssh ./scriptReboot1 root@${ip_linux_client}:~/;
         ssh root@${ip_linux_client} "~/scriptReboot1/reboot.sh $disk_path $ip_linux_host $ListenPort";
         echo r1r1r1!!!!!!!!!!!!!!!!
-        ip_android=`nc -lp $ListenPort`
+        ip_android=`nc -l $ListenPort`
         export ip_android
         echo $ip_android
         adb connect $ip_android
@@ -311,7 +310,7 @@ elif [ "$r_v" == "r" ];then
                     ###reboot to  linux
                     ./android_fastboot.sh  ${ip_android}  reboot_bootloader
                 else
-                    python sendEmail.py "something went wrong while run cts test in $host, ip is $ip_android"
+                    python sendEmail.py "something went wrong while run cts test in $host, ip is $ip_android" $ip_android
                 fi
             }
         elif [ "$testType" == "gui" ];then
@@ -350,7 +349,7 @@ elif [ "$r_v" == "r" ];then
                     ###reboot to  linux
                     ./android_fastboot.sh  ${ip_android}  reboot_bootloader
                 else
-                    python sendEmail.py "something went wrong while run cts test in $host, ip is $ip_android"
+                    python sendEmail.py "something went wrong while run cts test in $host, ip is $ip_android" $ip_android
                 fi
             }
        fi
@@ -360,21 +359,23 @@ elif [ "$r_v" == "r" ];then
         iso_loc=$7
         export iso_loc
         getCommitId
-        ./auto2.sh $ip_linux_client $iso_loc $disk_path $ListenPort $ip_linux_host;
-
-        echo r2r2r2!!!!!!!!!!!!!!!!!!
-        ip_android=`nc -lp $ListenPort`
-        export ip_android
+        ./auto2.sh $ip_linux_client $iso_loc $disk_path $ListenPort $ip_linux_host
+        ip_android=`timeout 600 nc -l $ListenPort`
+        ping $ip_android -c 1 || { echo "cannot ping ip $ip_android" ; exit 1 ; }
+        for i in {1..5}
+        do
+            adb connect ${ip_android} && break
+            sleep 2 
+        done
+        [ $i -eq 5 ] && { echo "adb connect failed" ; exit 1 ; }
+        
         echo "android boot success!"
-        #sleep 30
-        echo ${ip_android}
-        adb connect ${ip_android}
-        sleep 2
+        export ip_android
         ##keep screen active
-        adb -s $ip_android:$adbPort shell svc power stayon true
-        adb -s $ip_android:$adbPort shell system/checkAndroidDesktop.sh
+        adb -s $ip_android:$adbPort shell svc power stayon true || { echo "set svc power stayon failed" ; exit 1 ; }
+        adb -s $ip_android:$adbPort shell system/checkAndroidDesktop.sh || { echo "check desktop boot failed" ;  exit 1 ; }
         sleep 30
-        adb -s $ip_android:$adbPort push bin/firstlogin.jar /data/local/tmp
+        adb -s $ip_android:$adbPort push bin/firstlogin.jar /data/local/tmp || { echo "push firstlogin.jar failed" ; exit 1 ; }
         adb -s $ip_android:$adbPort shell uiautomator runtest firstlogin.jar -c com.firstlogin.firstlogin
 
         echo 'install CtsDeviceAdmin.apk!!!!!'
@@ -382,39 +383,26 @@ elif [ "$r_v" == "r" ];then
         adb -s $ip_android:$adbPort push device_policies.xml data/system/device_policies.xml
         adb -s $ip_android:$adbPort push commitId.txt data/
         
-        ##################################################
-        ./reboot.sh
-        ip_android=`cat "ip_android"$ListenPort`
+        ./reboot.sh || { echo "reboot failed " ; exit 1 ; }
         cts_cmd="$8"
-        #runTestInFold $testcaseFold
         ./runLkpTestInFold.sh $testcaseLKP
         ret=$?
-        ip_android=`cat "ip_android"$ListenPort`
         assert $ret
         ################################################### 
 
-        ################################################### 
-        #./reboot.sh
-        #ip_android=`cat "ip_android"$ListenPort`
         ./runGuiTestInFold.sh $testcaseFold
         ret=$?
-        ip_android=`cat "ip_android"$ListenPort`
         assert $ret
-        ################################################### 
         
         sleep 2 
         ### monitor script, if network is down, reboot to linux
         ./testAliveSend.sh &
-        echo "exit" | $testcaseCTS/tools/cts-tradefed run cts -s $ip_android:$adbPort $cts_cmd &
-        {
-            tradefedMonitor $!
-            if [ $? -eq 0 ];then
-                ###reboot to  linux
-                ./android_fastboot.sh  ${ip_android}  reboot_bootloader
-            else
-                python sendEmail.py "something went wrong while run cts test in $host, ip is $ip_android"
-            fi
-        }
+        echo "exit" | timeout 46000 $testcaseCTS/tools/cts-tradefed run cts -s $ip_android:$adbPort $cts_cmd
+        if [ $? -eq 0 ];then
+            ./android_fastboot.sh  ${ip_android}  reboot_bootloader
+        else
+            python sendEmail.py "something went wrong while run cts test in $host, ip is $ip_android" $ip_android
+        fi
 
     elif [ "$run_install" == "install" ];then
         ## install android-x86 and then test
@@ -422,7 +410,7 @@ elif [ "$r_v" == "r" ];then
         export iso_loc
         ./auto2.sh $ip_linux_client $iso_loc $disk_path $ListenPort $ip_linux_host;
         echo r5r5r5!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        ip_android=`nc -lp $ListenPort`
+        ip_android=`nc -l $ListenPort`
         export ip_android
         echo "android boot success!"
         #sleep 30
@@ -454,7 +442,5 @@ fi
 ## copy result
 ./cpResult.sh
 
-## remove tmp file
-ls ip_android*  && rm ip_android*
 wait 
 exit 0

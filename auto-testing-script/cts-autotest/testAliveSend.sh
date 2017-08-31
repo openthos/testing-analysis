@@ -1,6 +1,5 @@
 #!/bin/bash -ex 
 cd "$(dirname "$0")"
-echo "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
 adb devices | grep "$ip_android:$adbPort"
 if [[ $? -eq 1 ]];then
     #adb connect $ip_android
@@ -12,7 +11,8 @@ adb -s $ip_android:$adbPort shell "busybox nohup data/testAliveReceive.sh alive.
 
 while true
 do
-    sleep 100
+    sleep 60
+    echo "alive heart" > alive.txt
     ### if run in qemu. ip_android=localhost, ping localhost is always success, so we need consider this two situation seperately
     if [ $r_v = "v" ];then
         netstat -tunlp | grep $adbPort
@@ -39,5 +39,4 @@ adb devices | grep "$ip_android:$adbPort"
 if [[ $? -eq 0 ]];then
     adb disconnect $ip_android:$adbPort
 fi
-echo "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"
 exit 0
