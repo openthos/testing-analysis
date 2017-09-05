@@ -62,7 +62,7 @@ ip_android="0.0.0.0"
 iso_loc="default"
 testcaseFold="../kernelci-analysis/testcases"
 export testcaseFold
-testcaseLKP="../../../oto_lkp/testcase"
+testcaseLKP="../../../oto_external_lkp/testcase"
 export testcaseLKP
 testcaseCTS="../../../android-cts"
 export testcaseCTS

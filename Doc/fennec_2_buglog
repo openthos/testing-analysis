@@ -122,21 +122,21 @@ Use 'apt-get autoremove' to remove them.
 + pwd
 /root
 + rm -rf /result/
-+ '[' '!' -d ./oto_lkp ']'
-+ cd ./oto_lkp
++ '[' '!' -d ./oto_external_lkp ']'
++ cd ./oto_external_lkp
 + git pull
 Already up-to-date.
 + cd lkp-tests-master
-+ export LKP_SRC=/root/oto_lkp/lkp-tests-master
-+ LKP_SRC=/root/oto_lkp/lkp-tests-master
-+ export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/root/oto_lkp/lkp-tests-master/bin
-+ PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/root/oto_lkp/lkp-tests-master/bin
++ export LKP_SRC=/root/oto_external_lkp/lkp-tests-master
++ LKP_SRC=/root/oto_external_lkp/lkp-tests-master
++ export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/root/oto_external_lkp/lkp-tests-master/bin
++ PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/root/oto_external_lkp/lkp-tests-master/bin
 + source ../joblist/fennec.sh
-++ lkp install /root/oto_lkp/lkp-tests-master/jobs/fennec.yaml
-make -C /root/oto_lkp/lkp-tests-master/monitors/event
-Creating testbox configuration file: /root/oto_lkp/lkp-tests-master/hosts/pc.
-/root/oto_lkp/lkp-tests-master/lkp-exec/install: 87: /root/oto_lkp/lkp-tests-master/lkp-exec/install: Bad substitution
-Use: /root/oto_lkp/lkp-tests-master/distro/installer/ubuntu install bc gawk linux-tools-generic ruby ruby-gnuplot ruby-git sysstat time kmod gzip xz-utils make automake gcc libtool patch git cpio wget 
+++ lkp install /root/oto_external_lkp/lkp-tests-master/jobs/fennec.yaml
+make -C /root/oto_external_lkp/lkp-tests-master/monitors/event
+Creating testbox configuration file: /root/oto_external_lkp/lkp-tests-master/hosts/pc.
+/root/oto_external_lkp/lkp-tests-master/lkp-exec/install: 87: /root/oto_external_lkp/lkp-tests-master/lkp-exec/install: Bad substitution
+Use: /root/oto_external_lkp/lkp-tests-master/distro/installer/ubuntu install bc gawk linux-tools-generic ruby ruby-gnuplot ruby-git sysstat time kmod gzip xz-utils make automake gcc libtool patch git cpio wget 
 Reading package lists... Done
 Building dependency tree       
 Reading state information... Done
@@ -164,7 +164,7 @@ The following packages were automatically installed and are no longer required:
 Use 'apt-get autoremove' to remove them.
 0 upgraded, 0 newly installed, 0 to remove and 4 not upgraded.
 Making fennec benchmark for ubuntu
---2017-08-25 10:23:30--  https://github.com/openthos/oto_lkp/raw/master/benchmark_mirror/fennec.tar.gz
+--2017-08-25 10:23:30--  https://github.com/openthos/oto_external_lkp/raw/master/benchmark_mirror/fennec.tar.gz
 Resolving github.com (github.com)... 192.30.253.113, 192.30.253.112
 Connecting to github.com (github.com)|192.30.253.113|:443... connected.
 HTTP request sent, awaiting response... 301 Moved Permanently

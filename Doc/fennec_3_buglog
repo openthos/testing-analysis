@@ -111,21 +111,21 @@ Use 'apt-get autoremove' to remove them.
 + pwd
 /root
 + rm -rf /result/
-+ '[' '!' -d ./oto_lkp ']'
-+ cd ./oto_lkp
++ '[' '!' -d ./oto_external_lkp ']'
++ cd ./oto_external_lkp
 + git pull
 Already up-to-date.
 + cd lkp-tests-master
-+ export LKP_SRC=/root/oto_lkp/lkp-tests-master
-+ LKP_SRC=/root/oto_lkp/lkp-tests-master
-+ export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/root/oto_lkp/lkp-tests-master/bin
-+ PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/root/oto_lkp/lkp-tests-master/bin
++ export LKP_SRC=/root/oto_external_lkp/lkp-tests-master
++ LKP_SRC=/root/oto_external_lkp/lkp-tests-master
++ export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/root/oto_external_lkp/lkp-tests-master/bin
++ PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/root/oto_external_lkp/lkp-tests-master/bin
 + source ../joblist/fennec.sh
-++ lkp install /root/oto_lkp/lkp-tests-master/jobs/fennec.yaml
-make -C /root/oto_lkp/lkp-tests-master/monitors/event
-Creating testbox configuration file: /root/oto_lkp/lkp-tests-master/hosts/pc.
-/root/oto_lkp/lkp-tests-master/lkp-exec/install: 87: /root/oto_lkp/lkp-tests-master/lkp-exec/install: Bad substitution
-Use: /root/oto_lkp/lkp-tests-master/distro/installer/ubuntu install bc gawk linux-tools-generic ruby ruby-gnuplot ruby-git sysstat time kmod gzip xz-utils make automake gcc libtool patch git cpio wget 
+++ lkp install /root/oto_external_lkp/lkp-tests-master/jobs/fennec.yaml
+make -C /root/oto_external_lkp/lkp-tests-master/monitors/event
+Creating testbox configuration file: /root/oto_external_lkp/lkp-tests-master/hosts/pc.
+/root/oto_external_lkp/lkp-tests-master/lkp-exec/install: 87: /root/oto_external_lkp/lkp-tests-master/lkp-exec/install: Bad substitution
+Use: /root/oto_external_lkp/lkp-tests-master/distro/installer/ubuntu install bc gawk linux-tools-generic ruby ruby-gnuplot ruby-git sysstat time kmod gzip xz-utils make automake gcc libtool patch git cpio wget 
 Reading package lists... Done
 Building dependency tree       
 Reading state information... Done
@@ -176,10 +176,10 @@ Installing fennec-LKP
 Preparing to unpack /tmp/fennec-LKP.deb ...
 Unpacking fennec-lkp (2017-08-25) over (2017-08-25) ...
 Setting up fennec-lkp (2017-08-25) ...
-++ lkp split /root/oto_lkp/lkp-tests-master/jobs/fennec.yaml
-/root/oto_lkp/lkp-tests-master/jobs/fennec.yaml => ./fennec-1x.yaml
-++ lkp run /root/oto_lkp/lkp-tests-master/fennec-1x.yaml
-/root/oto_lkp/lkp-tests-master/monitors/turbostat: 10: cd: can't cd to /lkp/benchmarks/turbostat
+++ lkp split /root/oto_external_lkp/lkp-tests-master/jobs/fennec.yaml
+/root/oto_external_lkp/lkp-tests-master/jobs/fennec.yaml => ./fennec-1x.yaml
+++ lkp run /root/oto_external_lkp/lkp-tests-master/fennec-1x.yaml
+/root/oto_external_lkp/lkp-tests-master/monitors/turbostat: 10: cd: can't cd to /lkp/benchmarks/turbostat
 Iteration: 1
 2017-08-25 10:36:58 ./fennec
 strace: Can't stat './fennec': No such file or directory

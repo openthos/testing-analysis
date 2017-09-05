@@ -1,5 +1,5 @@
 #!/bin/bash
-testcaseFold=/home/oto/openthos/oto_lkp/testcase 
+testcaseFold=/home/oto/openthos/oto_external_lkp/testcase 
 echo 1 | update-alternatives --config java
 cd $testcaseFold
 localPwd=`pwd`

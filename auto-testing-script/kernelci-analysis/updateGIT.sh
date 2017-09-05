@@ -18,7 +18,7 @@ git pull
 
 ############################
 ## git pull lkp test source code 
-cd ../../../oto_lkp
+cd ../../../oto_external_lkp
 git pull
         if [ $? -ne 0 ]; then
         echo -e "LKP test source code pull ERROR, use the previous code and testcases set!"
