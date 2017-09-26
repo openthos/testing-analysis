@@ -28,7 +28,7 @@ cd $dirname_path
 
 ############################
 ## git pull gui test source code 
-cd ../../../oto_Uitest
+cd ../../../oto_external_Uitest
 git pull
         if [ $? -ne 0 ]; then
         echo -e "GUI test source code pull ERROR, use the previous code and testcases set!"

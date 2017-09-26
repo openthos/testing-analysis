@@ -66,7 +66,7 @@ testcaseLKP="../../../oto_external_lkp/testcase"
 export testcaseLKP
 testcaseCTS="../../../android-cts"
 export testcaseCTS
-testcaseGUI="../../../oto_Uitest"
+testcaseGUI="../../../oto_external_Uitest"
 export testcaseGUI
 qemuCMD="/usr/local/bin/qemu-system-x86_64 -m 4G"
 export qemuCMD
