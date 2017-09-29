@@ -56,7 +56,7 @@ disk_path=$5
 export disk_path
 run_install=$6
 export run_install
-ip_linux_host=`/sbin/ifconfig -a|grep inet|grep -v 127.0.0.1|grep -v inet6|awk '{print $2}'|tr -d "addr:"|grep 192`
+ip_linux_host=`/sbin/ifconfig -a|grep inet|grep -v 127.0.0.1|grep -v inet6|awk '{print $2}'|tr -d "addr:"|tr -d "地址:"|grep 192`
 export ip_linux_host
 ip_android="0.0.0.0"
 iso_loc="default"
@@ -388,7 +388,16 @@ elif [ "$r_v" == "r" ];then
         adb -s $ip_android:$adbPort push bin/firstlogin.jar /data/local/tmp || { echo "push firstlogin.jar failed" ; exit 1 ; }
         adb -s $ip_android:$adbPort shell uiautomator runtest firstlogin.jar -c com.firstlogin.firstlogin
 
-        echo 'install CtsDeviceAdmin.apk!!!!!'
+	##startmenuTest
+        echo 'startmenutest'
+        adb -s $ip_android:$adbPort push bin/StartMenuTest.apk /data/local/tmp/com.example.qin.startmenutest || { echo "push StartMenuTest.apk failed" ; exit 1 ; }
+        adb -s $ip_android:$adbPort shell pm install -r "/data/local/tmp/com.example.qin.startmenutest"
+        adb -s $ip_android:$adbPort push bin/StartMenuTest-androidTest.apk /data/local/tmp/com.example.qin.startmenutest.test || { echo "push StartMenuTest-androidTest.apk failed" ; exit 1 ; }
+        adb -s $ip_android:$adbPort shell pm install -r "/data/local/tmp/com.example.qin.startmenutest.test"
+        adb -s $ip_android:$adbPort shell am instrument -w -r   -e debug false -e class com.example.qin.startmenutest.StartMenuTest1 com.example.qin.startmenutest.test/android.support.test.runner.AndroidJUnitRunner
+        adb -s $ip_android:$adbPort shell pm uninstall com.example.qin.startmenutest
+        
+	echo 'install CtsDeviceAdmin.apk!!!!!'
         adb -s $ip_android:$adbPort install $testcaseCTS/repository/testcases/CtsDeviceAdmin.apk
         adb -s $ip_android:$adbPort push device_policies.xml data/system/device_policies.xml
         adb -s $ip_android:$adbPort push commitId.txt data/
@@ -433,6 +442,17 @@ elif [ "$r_v" == "r" ];then
         sleep 30
         adb -s $ip_android:5555 push bin/firstlogin.jar /data/local/tmp
         adb -s $ip_android:5555 shell uiautomator runtest firstlogin.jar -c com.firstlogin.firstlogin
+
+
+        ##startmenuTest
+        echo 'startmenutest'
+        adb -s $ip_android:$adbPort push bin/StartMenuTest.apk /data/local/tmp/com.example.qin.startmenutest || { echo "push StartMenuTest.apk failed" ; exit 1 ; }
+        adb -s $ip_android:$adbPort shell pm install -r "/data/local/tmp/com.example.qin.startmenutest"
+        adb -s $ip_android:$adbPort push bin/StartMenuTest-androidTest.apk /data/local/tmp/com.example.qin.startmenutest.test || { echo "push StartMenuTest-androidTest.apk failed" ; exit 1 ; }
+        adb -s $ip_android:$adbPort shell pm install -r "/data/local/tmp/com.example.qin.startmenutest.test"
+        adb -s $ip_android:$adbPort shell am instrument -w -r   -e debug false -e class com.example.qin.startmenutest.StartMenuTest1 com.example.qin.startmenutest.test/android.support.test.runner.AndroidJUnitRunner
+        adb -s $ip_android:$adbPort shell pm uninstall com.example.qin.startmenutest
+
 
         echo 'install CtsDeviceAdmin.apk!!!!!'
         adb -s $ip_android:5555 install $testcaseCTS/repository/testcases/CtsDeviceAdmin.apk
