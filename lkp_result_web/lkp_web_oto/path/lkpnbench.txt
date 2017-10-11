@@ -1,8 +1,0 @@
-/var/www/html/result/lkpnbench/1x/pc1-Z8302/ubuntu/defconfig/gcc-5/9f660ba3a7e982209564d32204e02ab3e83ead0f/avg.json
-/var/www/html/result/lkpnbench/1x/pc1-Z8302/ubuntu/defconfig/gcc-5/7d161ef190baf85136d922b0033f222f916d929b/avg.json
-/var/www/html/result/lkpnbench/1x/laptop1-T43U/ubuntu/defconfig/gcc-5/9f660ba3a7e982209564d32204e02ab3e83ead0f/avg.json
-/var/www/html/result/lkpnbench/1x/laptop1-T43U/ubuntu/defconfig/gcc-5/7d161ef190baf85136d922b0033f222f916d929b/avg.json
-/var/www/html/result/lkpnbench/1x/laptop2-T45/ubuntu/defconfig/gcc-5/9f660ba3a7e982209564d32204e02ab3e83ead0f/avg.json
-/var/www/html/result/lkpnbench/1x/laptop2-T45/ubuntu/defconfig/gcc-5/7d161ef190baf85136d922b0033f222f916d929b/avg.json
-/var/www/html/result/lkpnbench/1x/pc2-Z8000/ubuntu/defconfig/gcc-5/9f660ba3a7e982209564d32204e02ab3e83ead0f/avg.json
-/var/www/html/result/lkpnbench/1x/pc2-Z8000/ubuntu/defconfig/gcc-5/7d161ef190baf85136d922b0033f222f916d929b/avg.json
