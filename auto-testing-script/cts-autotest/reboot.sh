@@ -13,8 +13,14 @@ if [ "$r_v" == "r" ];then
     done
     [ $i -eq 5 ] && { echo "adb connect failed" ; exit 1 ; }
     echo $ip_android
-    adb -s $ip_android:$adbPort shell system/checkAndroidDesktop.sh || { echo "check desktop boot failed" ;  exit 1 ; }
-    sleep 30
+    for i in {1..5}
+    do
+	sleep 5
+        adb -s $ip_android:$adbPort shell system/checkAndroidDesktop.sh && break
+	echo "check desktop boot failed"
+    done
+    [ $i -eq 5 ] && { echo "check desktop boot failed and will return ubuntu" ; exit 1 ; }
+    sleep 20
 else
     adb -s $ip_android:$adbPort shell poweroff
     sleep 3
