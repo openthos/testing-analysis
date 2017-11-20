@@ -1,4 +1,6 @@
 #!/bin/bash -xe
+
+echo "$0 IP bios_reboot(android)|reboot_bootloader(ubuntu)"
 ping $1 -c 1 > /dev/null
 if [[ $? -ne 0 ]];then
     echo "cannot ping $1 in script android_fastboot.sh !"
@@ -16,6 +18,7 @@ adb -s $1:5555 shell busybox mount /dev/block/sda2 /data/grub_tmp/
 sleep 1
 
 
+#"bios_reboot" -> android
 if [ "$2" = "bios_reboot" ]
 then
 adb -s $1:5555 shell <<EOF
@@ -25,6 +28,7 @@ EOF
 fi
 
 
+#"reboot_bootloader" -> ubuntu
 if [ "$2" = "reboot_bootloader" ]
 then
 adb -s $1:5555 shell <<EOF

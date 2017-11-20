@@ -1,10 +1,16 @@
 #!/bin/bash -x
+
+ip_android_before=$ip_android
+
 cd "$(dirname "$0")"
 if [ "$r_v" == "r" ];then
     ./android_fastboot.sh  ${ip_android} bios_reboot
     ncPid=`lsof -i:$ListenPort | grep nc | awk '{print $2}'`
     [ ! -n "$ncPid" ] || kill $ncPid
-    ip_android=`timeout 180 nc -l $ListenPort` || { echo "wait ip failed" ; exit 1 ; }
+
+    ip_android=`timeout 180 nc -l $ListenPort` 
+    test -z $ip_android && $ip_android=$ip_android_before
+
     ping $ip_android -c 1 || { echo "cannot ping ip $ip_android, boot failed" ; exit 1 ; }
     for i in {1..5}
     do
@@ -29,7 +35,7 @@ else
     qemuPid=`ps -axu |grep qemu | grep kvm | awk '{print $2}'`
     [ ! -n "$qemuPid" ] || kill $qemuPid
 
-    $qemuCMD -vga vmware --enable-kvm -net nic -net user,hostfwd=tcp::$adbPort-:5555 $disk_path -vnc :3 &
+    $qemuCMD --enable-kvm -net nic -net user,hostfwd=tcp::$adbPort-:5555 $disk_path -vnc :3 &
     {
         qemuPid=$!
         nc -l $ListenPort &

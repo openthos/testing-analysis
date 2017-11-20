@@ -66,9 +66,7 @@ testcaseLKP="../../../oto_external_lkp/testcase"
 export testcaseLKP
 testcaseCTS="../../../android-cts"
 export testcaseCTS
-testcaseGUI="../../../oto_external_Uitest"
-export testcaseGUI
-qemuCMD="/usr/local/bin/qemu-system-x86_64 -m 4G"
+qemuCMD="/usr/bin/qemu-system-x86_64 -m 4G"
 export qemuCMD
 
 testType="default"
@@ -95,6 +93,7 @@ function assert_v()
 }
 
 
+echo "Start testing $host:$ip_linux_client"
 #check the ip address
 ./checkIP.sh $ip_linux_client
 if [ $? -ne 0 ];then
@@ -171,9 +170,9 @@ if [ "$r_v" == "v" ]; then
 
             ##startmenuTest
             echo 'startmenutest'
-            adb -s $ip_android:$adbPort push bin/StartMenuTest.apk /data/local/tmp/com.example.qin.startmenutest || { echo "push StartMenuTest.apk failed" ; exit 1 ; }
+            adb -s $ip_android:$adbPort push bin/StartMenuTest.apk /data/local/tmp/com.example.qin.startmenutest || { echo "push StartMenuTest.apk failed" ; }
             adb -s $ip_android:$adbPort shell pm install -r "/data/local/tmp/com.example.qin.startmenutest"
-            adb -s $ip_android:$adbPort push bin/StartMenuTest-androidTest.apk /data/local/tmp/com.example.qin.startmenutest.test || { echo "push StartMenuTest-androidTest.apk failed" ; exit 1 ; }
+            adb -s $ip_android:$adbPort push bin/StartMenuTest-androidTest.apk /data/local/tmp/com.example.qin.startmenutest.test || { echo "push StartMenuTest-androidTest.apk failed" ; }
             adb -s $ip_android:$adbPort shell pm install -r "/data/local/tmp/com.example.qin.startmenutest.test"
             adb -s $ip_android:$adbPort shell am instrument -w -r   -e debug false -e class com.example.qin.startmenutest.StartMenuTest1 com.example.qin.startmenutest.test/android.support.test.runner.AndroidJUnitRunner
             adb -s $ip_android:$adbPort shell pm uninstall com.example.qin.startmenutest
@@ -374,14 +373,14 @@ elif [ "$r_v" == "r" ];then
         export iso_loc
         getCommitId
         ./auto2.sh $ip_linux_client $iso_loc $disk_path $ListenPort $ip_linux_host
-        ip_android=`timeout 600 nc -l $ListenPort`
-        ping $ip_android -c 1 || { echo "cannot ping ip $ip_android" ; exit 1 ; }
+        ip_android=`timeout 300 nc -l $ListenPort`
+        ping $ip_android -c 1 || { echo "Cannot ping Android ip:$ip_android" ; exit 1 ; }
         for i in {1..5}
         do
             adb connect ${ip_android} && break
             sleep 2
         done
-        [ $i -eq 5 ] && { echo "adb connect failed" ; exit 1 ; }
+        [ $i -eq 5 ] && { echo "adb connect Android failed" ; exit 1 ; }
 
         echo "android boot success!"
         export ip_android
@@ -391,16 +390,16 @@ elif [ "$r_v" == "r" ];then
         adb -s $ip_android:$adbPort shell system/checkAndroidDesktop.sh || { echo "check desktop boot failed" ;  exit 1 ; }
 	echo 'check android desktop finish'
         sleep 30
-        adb -s $ip_android:$adbPort push bin/firstlogin.jar /data/local/tmp || { echo "push firstlogin.jar failed" ; exit 1 ; }
+        adb -s $ip_android:$adbPort push bin/firstlogin.jar /data/local/tmp || { echo "push firstlogin.jar failed" ; }
 	echo 'push firstlogin.jar finish'
         adb -s $ip_android:$adbPort shell uiautomator runtest firstlogin.jar -c com.firstlogin.firstlogin
 	echo 'run firstlogin.jar finish'
 
 	##startmenuTest
         echo 'startmenutest'
-        adb -s $ip_android:$adbPort push bin/StartMenuTest.apk /data/local/tmp/com.example.qin.startmenutest || { echo "push StartMenuTest.apk failed" ; exit 1 ; }
+        adb -s $ip_android:$adbPort push bin/StartMenuTest.apk /data/local/tmp/com.example.qin.startmenutest || { echo "push StartMenuTest.apk failed" ; }
         adb -s $ip_android:$adbPort shell pm install -r "/data/local/tmp/com.example.qin.startmenutest"
-        adb -s $ip_android:$adbPort push bin/StartMenuTest-androidTest.apk /data/local/tmp/com.example.qin.startmenutest.test || { echo "push StartMenuTest-androidTest.apk failed" ; exit 1 ; }
+        adb -s $ip_android:$adbPort push bin/StartMenuTest-androidTest.apk /data/local/tmp/com.example.qin.startmenutest.test || { echo "push StartMenuTest-androidTest.apk failed" ; }
         adb -s $ip_android:$adbPort shell pm install -r "/data/local/tmp/com.example.qin.startmenutest.test"
         adb -s $ip_android:$adbPort shell am instrument -w -r   -e debug false -e class com.example.qin.startmenutest.StartMenuTest1 com.example.qin.startmenutest.test/android.support.test.runner.AndroidJUnitRunner
         adb -s $ip_android:$adbPort shell pm uninstall com.example.qin.startmenutest
@@ -410,7 +409,7 @@ elif [ "$r_v" == "r" ];then
         adb -s $ip_android:$adbPort push device_policies.xml data/system/device_policies.xml
         adb -s $ip_android:$adbPort push commitId.txt data/
 
-        ./reboot.sh || { echo "reboot failed " ; exit 1 ; }
+	./reboot.sh || { echo "reboot failed while GUI test " ; exit 1 ; }
         cts_cmd="$8"
         ./runLkpTestInFold.sh $testcaseLKP
         ret=$?
@@ -422,7 +421,7 @@ elif [ "$r_v" == "r" ];then
         assert $ret
 
         sleep 2
-        ### monitor script, if network is down, reboot to linux
+        ### monitor script, if network is down, reboot
         ./testAliveSend.sh &
         echo "exit" | timeout 46000 $testcaseCTS/tools/cts-tradefed run cts -s $ip_android:$adbPort $cts_cmd
         if [ $? -eq 0 ];then

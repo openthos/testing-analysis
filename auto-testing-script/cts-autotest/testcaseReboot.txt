@@ -2,4 +2,4 @@
 ## default value of gui test is 0, which means do not reboot
 ## default value of lkp test is 1, which means reboot
 GUI:0
-LKP:1
+LKP:0

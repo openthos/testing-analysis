@@ -23,10 +23,14 @@ do
 	cmd="./autoTest.sh "
     echo $port
 	#cmd=$cmd"$line"" $port"
-	eval "$cmd $port $line" > testlog$port".txt" &
+	eval "$cmd $port $line" > "log_"$(echo $line|awk '{print $3}')".txt" 2>&1 &
 	#echo "done!"
 done < configs
 wait
+
+## result to json
+/var/www/html/run_py.sh
+
 pkill adb
 pkill nc
 kill `ps -axu | grep qemu-system-x86_64 | awk '{print $2}'`

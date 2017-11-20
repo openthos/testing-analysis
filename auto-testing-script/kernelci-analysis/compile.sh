@@ -1,7 +1,7 @@
-#!/bin/bash -ex
+#!/bin/bash -x
 otoid=$1
 android_repo=/mnt/freenas/work
-/usr/sbin/ntpdate s2a.time.edu.cn
+/usr/sbin/ntpdate ntp.tuna.tsinghua.edu.cn
 cd $android_repo
 ../OTO/repo sync
 #source build/envsetup.sh

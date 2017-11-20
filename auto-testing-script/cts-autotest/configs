@@ -1,5 +1,5 @@
-r 192.168.0.54 laptop2-T45 /dev/sda40 installTest $iso "--plan CTS-filtered --disable-reboot"
+r 192.168.0.54 laptop1-T43U /dev/sda40 installTest $iso "--plan CTS-filtered --disable-reboot"
+r 192.168.0.55 laptop2-T45 /dev/sda40 installTest $iso "--plan CTS-filtered --disable-reboot"
 v localhost qemu1 ../../../android-x86.raw installTest $iso "--plan CTS-filtered --disable-reboot"
 r 192.168.0.115 pc1-Z8302 /dev/sda40 installTest $iso "--plan CTS-filtered --disable-reboot"
-r 192.168.0.198 pc2-Z8000 /dev/sda40 installTest $iso "--plan CTS-filtered --disable-reboot"
-r 192.168.0.195 laptop1-T43U /dev/sda40 installTest $iso "--plan CTS-filtered --disable-reboot"
+r 192.168.0.114 pc2-Z8000 /dev/sda40 installTest $iso "--plan CTS-filtered --disable-reboot"

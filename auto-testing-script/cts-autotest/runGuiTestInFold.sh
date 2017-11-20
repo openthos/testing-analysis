@@ -9,10 +9,11 @@ pidAlive=$!
 cd $tmpTestcaseFold
 for testcase in `ls -d */|sed 's|[/]||g'`
 do
-    ping $ip_android -c 1 || { echo "cannot ping ip $ip_android" ; exit 1 ; }
-    adb connect $ip_android:$adbPort || { echo "adb connect connect $ip_android" ; exit 1 ; }
-    timeout 900 $testcase/$testcase".sh" $ip_android $adbPort $ip_android"_"$adbPort"_"$commitId
-    [ $? -ne 0 ] && { $localpwd/failaction.sh $ip_android $testcase  $r_v ; exit 1 ; }
+    ping $ip_android -c 1 || { echo "Cannot ping Android ip:$ip_android while GUI test" ; exit 1 ; }
+    adb connect $ip_android:$adbPort || { echo "adb cannot connect $ip_android while GUI test" ; exit 1 ; }
+
+    timeout 600 $testcase/$testcase".sh" $ip_android $adbPort $ip_android"_"$adbPort"_"$commitId
+    [ $? -ne 0 ] && { $localpwd/failaction.sh $ip_android $testcase  $r_v ;  echo "$testcase return fault"; }
 
     if [ $needreboot -eq 1 ];then
         #kill $pidAlive
@@ -22,10 +23,11 @@ do
         pidAlive=$!
     fi  
 done
+
+ps -p $pidAlive && kill $pidAlive
 if [ $needreboot -eq 0 ];then 
-    ps -p $pidAlive && kill $pidAlive
     $localpwd/reboot.sh
-fi  
+fi
 cd $pwdBefore
 wait
 exit 0

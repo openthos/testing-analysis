@@ -45,6 +45,10 @@ ssh root@${ip_linux} "rm -rf /root/android_auto/"
 
 ./android_tool.sh ${ip_linux}  ${android_iso_for_test} android_x86_iso_install.sh ${diskpart_for_android} 
 
+##add by xiaoluoyuan for testcases
+lkp_testcase="/home/oto/openthos/oto_external_lkp"
+rsync -avz -e ssh --exclude "benchmark_mirror" --exclude "testcase" --exclude ".git" $lkp_testcase/ root@${ip_linux}:~/$(basename $lkp_testcase)
+
 ## add by aoquan
 ssh root@${ip_linux} "~/android_auto/scriptReboot2/reboot.sh $diskpart_for_android $ip_linux_host $ListenPort"
 sleep 2
