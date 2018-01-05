@@ -64,4 +64,4 @@
    ```
    android list target
    ```
-    - 显示版本为22
+   - 显示版本为22
