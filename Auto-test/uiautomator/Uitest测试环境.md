@@ -18,10 +18,8 @@
   mv jdk1.8.0_111 /usr/lib/jdk8
   ```
   - 配置环境变量
-  
   ```
   sudo vi /etc/profile
-  
   ```
   - 添加以下几行
   
