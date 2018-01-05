@@ -1,4 +1,3 @@
-## 安装
 #### 安装ubuntu系统
 版本无所谓，语言必须是英文
 #### 下载安装jdk
@@ -48,3 +47,22 @@
   java -version
   ```
   出现jdk版本信息，则配置成功
+  
+  
+#### 安装adb
+#### 拷贝sdk
+  ```
+  scp lh@192.168.0.180:/home/lh/zlp/sdk.tar.gz .
+  ```
+#### 配置环境变量
+   ```
+   sudo vi /etc/profile
+   export PATH=$PATH:/sdk解压的目录/Sdk/tools:sdk解压的目录/Sdk/platform-tools:/sdk解压的目录/Sdk/tools/bin
+   ```
+    - 重启电脑
+    - 验证是否成功
+   
+   ```
+   android list target
+   ```
+    - 显示版本为22
