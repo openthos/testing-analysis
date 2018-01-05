@@ -58,10 +58,9 @@
    ```
    sudo vi /etc/profile
    export PATH=$PATH:/sdk解压的目录/Sdk/tools:sdk解压的目录/Sdk/platform-tools:/sdk解压的目录/Sdk/tools/bin
-   ```
-    - 重启电脑
-    - 验证是否成功
-   
+```
+   - 重启电脑
+   - 验证是否成功
    ```
    android list target
    ```
