@@ -1,5 +1,6 @@
 ## 安装
-#### 安装ubuntu系统（版本无所谓，语言必须时英文）
+#### 安装ubuntu系统
+版本无所谓，语言必须是英文
 #### 下载安装jdk
 
   - 下载地址:http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
