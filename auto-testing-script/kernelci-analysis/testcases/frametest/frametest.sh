@@ -11,6 +11,12 @@ port=$2
 foldName=$3
 cd "$(dirname "$0")"
 mkdir $foldName
+adb -s $androidIP:$port push ./app-debug.apk /data/local/tmp/com.example.qin.gamehelper
+adb -s $androidIP:$port shell pm install -r "/data/local/tmp/com.example.qin.gamehelper"
+adb -s $androidIP:$port push ./app-debug-androidTest.apk /data/local/tmp/com.example.qin.gamehelper.test
+adb -s $androidIP:$port shell pm install -r "/data/local/tmp/com.example.qin.gamehelper.test"
+adb -s $androidIP:$port shell am instrument -w -r   -e debug false -e class com.example.qin.closeVolume.closeVolume#testDemo com.example.qin.gamehelper.test/android.support.test.runner.AndroidJUnitRunner
+adb -s $androidIP:$port shell pm uninstall com.example.qin.gamehelper
 adb -s $androidIP:$port install vlc.apk
 adb -s $androidIP:$port push $VIDEO /storage/emulated/legacy/DCIM/Camera/$VIDEO
 adb -s $androidIP:$port shell mkdir /data/gputrace
