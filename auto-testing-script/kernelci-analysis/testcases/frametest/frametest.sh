@@ -41,7 +41,7 @@ sleep 1
 adb -s $androidIP:$port shell input keyevent 25
 sleep 1
 adb -s $androidIP:$port shell input keyevent 25
-sleep 30
+sleep 20
 
 adb -s $androidIP:$port push $VIDEO /storage/emulated/legacy/DCIM/Camera/$VIDEO
 adb -s $androidIP:$port shell mkdir /data/gputrace
