@@ -14,7 +14,7 @@ foldName=$3
 cd "$(dirname "$0")"
 mkdir $foldName
 
-sleep 10
+sleep 5
 adb -s $androidIP:$port shell input keyevent 66
 adb -s $androidIP:$port shell input keyevent 111
 adb -s $androidIP:$port install vlc.apk
