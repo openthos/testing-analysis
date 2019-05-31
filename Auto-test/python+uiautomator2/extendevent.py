@@ -129,8 +129,8 @@ def open_startmenu(d,event_id):
     d.shell("sendevent /dev/input/event"+event_id+" 2 1 2000")
     d.shell("sendevent /dev/input/event"+event_id+" 0 0 0")
     # move mouse to the position to left click
-    d.shell("sendevent /dev/input/event"+event_id+" 2 0 10")
-    d.shell("sendevent /dev/input/event"+event_id+" 2 1 -10")
+    d.shell("sendevent /dev/input/event"+event_id+" 2 0 20")
+    d.shell("sendevent /dev/input/event"+event_id+" 2 1 -20")
     d.shell("sendevent /dev/input/event"+event_id+" 0 0 0")
     # send event of left click
     d.shell("sendevent /dev/input/event"+event_id+" 0004 0004 00090001;"
