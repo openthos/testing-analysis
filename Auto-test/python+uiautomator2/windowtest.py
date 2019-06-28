@@ -47,8 +47,6 @@ class WindowTestCase(unittest.TestCase):
     def tearDown(self):
         sleep(0.5)
 
-    # 测试准备阶段
-    # 删除常用软件列表中的应用
     def test_00_prepare(self):
         logger.info("------------标准窗口测试：上下左右调整大小")
         count=1
