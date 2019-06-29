@@ -201,4 +201,3 @@ if __name__ == "__main__":
     sleep(2)
     test_file.close()
     d.service("uiautomator").stop()
-x, y = d(text="Settings").center()
