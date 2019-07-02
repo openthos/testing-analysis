@@ -124,7 +124,7 @@ def roller_up(d,event_id,targeticon,step):
     return True
 
 def open_startmenu(d,event_id):
-    # move mouse to the left top of the screen
+    # move mouse to the left bottom of the screen
     d.shell("sendevent /dev/input/event"+event_id+" 2 0 -2000")
     d.shell("sendevent /dev/input/event"+event_id+" 2 1 2000")
     d.shell("sendevent /dev/input/event"+event_id+" 0 0 0")
@@ -153,4 +153,25 @@ def click_blank(d,event_id):
             +"sendevent /dev/input/event"+event_id+" 0004 0004 00090001;"
             +"sendevent /dev/input/event"+event_id+" 0001 0272 00000000;"
             +"sendevent /dev/input/event"+event_id+" 0000 0000 00000000")
+    return True
+
+def drag(d,event_id,sx,sy,ex,ey):
+    # move mouse to the left top of the screen
+    d.shell("sendevent /dev/input/event"+event_id+" 2 0 -2000")
+    d.shell("sendevent /dev/input/event"+event_id+" 2 1 -2000")
+    d.shell("sendevent /dev/input/event"+event_id+" 0 0 0")
+    # move mouse to the position to left click
+    d.shell("sendevent /dev/input/event"+event_id+" 2 0 "+str(sx))
+    d.shell("sendevent /dev/input/event"+event_id+" 2 1 "+str(sy))
+    d.shell("sendevent /dev/input/event"+event_id+" 0 0 0")
+    # send event of drag
+    d.shell("sendevent /dev/input/event4 4 4 589825")
+    d.shell("sendevent /dev/input/event4 1 272 1")
+    d.shell("sendevent /dev/input/event4 0 0 0")
+    d.shell("sendevent /dev/input/event4 2 0 "+str(ex-sx))
+    d.shell("sendevent /dev/input/event4 2 1 "+str(ey-sy))
+    d.shell("sendevent /dev/input/event4 0 0 0")
+    d.shell("sendevent /dev/input/event4 4 4 589825")
+    d.shell("sendevent /dev/input/event4 1 272 0")
+    d.shell("sendevent /dev/input/event4 0 0 0")
     return True
