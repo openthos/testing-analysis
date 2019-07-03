@@ -127,7 +127,6 @@ class WindowTestCase(unittest.TestCase):
         windowBounds=extendfunction.getParentBounds(d.dump_hierarchy(),'resource-id="android:id/caption"')
         window_width=windowBounds['right']-windowBounds['left']
         extendevent.drag_2(d,mouseID,caption_x,caption_y,window_width/2+100,caption_y)
-        print(str(caption_x)+", "+str(caption_y))
         check_windowBounds = {'top': windowBounds['top'], 'bottom': windowBounds['bottom'], 'left': 100,'right':100+window_width}
         sleep(0.5)
         windowBounds=extendfunction.getParentBounds(d.dump_hierarchy(),'resource-id="android:id/caption"')
@@ -156,7 +155,6 @@ class WindowTestCase(unittest.TestCase):
         window_height=windowBounds['bottom']-windowBounds['top']
         caption_bounds=d(resourceId="android:id/caption").info.get('visibleBounds')
         caption_height=caption_bounds['bottom']-caption_bounds['top']
-        print(caption_height)
         extendevent.drag_2(d,mouseID,caption_x,caption_y,screen_width/2,100)
         check_windowBounds = {'top': 100-caption_height/2, 'bottom': (100-caption_height/2)+window_height, 'left': screen_width/2-window_width/2,'right': screen_width/2+window_width/2}
         sleep(0.5)
