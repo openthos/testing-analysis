@@ -78,7 +78,7 @@ class WindowTestCase(unittest.TestCase):
         d.app_start(package)
         sleep(5)
         logger.info("------------标准窗口测试：测试准备-移动窗口到屏幕中间")
-        d(resourceId="android:id/caption").drag_to(860, 90, duration=0.5)
+        d(resourceId="android:id/caption").drag_to(860, 90, duration=0.1)
         sleep(1)
 
     def test_01_resize_top(self):
@@ -126,8 +126,10 @@ class WindowTestCase(unittest.TestCase):
         caption_x,caption_y = d(resourceId="android:id/caption").center()
         windowBounds=extendfunction.getParentBounds(d.dump_hierarchy(),'resource-id="android:id/caption"')
         window_width=windowBounds['right']-windowBounds['left']
-        extendevent.drag(d,mouseID,caption_x,caption_y,window_width/2+100,caption_y)
+        extendevent.drag_2(d,mouseID,caption_x,caption_y,window_width/2+100,caption_y)
+        print(str(caption_x)+", "+str(caption_y))
         check_windowBounds = {'top': windowBounds['top'], 'bottom': windowBounds['bottom'], 'left': 100,'right':100+window_width}
+        sleep(0.5)
         windowBounds=extendfunction.getParentBounds(d.dump_hierarchy(),'resource-id="android:id/caption"')
         print(check_windowBounds)
         print(windowBounds)
@@ -138,8 +140,9 @@ class WindowTestCase(unittest.TestCase):
         caption_x,caption_y = d(resourceId="android:id/caption").center()
         windowBounds=extendfunction.getParentBounds(d.dump_hierarchy(),'resource-id="android:id/caption"')
         window_width=windowBounds['right']-windowBounds['left']
-        extendevent.drag(d,mouseID,caption_x,caption_y,1900-window_width/2,caption_y)
-        check_windowBounds = {'top': windowBounds['top'], 'bottom': windowBounds['bottom'], 'left': 1900-window_width,'right':1900}
+        extendevent.drag_2(d,mouseID,caption_x,caption_y,screen_width-100-window_width/2,caption_y)
+        check_windowBounds = {'top': windowBounds['top'], 'bottom': windowBounds['bottom'], 'left': screen_width-100-window_width,'right':screen_width-100}
+        sleep(0.5)
         windowBounds=extendfunction.getParentBounds(d.dump_hierarchy(),'resource-id="android:id/caption"')
         print(check_windowBounds)
         print(windowBounds)
@@ -149,9 +152,14 @@ class WindowTestCase(unittest.TestCase):
         logger.info("------------标准窗口测试：移动-屏幕内上移")
         caption_x,caption_y = d(resourceId="android:id/caption").center()
         windowBounds=extendfunction.getParentBounds(d.dump_hierarchy(),'resource-id="android:id/caption"')
-        window_height=windowBounds['top']-windowBounds['bottom']
-        extendevent.drag(d,mouseID,caption_x,caption_y,screen_width/2,50)
-        check_windowBounds = {'top': 100, 'bottom': 100+window_height, 'left': windowBounds['left'],'right':windowBounds['right']}
+        window_width=windowBounds['right']-windowBounds['left']
+        window_height=windowBounds['bottom']-windowBounds['top']
+        caption_bounds=d(resourceId="android:id/caption").info.get('visibleBounds')
+        caption_height=caption_bounds['bottom']-caption_bounds['top']
+        print(caption_height)
+        extendevent.drag_2(d,mouseID,caption_x,caption_y,screen_width/2,100)
+        check_windowBounds = {'top': 100-caption_height/2, 'bottom': (100-caption_height/2)+window_height, 'left': screen_width/2-window_width/2,'right': screen_width/2+window_width/2}
+        sleep(0.5)
         windowBounds=extendfunction.getParentBounds(d.dump_hierarchy(),'resource-id="android:id/caption"')
         print(check_windowBounds)
         print(windowBounds)
@@ -162,38 +170,39 @@ class WindowTestCase(unittest.TestCase):
         caption_x,caption_y = d(resourceId="android:id/caption").center()
         windowBounds=extendfunction.getParentBounds(d.dump_hierarchy(),'resource-id="android:id/caption"')
         window_height=windowBounds['top']-windowBounds['bottom']
-        extendevent.drag(d,mouseID,caption_x,caption_y,caption_x,800-window_height)
+        extendevent.drag_2(d,mouseID,caption_x,caption_y,caption_x,800-window_height)
 
     def test_15_move_left2(self):
         logger.info("------------标准窗口测试：移动-出屏幕左移")
         caption_x,caption_y = d(resourceId="android:id/caption").center()
-        extendevent.drag(d,mouseID,caption_x,caption_y,20,100)
+        extendevent.drag_2(d,mouseID,caption_x,caption_y,20,100)
 
     def test_16_move_right2(self):
         logger.info("------------标准窗口测试：移动-出屏幕右移")
         caption_x,caption_y = d(resourceId="android:id/caption").center()
-        extendevent.drag(d,mouseID,caption_x,caption_y,1900,100)
+        extendevent.drag_2(d,mouseID,caption_x,caption_y,1900,100)
 
     def test_17_move_leftdown(self):
         logger.info("------------标准窗口测试：移动-出屏幕左下")
         caption_x,caption_y = d(resourceId="android:id/caption").center()
-        extendevent.drag(d,mouseID,caption_x,caption_y,100,700)
+        extendevent.drag_2(d,mouseID,caption_x,caption_y,100,700)
 
     def test_18_move_rightdown(self):
         logger.info("------------标准窗口测试：移动-出屏幕右下")
         caption_x,caption_y = d(resourceId="android:id/caption").center()
-        extendevent.drag(d,mouseID,caption_x,caption_y,1900,700)
+        extendevent.drag_2(d,mouseID,caption_x,caption_y,1900,700)
 
     def test_19_move_top(self):
         logger.info("------------标准窗口测试：移动-上边界")
         caption_x,caption_y = d(resourceId="android:id/caption").center()
-        extendevent.drag(d,mouseID,caption_x,caption_y,800,0)
+        extendevent.drag_2(d,mouseID,caption_x,caption_y,800,0)
         check_windowBounds = {'top': 0, 'bottom': screen_height, 'left': 0,'right':screen_width}
+        sleep(0.5)
+        extendevent.click_blank(d,mouseID)
         windowBounds=extendfunction.getParentBounds(d.dump_hierarchy(),'resource-id="android:id/caption"')
         print(check_windowBounds)
         print(windowBounds)
         output_res(windowBounds==check_windowBounds)
-
 
     def test_20_move_leftside(self):
         logger.info("------------标准窗口测试：移动-左边界")
