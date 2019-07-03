@@ -31,11 +31,10 @@ def output_res(cond):
         #test_file.write("**不通过**\n")
         print("不通过！！！")
 
-def resize(orientation,direction):
+def resize(orientation,i):
     windowBounds=extendfunction.getParentBounds(d.dump_hierarchy(),'resource-id="android:id/caption"')
     print(windowBounds)
     
-    i=direction*100
     currentApp_hcenter=(windowBounds['left']+windowBounds['right'])/2
     currentApp_vcenter=(windowBounds['top']+windowBounds['bottom'])/2
     if (orientation=="top"):
@@ -76,53 +75,57 @@ class WindowTestCase(unittest.TestCase):
     def test_00_prepare(self):
         logger.info("------------标准窗口测试：测试准备-打开应用")
         d.app_start(package)
-        sleep(5)
-        logger.info("------------标准窗口测试：测试准备-移动窗口到屏幕中间")
-        d(resourceId="android:id/caption").drag_to(860, 90, duration=0.1)
-        sleep(1)
+        d(resourceId="android:id/caption").exists(timeout=30)
+        d(resourceId="android:id/caption").drag_to(screen_width/2, 100, duration=0.1)
+        sleep(0.5)
+        windowBounds=extendfunction.getParentBounds(d.dump_hierarchy(),'resource-id="android:id/caption"')
+        window_width=windowBounds['right']-windowBounds['left']
+        if window_width<700:
+            windowBounds = resize("right",-800+window_width)
 
     def test_01_resize_top(self):
         logger.info("------------标准窗口测试：调整大小-上边框")
-        windowBounds = resize("top",1)
-        windowBounds = resize("top",-1)
+        windowBounds = resize("top",100)
+        windowBounds = resize("top",-100)
 
     def test_02_resize_bottom(self):
         logger.info("------------标准窗口测试：调整大小-下边框")
-        windowBounds = resize("bottom",1)
-        windowBounds = resize("bottom",-1)
+        windowBounds = resize("bottom",100)
+        windowBounds = resize("bottom",-100)
 
     def test_03_resize_left(self):
         logger.info("------------标准窗口测试：调整大小-左边框")
-        windowBounds = resize("left",1)
-        windowBounds = resize("left",-1)
+        windowBounds = resize("left",100)
+        windowBounds = resize("left",-100)
 
     def test_04_resize_right(self):
         logger.info("------------标准窗口测试：调整大小-右边框")
-        windowBounds = resize("right",1)
-        windowBounds = resize("right",-1)
+        windowBounds = resize("right",100)
+        windowBounds = resize("right",-100)
 
     def test_05_resize_lefttop(self):
         logger.info("------------标准窗口测试：调整大小-左上边框")
-        windowBounds = resize("left-top",1)
-        windowBounds = resize("left-top",-1)
+        windowBounds = resize("left-top",100)
+        windowBounds = resize("left-top",-100)
 
     def test_06_resize_leftbottom(self):
         logger.info("------------标准窗口测试：调整大小-左下边框")
-        windowBounds = resize("left-bottom",1)
-        windowBounds = resize("left-bottom",-1)
+        windowBounds = resize("left-bottom",100)
+        windowBounds = resize("left-bottom",-100)
 
     def test_07_resize_righttop(self):
         logger.info("------------标准窗口测试：调整大小-右上边框")
-        windowBounds = resize("right-top",1)
-        windowBounds = resize("right-top",-1)
+        windowBounds = resize("right-top",100)
+        windowBounds = resize("right-top",-100)
 
     def test_08_resize_rightbottom(self):
         logger.info("------------标准窗口测试：调整大小-右下边框")
-        windowBounds = resize("right-bottom",1)
-        windowBounds = resize("right-bottom",-1)
+        windowBounds = resize("right-bottom",100)
+        windowBounds = resize("right-bottom",-100)
 
     def test_11_move_left1(self):
         logger.info("------------标准窗口测试：移动-屏幕内左移")
+        sleep(0.5)
         caption_x,caption_y = d(resourceId="android:id/caption").center()
         windowBounds=extendfunction.getParentBounds(d.dump_hierarchy(),'resource-id="android:id/caption"')
         window_width=windowBounds['right']-windowBounds['left']
@@ -136,6 +139,7 @@ class WindowTestCase(unittest.TestCase):
 
     def test_12_move_right1(self):
         logger.info("------------标准窗口测试：移动-屏幕内右移")
+        sleep(0.5)
         caption_x,caption_y = d(resourceId="android:id/caption").center()
         windowBounds=extendfunction.getParentBounds(d.dump_hierarchy(),'resource-id="android:id/caption"')
         window_width=windowBounds['right']-windowBounds['left']
@@ -149,6 +153,7 @@ class WindowTestCase(unittest.TestCase):
 
     def test_13_move_up1(self):
         logger.info("------------标准窗口测试：移动-屏幕内上移")
+        sleep(0.5)
         caption_x,caption_y = d(resourceId="android:id/caption").center()
         windowBounds=extendfunction.getParentBounds(d.dump_hierarchy(),'resource-id="android:id/caption"')
         window_width=windowBounds['right']-windowBounds['left']
@@ -165,6 +170,7 @@ class WindowTestCase(unittest.TestCase):
 
     def test_14_move_down1(self):
         logger.info("------------标准窗口测试：移动-屏幕内下移")
+        sleep(0.5)
         caption_x,caption_y = d(resourceId="android:id/caption").center()
         windowBounds=extendfunction.getParentBounds(d.dump_hierarchy(),'resource-id="android:id/caption"')
         window_height=windowBounds['top']-windowBounds['bottom']
@@ -172,31 +178,35 @@ class WindowTestCase(unittest.TestCase):
 
     def test_15_move_left2(self):
         logger.info("------------标准窗口测试：移动-出屏幕左移")
+        sleep(0.5)
         caption_x,caption_y = d(resourceId="android:id/caption").center()
-        extendevent.drag_2(d,mouseID,caption_x,caption_y,20,100)
+        extendevent.drag_2(d,mouseID,caption_x,caption_y,300,100)
 
     def test_16_move_right2(self):
         logger.info("------------标准窗口测试：移动-出屏幕右移")
+        sleep(0.5)
         caption_x,caption_y = d(resourceId="android:id/caption").center()
-        extendevent.drag_2(d,mouseID,caption_x,caption_y,1900,100)
+        extendevent.drag_2(d,mouseID,caption_x,caption_y,screen_width-300,100)
 
     def test_17_move_leftdown(self):
         logger.info("------------标准窗口测试：移动-出屏幕左下")
+        sleep(0.5)
         caption_x,caption_y = d(resourceId="android:id/caption").center()
         extendevent.drag_2(d,mouseID,caption_x,caption_y,100,700)
 
     def test_18_move_rightdown(self):
         logger.info("------------标准窗口测试：移动-出屏幕右下")
+        sleep(0.5)
         caption_x,caption_y = d(resourceId="android:id/caption").center()
         extendevent.drag_2(d,mouseID,caption_x,caption_y,1900,700)
 
     def test_19_move_top(self):
         logger.info("------------标准窗口测试：移动-上边界")
+        sleep(0.5)
         caption_x,caption_y = d(resourceId="android:id/caption").center()
         extendevent.drag_2(d,mouseID,caption_x,caption_y,800,0)
         check_windowBounds = {'top': 0, 'bottom': screen_height, 'left': 0,'right':screen_width}
         sleep(0.5)
-        extendevent.click_blank(d,mouseID)
         windowBounds=extendfunction.getParentBounds(d.dump_hierarchy(),'resource-id="android:id/caption"')
         print(check_windowBounds)
         print(windowBounds)
@@ -204,21 +214,85 @@ class WindowTestCase(unittest.TestCase):
 
     def test_20_move_leftside(self):
         logger.info("------------标准窗口测试：移动-左边界")
+        sleep(0.5)
+        caption_x,caption_y = d(resourceId="android:id/caption").center()
+        extendevent.drag_2(d,mouseID,caption_x,caption_y,0,10)
+        sleep(0.5)
+        check_windowBounds = {'top': 0, 'bottom': screen_height, 'left': 0,'right':screen_width/2}
+        windowBounds=extendfunction.getParentBounds(d.dump_hierarchy(),'resource-id="android:id/caption"')
+        print(check_windowBounds)
+        print(windowBounds)
+        output_res(windowBounds==check_windowBounds)
 
     def test_21_move_rightside(self):
         logger.info("------------标准窗口测试：移动-右边界")
+        sleep(0.5)
+        caption_x,caption_y = d(resourceId="android:id/caption").center()
+        extendevent.drag_2(d,mouseID,caption_x,caption_y,screen_width,10)
+        sleep(0.5)
+        check_windowBounds = {'top': 0, 'bottom': screen_height, 'left': screen_width/2,'right':screen_width}
+        windowBounds=extendfunction.getParentBounds(d.dump_hierarchy(),'resource-id="android:id/caption"')
+        print(check_windowBounds)
+        print(windowBounds)
+        output_res(windowBounds==check_windowBounds)
 
     def test_22_doubleclick(self):
         logger.info("------------标准窗口测试：双击")
+        sleep(0.5)
+        caption_x,caption_y = d(resourceId="android:id/caption").center()
+        extendevent.drag_2(d,mouseID,caption_x,caption_y,screen_width/2,100)
+        sleep(0.5)
+        extendevent.double_click(d,mouseID,d(resourceId="android:id/caption"))
+        sleep(0.5)
+        extendevent.click_blank(d,mouseID)
+        sleep(0.5)
+        check_windowBounds = {'top': 0, 'bottom': screen_height, 'left': 0,'right':screen_width}
+        windowBounds=extendfunction.getParentBounds(d.dump_hierarchy(),'resource-id="android:id/caption"')
+        print(check_windowBounds)
+        print(windowBounds)
+        output_res(windowBounds==check_windowBounds)
+
 
     def test_31_button_minimum(self):
         logger.info("------------标准窗口测试：按钮-最小化")
+        sleep(0.5)
+        d(resourceId="android:id/minimize_window").click()
+        sleep(0.5)
+        output_res(d(text="回收站").exists)
 
     def test_32_button_max(self):
         logger.info("------------标准窗口测试：按钮-最大化")
+        sleep(0.5)
+        d.app_stop(package)
+        sleep(0.5)
+        d.app_start(package)
+        if(not d(resourceId="android:id/caption").exists):
+            extendevent.click_blank(d,mouseID)
+            caption_x,caption_y = d(resourceId="android:id/caption").center()
+            extendevent.drag_2(d,mouseID,caption_x,caption_y,screen_width/2,100)
+            sleep(0.5)
+        windowBounds=extendfunction.getParentBounds(d.dump_hierarchy(),'resource-id="android:id/caption"')
+        window_width=windowBounds['right']-windowBounds['left']
+        if window_width<700:
+            windowBounds = resize("right",-800+window_width)
+        d(resourceId="android:id/maximize_window").click()
+        sleep(0.5)
+        extendevent.click_blank(d,mouseID)
+        sleep(0.5)
+        check_windowBounds = {'top': 0, 'bottom': screen_height, 'left': 0,'right':screen_width}
+        windowBounds=extendfunction.getParentBounds(d.dump_hierarchy(),'resource-id="android:id/caption"')
+        print(check_windowBounds)
+        print(windowBounds)
+        output_res(windowBounds==check_windowBounds)
+        d(resourceId="android:id/maximize_window").click()
+
 
     def test_33_button_close(self):
         logger.info("------------标准窗口测试：按钮-关闭")
+        sleep(0.5)
+        d(resourceId="android:id/close_window").click()
+        sleep(0.5)
+        output_res(d(text="回收站").exists)
 
     def test_34_button_setting(self):
         logger.info("------------标准窗口测试：按钮-设置")

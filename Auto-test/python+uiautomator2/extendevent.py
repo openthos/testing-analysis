@@ -79,6 +79,32 @@ def middle_click(d,event_id,targeticon):
             +"sendevent /dev/input/event"+event_id+" 0000 0000 00000000")
     return True
 
+def double_click(d,event_id,targeticon):
+    x_position,y_position=targeticon.center()
+    # move mouse to the left top of the screen
+    d.shell("sendevent /dev/input/event"+event_id+" 2 0 -2000")
+    d.shell("sendevent /dev/input/event"+event_id+" 2 1 -2000")
+    d.shell("sendevent /dev/input/event"+event_id+" 0 0 0")
+    # move mouse to the position to double click
+    d.shell("sendevent /dev/input/event"+event_id+" 2 0 "+str(x_position))
+    d.shell("sendevent /dev/input/event"+event_id+" 2 1 "+str(y_position))
+    d.shell("sendevent /dev/input/event"+event_id+" 0 0 0")
+    # double click
+    d.shell("sendevent /dev/input/event"+event_id+" 4 4 589825")
+    d.shell("sendevent /dev/input/event"+event_id+" 1 272 1")
+    d.shell("sendevent /dev/input/event"+event_id+" 0 0 0")
+    d.shell("sendevent /dev/input/event"+event_id+" 4 4 589825")
+    d.shell("sendevent /dev/input/event"+event_id+" 1 272 0")
+    d.shell("sendevent /dev/input/event"+event_id+" 0 0 0")
+    sleep(0.3)
+    d.shell("sendevent /dev/input/event"+event_id+" 4 4 589825")
+    d.shell("sendevent /dev/input/event"+event_id+" 1 272 1")
+    d.shell("sendevent /dev/input/event"+event_id+" 0 0 0")
+    d.shell("sendevent /dev/input/event"+event_id+" 4 4 589825")
+    d.shell("sendevent /dev/input/event"+event_id+" 1 272 0")
+    d.shell("sendevent /dev/input/event"+event_id+" 0 0 0")
+    return True
+
 def roller_down(d,event_id,targeticon,step):
     # find the position to roll
     target_bounds=targeticon.info.get('visibleBounds')
