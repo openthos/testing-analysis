@@ -119,7 +119,7 @@ class StartmenuTestCase(unittest.TestCase):
         test_file.write("暂不验证\n")
 
     # 测试开始菜单所有应用列表
-    def test_03_allapp_single_click(self):
+    def test_11_allapp_single_click(self):
         logger.info("------------开始菜单：所有应用列表")
         test_file.write("- 开始菜单：所有应用列表\n")
         logger.info("------------------------单击打开")
@@ -133,7 +133,7 @@ class StartmenuTestCase(unittest.TestCase):
         output_res(d(resourceId="com.eolwral.osmonitor:id/action_bar").exists)
         d.app_stop("com.eolwral.osmonitor")
 
-    def test_04_allapp_rightclick_open(self):
+    def test_12_allapp_rightclick_open(self):
         logger.info("------------------------右键-打开")
         test_file.write("  + 右键-打开\t")
         d(resourceId='com.android.systemui:id/search').set_text("os monitor")
@@ -147,35 +147,7 @@ class StartmenuTestCase(unittest.TestCase):
         output_res(d(resourceId="com.eolwral.osmonitor:id/action_bar").exists)
         d.app_stop("com.eolwral.osmonitor")
 
-    def test_05_allapp_rightclick_phonemode(self):
-        logger.info("------------------------右键-以手机模式运行")
-        test_file.write("  + 右键-以手机模式运行\t")
-        d(resourceId='com.android.systemui:id/search').set_text("os monitor")
-        time.sleep(1)
-        first_icon = d(resourceId="com.android.systemui:id/grid_view").child(instance=0)
-        extendevent.right_click(d,mouseID,first_icon.child(className="android.widget.TextView"))
-        time.sleep(1)
-        d(text="以手机模式运行").click()
-        time.sleep(2)
-        print(d(resourceId="com.eolwral.osmonitor:id/action_bar").exists)
-        output_res(d(resourceId="com.eolwral.osmonitor:id/action_bar").exists)
-        d.app_stop("com.eolwral.osmonitor")
-
-    def test_06_allapp_rightclick_desktopmode(self):
-        logger.info("------------------------右键-以桌面模式运行")
-        test_file.write("  + 右键-以桌面模式运行\t")
-        d(resourceId='com.android.systemui:id/search').set_text("os monitor")
-        time.sleep(1)
-        first_icon = d(resourceId="com.android.systemui:id/grid_view").child(instance=0)
-        extendevent.right_click(d,mouseID,first_icon.child(className="android.widget.TextView"))
-        time.sleep(1)
-        d(text="以桌面模式运行").click()
-        time.sleep(2)
-        print(d(resourceId="com.eolwral.osmonitor:id/action_bar").exists)
-        output_res(d(resourceId="com.eolwral.osmonitor:id/action_bar").exists)
-        d.app_stop("com.eolwral.osmonitor")
-
-    def test_07_allapp_rightclick_dock(self):
+    def test_13_allapp_rightclick_dock(self):
         logger.info("------------------------右键-固定到任务栏")
         test_file.write("  + 右键-固定到任务栏\t")
         d(resourceId='com.android.systemui:id/search').set_text("os monitor")
@@ -189,7 +161,7 @@ class StartmenuTestCase(unittest.TestCase):
         test_file.write("暂不验证\n")
 
 
-    def test_08_allapp_rightclick_undock(self):
+    def test_14_allapp_rightclick_undock(self):
         logger.info("------------------------右键-解除固定")
         test_file.write("  + 右键-解除固定\t")
         d(resourceId='com.android.systemui:id/search').set_text("os monitor")
@@ -203,7 +175,7 @@ class StartmenuTestCase(unittest.TestCase):
         test_file.write("暂不验证\n")
 
 
-    def test_09_allapp_rightclick_uninstall(self):
+    def test_15_allapp_rightclick_uninstall(self):
         logger.info("------------------------右键-卸载")
         test_file.write("  + 右键-卸载\t")
         d(resourceId='com.android.systemui:id/search').set_text("os monitor")
@@ -219,7 +191,7 @@ class StartmenuTestCase(unittest.TestCase):
 
 
     # 测试开始菜单常用应用列表
-    def test_10_freqapp_single_click(self):
+    def test_21_freqapp_single_click(self):
         logger.info("------------开始菜单：常用应用列表")
         test_file.write("- 开始菜单：常用应用列表\n")
         logger.info("------------------------单击打开")
@@ -243,7 +215,7 @@ class StartmenuTestCase(unittest.TestCase):
         output_res(d(resourceId="com.eolwral.osmonitor:id/action_bar").exists)
         d.app_stop("com.eolwral.osmonitor")
 
-    def test_11_freqapp_rightclick_open(self):
+    def test_22_freqapp_rightclick_open(self):
         logger.info("------------------------右键-打开")
         test_file.write("  + 右键打开 \t")
         common_software_list = d(resourceId="com.android.systemui:id/list_view")
@@ -254,30 +226,7 @@ class StartmenuTestCase(unittest.TestCase):
         output_res(d(resourceId="com.eolwral.osmonitor:id/action_bar").exists)
         d.app_stop("com.eolwral.osmonitor")
 
-    def test_12_freqapp_rightclick_phonemode(self):
-        logger.info("------------------------右键-以手机模式运行")
-        test_file.write("  + 右键-以手机模式运行\t")
-        common_software_list = d(resourceId="com.android.systemui:id/list_view")
-        extendevent.right_click(d,mouseID,common_software_list.child(instance=0))
-        d(text="以手机模式运行").click()
-        time.sleep(2)
-        print(d(resourceId="com.eolwral.osmonitor:id/action_bar").exists)
-        output_res(d(resourceId="com.eolwral.osmonitor:id/action_bar").exists)
-        d.app_stop("com.eolwral.osmonitor")
-
-
-    def test_13_freqapp_rightclick_desktopmode(self):
-        logger.info("------------------------右键-以桌面模式运行")
-        test_file.write("  + 右键-以桌面模式运行\t")
-        common_software_list = d(resourceId="com.android.systemui:id/list_view")
-        extendevent.right_click(d,mouseID,common_software_list.child(instance=0))
-        d(text="以桌面模式运行").click()
-        time.sleep(2)
-        print(d(resourceId="com.eolwral.osmonitor:id/action_bar").exists)
-        output_res(d(resourceId="com.eolwral.osmonitor:id/action_bar").exists)
-        d.app_stop("com.eolwral.osmonitor")
-
-    def test_14_freqapp_rightclick_delete(self):
+    def test_23_freqapp_rightclick_delete(self):
         logger.info("------------------------右键-从此列表中删除")
         test_file.write("  + 右键-从此列表中删除\t")
         common_software_list = d(resourceId="com.android.systemui:id/list_view")
@@ -289,7 +238,7 @@ class StartmenuTestCase(unittest.TestCase):
 
     
     # 测试文件管理器快捷按钮
-    def test_15_filemanager(self):
+    def test_31_filemanager(self):
         test_file.write("- 开始菜单：快捷按钮\n")
         logger.info("------------文件管理器快捷按钮")
         test_file.write("  + 文件管理器快捷按钮\t")
@@ -305,7 +254,7 @@ class StartmenuTestCase(unittest.TestCase):
             closebutton.click()
 
     # 测试设置快捷按钮  
-    def test_16_setting(self):
+    def test_32_setting(self):
         logger.info("------------设置快捷按钮")
         test_file.write("  + 设置快捷按钮\t")
         d(resourceId="com.android.systemui:id/system_setting").click()
@@ -321,7 +270,7 @@ class StartmenuTestCase(unittest.TestCase):
 
 
     # 测试电源快捷按钮
-    def test_17_power(self):
+    def test_33_power(self):
         logger.info("------------电源快捷按钮")
         test_file.write("  + 电源快捷按钮\t")
         d(resourceId="com.android.systemui:id/power_off").click()
