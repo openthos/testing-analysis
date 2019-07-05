@@ -71,7 +71,6 @@ def resize(orientation,i):
 
 
 class WindowTestCase(unittest.TestCase):
-
     def test_00_prepare(self):
         logger.info("------------标准窗口测试：测试准备-打开应用")
         d.app_start(package)
@@ -363,13 +362,14 @@ class WindowTestCase(unittest.TestCase):
         print("实际："+str(windowBounds))
         output_res(windowBounds==check_windowBounds)
 
+    
     def test_53_fullscreen_button_minimum(self):
         logger.info("------------全屏窗口测试：按钮-最小化")
         sleep(0.5)
         d(resourceId="android:id/minimize_window").click()
         sleep(0.5)
         output_res(d(text="回收站").exists)
-        d.app_stop_all()
+        d.app_stop(package)
         d.app_stop("com.android.calculator2")
         sleep(0.5)
         d.app_start(package)
