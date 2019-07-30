@@ -226,3 +226,13 @@ def drag_2(d,event_id,sx,sy,ex,ey):
     d.shell("sendevent /dev/input/event"+event_id+" 1 272 0")
     d.shell("sendevent /dev/input/event"+event_id+" 0 0 0")
     return True
+
+def hover_00(d,event_id):
+    # 移动窗口用这个（移动窗口时需要用移动两次，否则无效）
+    # move mouse to the left top of the screen
+    d.shell("sendevent /dev/input/event"+event_id+" 2 0 -2000")
+    d.shell("sendevent /dev/input/event"+event_id+" 2 1 -2000")
+    d.shell("sendevent /dev/input/event"+event_id+" 0 0 0")
+    sleep(0.5)
+    return True
+
