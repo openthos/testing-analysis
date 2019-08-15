@@ -1,0 +1,4 @@
+app
+result_dir
+*.pyc
+*.txt

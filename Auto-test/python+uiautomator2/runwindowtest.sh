@@ -1,4 +1,13 @@
 #!/bin/bash
+# 作用：对测试机上的所有第三方应用进行窗口测试(调用windowtest.py)，结果放在result_dir目录
+
+ADB=`which adb`
+
+#指定测试机
+if [ x"$1" = x ]; then
+    echo must define param 1 : ip of guest
+    exit
+fi
 
 trap 'onCtrlC' INT
 function onCtrlC () {
@@ -14,7 +23,7 @@ else
 fi
 
 python -m uiautomator2 init
-package_list=$(/home/qin/Android/Sdk/platform-tools/adb shell pm list packages -3 | awk -F ':' '{print $2}' | grep -v "uiautomator")
+package_list=`$ADB shell pm list packages -3 | awk -F ':' '{print $2}' | grep -v "uiautomator"`
 
 sum=0
 for package in $package_list
@@ -27,5 +36,5 @@ for package in $package_list
 do
     count=$((count+1))
     echo "title: [$count/$sum] $package"
-    python windowtest.py 192.168.0.166 "$package" 2>&1 |tee result_dir/${package}-result.txt
+    python windowtest.py $1 "$package" 2>&1 |tee result_dir/${package}-result.txt
 done

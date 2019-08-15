@@ -5,7 +5,7 @@ import uiautomator2 as u2
 from time import sleep
 import extendevent
 
-d = u2.connect('192.168.0.164')
+d = u2.connect('192.168.0.69')
 print(d.info)
 mouseID=extendevent.getmouseID(d)
 
