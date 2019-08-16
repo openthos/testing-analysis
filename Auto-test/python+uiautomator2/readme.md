@@ -60,6 +60,10 @@ pip install lxml	# 如没有安装lxml，需要先安装它
 ```
 # 注意：测试前修改脚本里的测试机地址
 # 注意：要求测试机的系统语言为简体中文
+adb connect IP			# 连接到测试机的IP
+python -m uiautomator2 init	
 python mousedemo1.py	# 演示鼠标操作
+python rolldemo.py		# 模拟鼠标滚轮，要求文件管理器为打开的状态
+python startmenu_test.py IP	# 测试开始菜单，IP为测试机的地址，结果输出到startmenu.md
 ```
 
