@@ -8,21 +8,23 @@
 which seaf-cli
 if [ $? -ne 0 ]; then
 	echo please install seaf-cli
+	exit 1
 fi
 
 SERVER_URL=http://192.168.0.158
 CONF_DIR=config
 DATA_DIR=seafdata
-TMP_FILE=/tmp/abc.txt
 LIB_ID=86291401-ed2c-4fda-8fa8-8b3c0d87c94d
 
 if [ ! -d $CONF_DIR ]; then mkdir $CONF_DIR; fi
 if [ ! -d $DATA_DIR ]; then mkdir $DATA_DIR; fi
 
 function s_init() {
-	for ((i=$1;i<=$2;i++));do
-		user=thtfpc00000$i@openthos.com
-		lib_name=thtfpc$i
+	i=$1;
+	while [ $i -le $2 ]; do
+		user=`printf "thtfpc%08d@openthos.com" $i`
+		lib_name=`printf "thtfpc%03d" $i`
+		i=$(($i+1))
 		mkdir $DATA_DIR/$lib_name
 		seaf-cli init -c $CONF_DIR/$lib_name -d $DATA_DIR/$lib_name
 	done
@@ -33,23 +35,28 @@ function s_deinit() {
 }
 
 function s_start() {
-        for ((i=$1;i<=$2;i++));do
-		user=thtfpc00000$i@openthos.com
-		lib_name=thtfpc$i
+	i=$1;
+	while [ $i -le $2 ]; do
+		user=`printf "thtfpc%08d@openthos.com" $i`
+		lib_name=`printf "thtfpc%03d" $i`
+		i=$(($i+1))
+		echo $user $lib_name
 		seaf-cli start -c $CONF_DIR/$lib_name
 	done
 }
 
 function s_download() {
-	for ((i=$1;i<=$2;i++));do
-		user=thtfpc00000$i@openthos.com
-		lib_name=thtfpc$i
+	i=$1;
+	while [ $i -le $2 ]; do
+		user=`printf "thtfpc%08d@openthos.com" $i`
+		lib_name=`printf "thtfpc%03d" $i`
+		i=$(($i+1))
 		seaf-cli download -c $CONF_DIR/$lib_name -s $SERVER_URL -l $LIB_ID -u $user -p thtfpc
-		sleep 15
+		sleep 15	# avoid errors of "Too Many Request"
 	done
 }
 
-s_deinit
-s_init
-s_start
-s_download
+s_deinit $1 $2
+s_init $1 $2
+s_start $1 $2
+s_download $1 $2
