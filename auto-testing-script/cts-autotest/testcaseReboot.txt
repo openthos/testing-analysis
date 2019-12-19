@@ -1,5 +1,0 @@
-## 0 do not reboot / 1 reboot
-## default value of gui test is 0, which means do not reboot
-## default value of lkp test is 1, which means reboot
-GUI:0
-LKP:0

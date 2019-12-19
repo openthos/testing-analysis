@@ -1,6 +1,0 @@
-Manifest-Version: 1.0
-Rsrc-Class-Path: ./ uiautomator.jar android.jar org.hamcrest.core_1.3.0.jar junit.jar
-Class-Path: .
-Rsrc-Main-Class: com.autoTestUI.AutoTest
-Main-Class: org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader
-
